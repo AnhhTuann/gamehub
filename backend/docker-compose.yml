@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   postgres:
@@ -6,7 +6,7 @@ services:
     container_name: omniwear_db
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_PASSWORD: tuan2525
       POSTGRES_DB: omniwear
     ports:
       - "5433:5432"

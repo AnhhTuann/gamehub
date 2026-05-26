@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "paDwTRC4oc8=",
+  "success": true,
+  "projectFilePath": "C:\\Work\\OmniWear\\desktop-app\\OmniWear.Warehouse\\OmniWear.Warehouse.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\atuan\\.nuget\\packages\\graphql.client\\6.1.0\\graphql.client.6.1.0.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\graphql.client.abstractions\\6.1.0\\graphql.client.abstractions.6.1.0.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\graphql.client.abstractions.websocket\\6.1.0\\graphql.client.abstractions.websocket.6.1.0.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\graphql.client.serializer.newtonsoft\\6.1.0\\graphql.client.serializer.newtonsoft.6.1.0.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\graphql.primitives\\6.1.0\\graphql.primitives.6.1.0.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\system.reactive\\6.0.0\\system.reactive.6.0.0.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.27\\microsoft.netcore.app.ref.8.0.27.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.27\\microsoft.windowsdesktop.app.ref.8.0.27.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.27\\microsoft.aspnetcore.app.ref.8.0.27.nupkg.sha512",
+    "C:\\Users\\atuan\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.27\\microsoft.netcore.app.host.win-x64.8.0.27.nupkg.sha512"
+  ],
+  "logs": []
+}
