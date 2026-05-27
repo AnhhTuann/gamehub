@@ -1,0 +1,6 @@
+{
+  "name": "OmniWear",
+  "description": "A cinematic, deep dark mode e-commerce frontend prototype.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
