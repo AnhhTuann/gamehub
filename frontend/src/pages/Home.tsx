@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { dummyProducts } from '../data/products';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '../graphql/queries';
+import { Product } from '../types';
 import { ProductCard } from '../components/common/ProductCard';
 
 export const Home = () => {
-  const featuredProducts = dummyProducts.slice(0, 4);
+  const { data, loading, error } = useQuery(GET_PRODUCTS);
+  const products: Product[] = data?.products || [];
+
+  const featuredProducts = products.slice(0, 4);
 
   // Derive Flash Sale Products
-  const flashSaleProducts = dummyProducts.slice(4, 8).map(p => ({
+  const flashSaleProducts = products.slice(4, 8).map(p => ({
     ...p,
     originalPrice: p.price * 1.4,
     badge: 'SALE'
   }));
 
   // Derive Trending Products
-  const trendingProducts = [dummyProducts[8], dummyProducts[9], dummyProducts[10], dummyProducts[11], dummyProducts[0], dummyProducts[1]];
+  const trendingProducts = products.length >= 12 
+    ? [products[8], products[9], products[10], products[11], products[0], products[1]]
+    : products;
 
   // Countdown Timer Logic
   const [timeLeft, setTimeLeft] = useState(3 * 3600 + 45 * 60 + 12); // 03h:45m:12s
@@ -140,11 +147,15 @@ export const Home = () => {
             View All
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-16">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-12 text-zinc-500 font-sans">Loading...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-16">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

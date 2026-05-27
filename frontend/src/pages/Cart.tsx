@@ -42,8 +42,8 @@ export const Cart = () => {
             >
               <div className="w-24 h-32 shrink-0 bg-zinc-800 relative">
                 <img 
-                  src={item.imageUrl} 
-                  alt={item.name} 
+                  src={item.image || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop'} 
+                  alt={item.title} 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -51,7 +51,7 @@ export const Cart = () => {
               <div className="flex flex-col flex-grow py-2">
                 <div className="flex justify-between items-start gap-4">
                   <h3 className="font-serif text-lg font-medium leading-snug text-balance">
-                    {item.name}
+                    {item.title}
                   </h3>
                   <span className="font-medium tracking-wider shrink-0">
                     ${(item.price * item.quantity).toFixed(2)}

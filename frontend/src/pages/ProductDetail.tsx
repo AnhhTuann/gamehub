@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, ChevronDown, ChevronUp, ShoppingBag } from 'lucide-react';
-import { dummyProducts } from '../data/products';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCT } from '../graphql/queries';
+import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { ProductReviews } from '../components/common/ProductReviews';
 
@@ -15,7 +17,13 @@ const COLORS = [
 
 export const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const product = dummyProducts.find(p => p.id === id) || dummyProducts[0]; // fallback to first if direct visit
+  
+  const { data, loading, error } = useQuery(GET_PRODUCT, {
+    variables: { id },
+    skip: !id,
+  });
+  
+  const product: Product | undefined = data?.product;
   
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState('M');
@@ -26,7 +34,15 @@ export const ProductDetail = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <h2 className="text-xl text-zinc-400 font-sans">Loading product...</h2>
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <h2 className="text-xl text-zinc-400 font-serif">Product not found</h2>
@@ -56,8 +72,8 @@ export const ProductDetail = () => {
         {/* Left Column: Visuals */}
         <div className="relative aspect-[3/4] w-full bg-zinc-900 overflow-hidden">
           <img 
-            src={product.imageUrl} 
-            alt={product.name}
+            src={product.image || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop'} 
+            alt={product.title}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 shadow-[inset_0_0_120px_rgba(10,10,10,0.9)] pointer-events-none" />
@@ -66,7 +82,7 @@ export const ProductDetail = () => {
         {/* Right Column: Details */}
         <div className="flex flex-col py-6 md:py-12">
           <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-tight text-white mb-6 text-balance">
-            {product.name}
+            {product.title}
           </h1>
           
           <p className="text-2xl font-bold text-zinc-200 tracking-wider mb-8">
@@ -74,7 +90,7 @@ export const ProductDetail = () => {
           </p>
           
           <p className="text-zinc-400 leading-relaxed mb-12 text-lg">
-            Engineered for the modern aesthete, this piece is crafted from premium, ethically sourced materials to ensure unparalleled comfort and a flawless drape. Elevate your twilight wardrobe with its cinematic silhouette.
+            {product.description || "Engineered for the modern aesthete, this piece is crafted from premium, ethically sourced materials to ensure unparalleled comfort and a flawless drape. Elevate your twilight wardrobe with its cinematic silhouette."}
           </p>
 
           {/* Color Selector */}

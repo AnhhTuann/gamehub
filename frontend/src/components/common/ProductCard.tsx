@@ -28,8 +28,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
         <img
-          src={product.imageUrl}
-          alt={product.name}
+          src={product.image || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop'}
+          alt={product.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
         />
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -37,10 +37,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="p-6 md:p-8 flex flex-col flex-grow">
         <Link to={`/product/${product.id}`} className="flex flex-col flex-grow">
           <span className="text-zinc-500 text-xs font-semibold tracking-widest uppercase mb-3">
-            {product.category}
+            {product.category || 'Uncategorized'}
           </span>
           <h3 className="font-sans text-zinc-300 text-lg leading-relaxed mb-6 hover:text-white transition-colors">
-            {product.name}
+            {product.title}
           </h3>
         </Link>
         <div className="mt-auto flex items-center justify-between border-t border-zinc-800/50 pt-6">

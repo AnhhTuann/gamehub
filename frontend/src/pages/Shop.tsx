@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, SlidersHorizontal, X, Check, ChevronUp } from 'lucide-react';
-import { dummyProducts } from '../data/products';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS, GET_CATEGORIES, GET_BRANDS } from '../graphql/queries';
+import { Product } from '../types';
 import { ProductCard } from '../components/common/ProductCard';
-
-const CATEGORIES = ['Outerwear', 'T-Shirts', 'Denim', 'Footwear', 'Accessories'];
-const BRANDS = ['Saint Laurent', 'Balenciaga', 'Acne Studios', 'Zara', 'Local Brands'];
 
 export const Shop = () => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
@@ -26,8 +25,13 @@ export const Shop = () => {
     setSelectedBrands(prev => prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]);
   };
 
-  // Duplicate dummy products for display purposes
-  const displayProducts = [...dummyProducts, ...dummyProducts].slice(0, 9);
+  const { data: productsData, loading, error } = useQuery(GET_PRODUCTS);
+  const { data: categoriesData } = useQuery(GET_CATEGORIES);
+  const { data: brandsData } = useQuery(GET_BRANDS);
+
+  const displayProducts: Product[] = productsData?.products || [];
+  const CATEGORIES = categoriesData?.categories.map((c: any) => c.name) || [];
+  const BRANDS = brandsData?.brands.map((b: any) => b.name) || [];
 
   const Sidebar = () => (
     <div className="flex flex-col gap-8">
@@ -187,9 +191,23 @@ export const Shop = () => {
         <div className="w-full lg:w-3/4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-12">
             <AnimatePresence mode="popLayout">
-              {displayProducts.map((product, idx) => (
-                <ProductCard key={`${product.id}-${idx}`} product={product} />
-              ))}
+              {loading ? (
+                <div className="col-span-full text-center py-12 text-zinc-500 font-sans">
+                  Loading collection...
+                </div>
+              ) : error ? (
+                <div className="col-span-full text-center py-12 text-red-500 font-sans">
+                  Error loading products.
+                </div>
+              ) : displayProducts.length === 0 ? (
+                <div className="col-span-full text-center py-12 text-zinc-500 font-sans">
+                  No products found.
+                </div>
+              ) : (
+                displayProducts.map((product, idx) => (
+                  <ProductCard key={`${product.id}-${idx}`} product={product} />
+                ))
+              )}
             </AnimatePresence>
           </div>
         </div>

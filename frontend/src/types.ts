@@ -1,13 +1,24 @@
-export type Category = 'All' | 'Men' | 'Women' | 'Shoes' | 'Accessories';
+export interface ProductVariant {
+  id: string;
+  sku?: string;
+  color?: string;
+  size?: string;
+  price: number;
+  inventory: number;
+}
 
 export interface Product {
   id: string;
-  name: string;
+  title: string;
   price: number;
+  description?: string;
+  category?: string;
+  image?: string;
+  inventory?: number;
+  createdAt?: string;
+  variants?: ProductVariant[];
   originalPrice?: number;
   badge?: string;
-  category: Category;
-  imageUrl: string;
 }
 
 export interface CartItem extends Product {
