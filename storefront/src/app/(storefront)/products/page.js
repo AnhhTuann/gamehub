@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
 import { ProductCard } from '../../../components/storefront/ProductCard';
-import { Input } from '../../../components/ui/Input';
 
 const GET_PRODUCTS = gql`
   query GetProducts {
@@ -37,43 +36,37 @@ export default function ProductsPage() {
   });
 
   return (
-    <div className="animate-fade-in">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-xl)' }}>
-        <h1 style={{ fontSize: '2.5rem' }}>Our Collection</h1>
+    <div className="animate-fade-in container pb-20">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 mt-8">
+        <h1 className="text-4xl font-heading font-bold tracking-tight">Our Collection</h1>
         
         {/* Search */}
-        <div style={{ width: '300px' }}>
-          <Input 
+        <div className="w-full md:w-80 relative">
+          <input 
+            type="text"
             placeholder="Search products..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ borderRadius: 'var(--radius-full)' }} 
+            className="w-full bg-background border border-border rounded-full px-5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-shadow" 
           />
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 'var(--spacing-xl)' }}>
+      <div className="flex flex-col md:flex-row gap-12">
         {/* Sidebar Filters */}
-        <aside style={{ width: '250px' }}>
-          <div style={{ position: 'sticky', top: '100px' }}>
-            <h3 style={{ marginBottom: 'var(--spacing-md)' }}>Categories</h3>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)' }}>
+        <aside className="w-full md:w-64 flex-shrink-0">
+          <div className="sticky top-24">
+            <h3 className="font-heading font-bold text-lg mb-4 tracking-wide uppercase">Categories</h3>
+            <ul className="flex flex-col gap-2">
               {['All', 'Men', 'Women', 'Accessories', 'Shoes'].map(cat => (
                 <li key={cat}>
                   <button 
                     onClick={() => setFilter(cat)}
-                    style={{ 
-                      background: 'none', 
-                      border: 'none', 
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                      color: filter === cat ? 'var(--primary)' : 'var(--text-secondary)',
-                      fontWeight: filter === cat ? '600' : '400',
-                      textAlign: 'left',
-                      width: '100%',
-                      padding: 'var(--spacing-xs) 0',
-                      transition: 'var(--transition)'
-                    }}
+                    className={`w-full text-left px-3 py-2 rounded-md transition-all text-sm font-medium ${
+                      filter === cat 
+                        ? 'bg-primary text-primary-foreground shadow-sm' 
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    }`}
                   >
                     {cat}
                   </button>
@@ -81,16 +74,16 @@ export default function ProductsPage() {
               ))}
             </ul>
             
-            <h3 style={{ marginTop: 'var(--spacing-xl)', marginBottom: 'var(--spacing-md)' }}>Price Range</h3>
+            <h3 className="font-heading font-bold text-lg mt-10 mb-4 tracking-wide uppercase">Price Range</h3>
             <input 
               type="range" 
               min="0" 
-              max="150" 
+              max="500" 
               value={maxPrice}
               onChange={(e) => setMaxPrice(parseFloat(e.target.value))}
-              style={{ width: '100%' }} 
+              className="w-full accent-primary" 
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+            <div className="flex justify-between text-muted-foreground text-sm mt-2 font-medium">
               <span>$0</span>
               <span>${maxPrice}</span>
             </div>
@@ -98,15 +91,21 @@ export default function ProductsPage() {
         </aside>
 
         {/* Product Grid */}
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           {loading ? (
-            <p>Loading products...</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="h-96 bg-muted/50 animate-pulse rounded-xl border border-border" />
+              ))}
+            </div>
           ) : error ? (
-            <p>Error loading products: {error.message}</p>
+             <p className="text-destructive font-medium bg-destructive/10 p-4 rounded-md">Error loading products: {error.message}</p>
           ) : filteredProducts.length === 0 ? (
-            <p>No products found matching your filters.</p>
+            <div className="py-20 text-center border border-dashed border-border rounded-xl bg-muted/20">
+              <p className="text-muted-foreground font-medium text-lg">No products found matching your filters.</p>
+            </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'var(--spacing-lg)' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}

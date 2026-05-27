@@ -21,45 +21,56 @@ const GET_BEST_SELLERS = gql`
 `;
 
 export default function Home() {
-  const categories = ['Men', 'Women', 'Accessories', 'Shoes'];
+  const categories = [
+    { id: 'Men', label: "Men's Collection" },
+    { id: 'Women', label: "Women's Collection" },
+    { id: 'Accessories', label: "Accessories" },
+    { id: 'Shoes', label: "Shoes Collection" }
+  ];
   const { data, loading, error } = useQuery(GET_BEST_SELLERS);
 
   const bestSellers = data?.products?.slice(0, 4) || [];
 
   return (
-    <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-xl)' }}>
+    <div className="animate-fade-in flex flex-col gap-32 pb-32">
       
-      <HeroBanner 
-        title={<>Elevate Your <span style={{ color: 'var(--primary)' }}>Style</span></>}
-        subtitle="Discover the latest trends in fashion. Premium quality, modern design, exclusively for you."
-        primaryAction={{ label: 'Shop Collection', href: '/products' }}
-        secondaryAction={{ label: 'Flash Sale', href: '/products?sale=true' }}
-      />
+      <div className="container">
+        <HeroBanner 
+          title={<>Elevate Your <span className="text-primary">Style</span></>}
+          subtitle="Discover the latest trends in fashion. Premium quality, modern design, exclusively for you."
+          primaryAction={{ label: 'Shop Collection', href: '/products' }}
+          secondaryAction={{ label: 'Flash Sale', href: '/products?sale=true' }}
+        />
+      </div>
 
       {/* Categories */}
-      <section>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--spacing-lg)' }}>
-          <h2 style={{ fontSize: '2rem' }}>Featured Categories</h2>
-          <Link href="/products" style={{ color: 'var(--primary)', fontWeight: 500 }}>View All</Link>
+      <section className="container">
+        <div className="flex justify-between items-end mb-12 pb-4">
+          <h2 className="text-3xl font-sans font-bold tracking-tight">Featured Categories</h2>
+          <Link href="/products" className="text-primary font-medium hover:underline hover:underline-offset-4 transition-all">View All &rarr;</Link>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((cat) => (
-            <CategoryCard key={cat} category={cat} />
+            <CategoryCard key={cat.id} category={cat.id} label={cat.label} />
           ))}
         </div>
       </section>
 
       {/* Best Sellers */}
-      <section>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--spacing-lg)' }}>
-          <h2 style={{ fontSize: '2rem' }}>Best Sellers</h2>
+      <section className="container">
+        <div className="flex justify-between items-end mb-12 pb-4">
+          <h2 className="text-3xl font-sans font-bold tracking-tight">Best Sellers</h2>
         </div>
         {loading ? (
-          <p>Loading best sellers...</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="aspect-square bg-muted/50 animate-pulse rounded-2xl border border-border" />
+            ))}
+          </div>
         ) : error ? (
-          <p>Error loading products: {error.message}</p>
+          <p className="text-destructive font-medium bg-destructive/10 p-4 rounded-md">Error loading products: {error.message}</p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'var(--spacing-lg)' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {bestSellers.map((item) => (
               <ProductCard key={item.id} product={item} />
             ))}
