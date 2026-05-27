@@ -1,0 +1,281 @@
+[
+  {
+    "id": "m1",
+    "title": "Vanguard Obsidian Bomber Jacket",
+    "description": "A sleek, modern bomber jacket crafted from premium weather-resistant nylon. Features minimal silver zippers, utility pockets, and a tailored obsidian silhouette. Designed for urban exploration.",
+    "category": "Men",
+    "price": 89.99,
+    "color": "Black",
+    "image": "/images/products/m1.jpg"
+  },
+  {
+    "id": "m2",
+    "title": "Nordic Cream Knit Sweater",
+    "description": "Cozy, chunky ribbed knit sweater inspired by Scandinavian minimalism. Spun from a luxurious blend of merino wool and organic cotton. Perfect for layering during cold seasons.",
+    "category": "Men",
+    "price": 79.99,
+    "color": "Cream",
+    "image": "/images/products/m2.jpg"
+  },
+  {
+    "id": "m3",
+    "title": "Aero Relaxed Linen Shirt",
+    "description": "An ultra-breathable casual shirt made from 100% Belgian flax linen. Features a relaxed camp collar, soft natural drape, and clean ivory tones. The ultimate warm-weather essential.",
+    "category": "Men",
+    "price": 49.99,
+    "color": "White",
+    "image": "/images/products/m3.jpg"
+  },
+  {
+    "id": "m4",
+    "title": "Nomad Waterproof Tech Parka",
+    "description": "A high-performance shell parka featuring fully taped seams, breathable Gore-Tex construction, and an adjustable storm hood. Tailored in a rich, minimalist olive green shade.",
+    "category": "Men",
+    "price": 129.99,
+    "color": "Olive Green",
+    "image": "/images/products/m4.jpg"
+  },
+  {
+    "id": "m5",
+    "title": "Classic Indigo Trucker Denim Jacket",
+    "description": "A rugged denim jacket built from heavy 14oz Japanese raw denim. Gets better with age, featuring classic silver shank buttons, chest pockets, and beautiful double-needle stitching.",
+    "category": "Men",
+    "price": 69.99,
+    "color": "Indigo",
+    "image": "/images/products/m5.jpg"
+  },
+  {
+    "id": "m6",
+    "title": "Heritage Camel Wool Overcoat",
+    "description": "An exquisite double-breasted overcoat tailored from a premium wool-cashmere blend. Features a structured shoulder line, deep notch lapels, and a striking camel brown color.",
+    "category": "Men",
+    "price": 149.99,
+    "color": "Camel",
+    "image": "/images/products/m6.jpg"
+  },
+  {
+    "id": "m7",
+    "title": "Minimalist Charcoal Pima Cotton Tee",
+    "description": "An incredibly soft basic tee made from 100% extra-long staple Pima cotton. Breathable, durable, and designed with a modern semi-fitted cut that retains its shape.",
+    "category": "Men",
+    "price": 24.99,
+    "color": "Charcoal",
+    "image": "/images/products/m7.jpg"
+  },
+  {
+    "id": "m8",
+    "title": "Streetwear Oversized Sand Hoodie",
+    "description": "Heavyweight French terry cotton hoodie featuring a drop-shoulder design, cozy double-lined hood, and a clean sand-colored wash. Ideal for premium loungewear styling.",
+    "category": "Men",
+    "price": 59.99,
+    "color": "Sand",
+    "image": "/images/products/m8.jpg"
+  },
+  {
+    "id": "m9",
+    "title": "Utility Khaki Field Overshirt",
+    "description": "A versatile transitional piece combining shirt styling with light jacket utility. Made from durable cotton twill with dual chest flap pockets and structured classic collar.",
+    "category": "Men",
+    "price": 54.99,
+    "color": "Khaki",
+    "image": "/images/products/m9.jpg"
+  },
+  {
+    "id": "m10",
+    "title": "Classic Oxford Button-Down Shirt",
+    "description": "The quintessential wardrobe staple. Woven from durable, high-density Oxford cotton fabric, featuring a roll-collar button-down design and a premium tailored finish.",
+    "category": "Men",
+    "price": 45.99,
+    "color": "Light Blue",
+    "image": "/images/products/m10.jpg"
+  },
+  {
+    "id": "w1",
+    "title": "Aurelia Silk Wrap Dress",
+    "description": "A luxurious wrap dress crafted from 100% pure Mulberry silk. Drapes gracefully with an adjustable tie waist, subtle balloon sleeves, and a rich jewel-toned emerald green hue.",
+    "category": "Women",
+    "price": 119.99,
+    "color": "Emerald Green",
+    "image": "/images/products/w1.jpg"
+  },
+  {
+    "id": "w3",
+    "title": "Oversized Cashmere Taupe Cardigan",
+    "description": "Luxuriously soft oversized cardigan knitted from 100% fine Mongolian cashmere. Features low tortoiseshell button closures, ribbed cuffs, and a warm taupe tone.",
+    "category": "Women",
+    "price": 89.99,
+    "color": "Taupe",
+    "image": "/images/products/w3.jpg"
+  },
+  {
+    "id": "w4",
+    "title": "Pleated Satin Champagne Midi Skirt",
+    "description": "A flowing midi skirt that catches the light beautifully. Made from lustrous fluid satin, featuring delicate accordion pleats and an elasticized comfort waistband.",
+    "category": "Women",
+    "price": 64.99,
+    "color": "Champagne",
+    "image": "/images/products/w4.jpg"
+  },
+  {
+    "id": "w5",
+    "title": "Modern Classic Beige Trench Coat",
+    "description": "A timeless trench coat woven from durable water-repellent gabardine. Features traditional storm flaps, a double-breasted button front, and a waist-defining belt.",
+    "category": "Women",
+    "price": 139.99,
+    "color": "Beige",
+    "image": "/images/products/w5.jpg"
+  },
+  {
+    "id": "w6",
+    "title": "Breezy Linen White Sun Dress",
+    "description": "A light and breezy sun dress crafted from pre-washed organic linen. Designed with a gentle A-line silhouette, delicate shoulder straps, and a clean white finish.",
+    "category": "Women",
+    "price": 69.99,
+    "color": "White",
+    "image": "/images/products/w6.jpg"
+  },
+  {
+    "id": "w7",
+    "title": "Ribbed Knit Terracotta Crop Top",
+    "description": "A cozy, chic cropped top featuring a high neckline and premium ribbed knit texture. Offers a flexible, body-hugging fit in a warm earth-toned terracotta color.",
+    "category": "Women",
+    "price": 29.99,
+    "color": "Terracotta",
+    "image": "/images/products/w7.jpg"
+  },
+  {
+    "id": "w8",
+    "title": "Tailored Wide-Leg Charcoal Trousers",
+    "description": "Elegant wide-leg trousers featuring a sophisticated high-rise fit, sharp front pleats, and side slip pockets. Crafted from a structured, premium drape fabric.",
+    "category": "Women",
+    "price": 74.99,
+    "color": "Charcoal",
+    "image": "/images/products/w8.jpg"
+  },
+  {
+    "id": "w9",
+    "title": "Velvet Midnight Slip Dress",
+    "description": "A sleek, luxurious slip dress cut on the bias from plush midnight blue silk velvet. Features a delicate cowl neckline and adjustable criss-cross spaghetti straps.",
+    "category": "Women",
+    "price": 84.99,
+    "color": "Midnight Blue",
+    "image": "/images/products/w9.jpg"
+  },
+  {
+    "id": "a1",
+    "title": "Chronos Minimalist Steel Watch",
+    "description": "A sleek watch featuring a surgical-grade steel case, scratch-resistant sapphire crystal glass, and a black mesh band. Powered by precise Swiss quartz movement.",
+    "category": "Accessories",
+    "price": 149.99,
+    "color": "Matte Black",
+    "image": "/images/products/a1.jpg"
+  },
+  {
+    "id": "a2",
+    "title": "Nomad Full-Grain Cognac Duffle Bag",
+    "description": "A premium weekend duffle handcrafted from beautiful full-grain Italian leather. Features heavy-duty brass zippers, reinforced canvas linings, and a spacious main cabin.",
+    "category": "Accessories",
+    "price": 189.99,
+    "color": "Cognac",
+    "image": "/images/products/a2.jpg"
+  },
+  {
+    "id": "a4",
+    "title": "Horizon Gold Tortoise Sunglasses",
+    "description": "Premium acetate sunglasses featuring classic tortoise shell patterns, gold-plated wire frame accents, and highly protective polarized dark green lenses.",
+    "category": "Accessories",
+    "price": 79.99,
+    "color": "Tortoise Shell",
+    "image": "/images/products/a4.jpg"
+  },
+  {
+    "id": "a5",
+    "title": "Saffiano Emerald Zip Wallet",
+    "description": "A sleek, compact zip-around wallet constructed from scratch-resistant Saffiano leather. Designed with multiple card slots, bill compartments, and a gold zipper.",
+    "category": "Accessories",
+    "price": 49.99,
+    "color": "Emerald",
+    "image": "/images/products/a5.jpg"
+  },
+  {
+    "id": "a7",
+    "title": "Urban Canvas & Leather Backpack",
+    "description": "A water-repellent heavy canvas backpack reinforced with oil-waxed leather trims. Includes a padded 15-inch laptop sleeve, magnetic closures, and brass buckles.",
+    "category": "Accessories",
+    "price": 89.99,
+    "color": "Forest Green",
+    "image": "/images/products/a7.jpg"
+  },
+  {
+    "id": "a8",
+    "title": "Minimalist Solid Raw Brass Cuff",
+    "description": "A simple, solid brass cuff bracelet with a hand-polished matte finish. Designed with a flexible open back for custom sizing. Will develop a beautiful dark patina over time.",
+    "category": "Accessories",
+    "price": 34.99,
+    "color": "Raw Brass",
+    "image": "/images/products/a8.jpg"
+  },
+  {
+    "id": "a9",
+    "title": "Classic Canvas Cream & Tan Tote Bag",
+    "description": "A durable, large-capacity tote bag made from high-density heavy cotton canvas. Trimmed with full-grain tan leather handles, perfect for daily commuting or beach trips.",
+    "category": "Accessories",
+    "price": 45.99,
+    "color": "Cream / Tan",
+    "image": "/images/products/a9.jpg"
+  },
+  {
+    "id": "s1",
+    "title": "Apex Triple Black Carbon Knit Sneakers",
+    "description": "Next-generation running sneakers featuring an ultra-breathable seamless carbon knit upper, energy-returning foam midsoles, and a durable rubber outsole.",
+    "category": "Shoes",
+    "price": 119.99,
+    "color": "Triple Black",
+    "image": "/images/products/s1.jpg"
+  },
+  {
+    "id": "s2",
+    "title": "Timeless Chestnut Leather Chelsea Boots",
+    "description": "Classic Chelsea boots hand-tailored from soft, water-resistant calfskin leather. Features flexible dark brown elastic side panels and durable Goodyear-welted soles.",
+    "category": "Shoes",
+    "price": 139.99,
+    "color": "Chestnut Brown",
+    "image": "/images/products/s2.jpg"
+  },
+  {
+    "id": "s3",
+    "title": "Retro Court White & Green Sneakers",
+    "description": "Vintage-inspired minimalist court sneakers crafted from premium full-grain white leather. Detailed with a contrast forest green heel tab and clean stitched cupsoles.",
+    "category": "Shoes",
+    "price": 89.99,
+    "color": "White / Forest Green",
+    "image": "/images/products/s3.jpg"
+  },
+  {
+    "id": "s4",
+    "title": "Minimalist Sand Suede Loafers",
+    "description": "Sleek, highly comfortable slip-on loafers crafted from premium Italian split suede leather. Finished with an unlined flexible construction and a soft padded leather insole.",
+    "category": "Shoes",
+    "price": 99.99,
+    "color": "Sand Suede",
+    "image": "/images/products/s4.jpg"
+  },
+  {
+    "id": "s5",
+    "title": "Nomad Waterproof Trail Boots",
+    "description": "Rugged, heavy-duty hiking boots constructed with waterproof nylon uppers, durable rubber mudguards, and high-traction Vibram lugged soles for maximum stability.",
+    "category": "Shoes",
+    "price": 129.99,
+    "color": "Olive / Black",
+    "image": "/images/products/s5.jpg"
+  },
+  {
+    "id": "s8",
+    "title": "Vintage Off-White Canvas High-Tops",
+    "description": "A timeless classic. Features heavy 12oz washed organic canvas uppers, soft cushioned ortholite insoles, and durable vulcanized white rubber toe caps and soles.",
+    "category": "Shoes",
+    "price": 65.0,
+    "color": "Off-White",
+    "image": "/images/products/s8.jpg"
+  }
+]

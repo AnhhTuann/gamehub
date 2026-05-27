@@ -1,48 +1,89 @@
 const { PrismaClient } = require('@prisma/client');
-const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Bắt đầu quy trình seeding dữ liệu...');
+  console.log('Bắt đầu quy trình seeding dữ liệu từ Kaggle Fashion Dataset...');
 
   try {
-    // 1. Fetch dữ liệu từ FakeStore API
-    const response = await axios.get('https://fakestoreapi.com/products');
-    const products = response.data;
-
-    // Lọc chỉ lấy quần áo nam và nữ
-    const clothingProducts = products.filter(
-      p => p.category === "men's clothing" || p.category === "women's clothing"
-    );
-
-    console.log(`Đã tải ${clothingProducts.length} sản phẩm quần áo từ FakeStoreAPI.`);
-
-    // 2. Chèn vào CSDL
-    let count = 0;
-    for (const product of clothingProducts) {
-      // Bỏ qua nếu đã tồn tại title (để tránh trùng lặp khi chạy lại)
-      const existingProduct = await prisma.product.findFirst({
-        where: { title: product.title }
-      });
-
-      if (!existingProduct) {
-        await prisma.product.create({
-          data: {
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            category: product.category,
-            image: product.image,
-            // Random tồn kho từ 10 đến 50
-            inventory: Math.floor(Math.random() * 41) + 10,
-          }
-        });
-        count++;
-      }
+    const jsonPath = path.join(__dirname, 'products_seed.json');
+    if (!fs.existsSync(jsonPath)) {
+      throw new Error(`Không tìm thấy file metadata tại: ${jsonPath}`);
     }
 
-    console.log(`Seeding thành công! Đã chèn ${count} sản phẩm mới vào CSDL.`);
+    const productsData = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+    console.log(`Đã đọc ${productsData.length} sản phẩm mẫu từ file JSON.`);
+
+    // 1. Dọn dẹp dữ liệu cũ để tránh trùng lặp hoặc xung đột khóa ngoại
+    console.log('Đang dọn dẹp dữ liệu cũ trong CSDL...');
+    await prisma.cartItem.deleteMany();
+    await prisma.cart.deleteMany();
+    await prisma.orderItem.deleteMany();
+    await prisma.order.deleteMany();
+    await prisma.productVariant.deleteMany();
+    await prisma.product.deleteMany();
+    await prisma.category.deleteMany();
+    await prisma.brand.deleteMany();
+
+    // 2. Tạo thương hiệu OmniWear mặc định
+    const brand = await prisma.brand.create({
+      data: { name: 'OmniWear' }
+    });
+    console.log(`Đã tạo thương hiệu mặc định: ${brand.name}`);
+
+    // 3. Tạo các danh mục và sản phẩm tương ứng
+    const categoriesMap = {};
+    let count = 0;
+
+    for (const item of productsData) {
+      // Đảm bảo danh mục tồn tại
+      const catName = item.category;
+      const catSlug = catName.toLowerCase();
+      
+      if (!categoriesMap[catName]) {
+        let category = await prisma.category.findUnique({
+          where: { slug: catSlug }
+        });
+        if (!category) {
+          category = await prisma.category.create({
+            data: { name: catName, slug: catSlug }
+          });
+        }
+        categoriesMap[catName] = category.id;
+      }
+
+      // Tạo sản phẩm
+      const createdProduct = await prisma.product.create({
+        data: {
+          title: item.title,
+          description: item.description,
+          image: item.image,
+          categoryId: categoriesMap[catName],
+          brandId: brand.id
+        }
+      });
+
+      // Tạo ProductVariant mặc định cho sản phẩm
+      // Random tồn kho từ 15 đến 60
+      const inventory = Math.floor(Math.random() * 46) + 15;
+      await prisma.productVariant.create({
+        data: {
+          productId: createdProduct.id,
+          sku: `OW-${createdProduct.id.slice(0, 8).toUpperCase()}-M`,
+          color: item.color || 'Black',
+          size: 'M',
+          price: parseFloat(item.price),
+          inventory: inventory
+        }
+      });
+
+      count++;
+      console.log(`[${catName}] Đã chèn sản phẩm: "${item.title}"`);
+    }
+
+    console.log(`\nSeeding thành công! Đã chèn ${count} sản phẩm mới từ Kaggle Fashion Dataset vào CSDL PostgreSQL!`);
   } catch (error) {
     console.error('Lỗi khi seeding dữ liệu:', error);
   } finally {

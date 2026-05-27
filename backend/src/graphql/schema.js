@@ -40,10 +40,11 @@ const typeDefs = `#graphql
   type Product {
     id: ID!
     title: String!
+    price: Float!
     description: String!
+    category: String!
     image: String
-    category: Category
-    brand: Brand
+    inventory: Int!
     variants: [ProductVariant!]!
     createdAt: String!
   }
@@ -94,6 +95,12 @@ const typeDefs = `#graphql
     isActive: Boolean!
   }
 
+  input OrderItemInput {
+    productId: ID!
+    quantity: Int!
+    price: Float!
+  }
+
   type Query {
     users: [User!]!
     user(id: ID!): User
@@ -132,10 +139,12 @@ const typeDefs = `#graphql
     addToCart(cartId: ID, productVariantId: ID!, quantity: Int!): Cart!
     removeFromCart(cartId: ID!, cartItemId: ID!): Cart!
     
-    createOrder(cartId: ID!, customerName: String!, customerPhone: String!, customerAddress: String!, couponCode: String): Order!
+    createOrder(customerName: String!, customerPhone: String!, items: [OrderItemInput!]!): Order!
     updateOrderStatus(id: ID!, status: String!): Order!
 
     createCoupon(code: String!, type: String!, value: Float!, expiryDate: String, usageLimit: Int): Coupon!
+    
+    updateInventory(id: ID!, newInventory: Int!): Product!
   }
 `;
 

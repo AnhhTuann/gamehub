@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 
 const CREATE_ORDER = gql`
   mutation CreateOrder($customerName: String!, $customerPhone: String!, $items: [OrderItemInput!]!) {

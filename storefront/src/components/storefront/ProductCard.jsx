@@ -8,7 +8,7 @@ export function ProductCard({ product }) {
       <Card hoverable style={{ overflow: 'hidden' }}>
         <div style={{ height: '300px', backgroundColor: '#f1f5f9', position: 'relative' }}>
           <img 
-            src={product.img || `https://source.unsplash.com/random/400x500/?clothing,${product.id}`} 
+            src={product.image || product.img || `https://source.unsplash.com/random/400x500/?clothing,${product.id}`} 
             alt={product.name || product.title} 
             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
           />
