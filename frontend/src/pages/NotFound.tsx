@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 
 export const NotFound = () => {
   return (
@@ -16,7 +16,7 @@ export const NotFound = () => {
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center px-6 w-full max-w-4xl mx-auto">
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -24,12 +24,12 @@ export const NotFound = () => {
         >
           404
         </motion.h1>
-        
+
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.8, delay: 0.3 }}
-           className="relative z-10 flex flex-col items-center mt-12 md:mt-0"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="relative z-10 flex flex-col items-center mt-12 md:mt-0"
         >
           <h2 className="font-serif text-5xl md:text-7xl font-bold text-white mb-6 tracking-wide drop-shadow-xl">
             Lost in Style.
@@ -37,7 +37,7 @@ export const NotFound = () => {
           <p className="text-zinc-400 font-sans text-sm md:text-base max-w-md mx-auto mb-12 tracking-widest leading-relaxed uppercase px-4 text-center">
             The page you are looking for has stepped off the runway.
           </p>
-          <Link 
+          <Link
             to="/"
             className="group relative inline-flex items-center justify-center px-10 py-5 bg-white text-black font-semibold tracking-widest uppercase text-sm transition-all hover:bg-zinc-200"
           >
