@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Camera, Sparkles } from 'lucide-react';
-import { dummyProducts } from '../../data/products';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '../../graphql/queries';
+import { Product } from '../../types';
 import { ProductCard } from '../common/ProductCard';
 
 interface AIStylistModalProps {
@@ -43,7 +45,8 @@ export const AIStylistModal = ({ isOpen, onClose }: AIStylistModalProps) => {
   const colors = ['#2C3E50', '#E74C3C', '#AAAAAA', '#F5DF4D'];
   const materials = ['Denim', 'Canvas', 'Matte Leather'];
   // Show 2-4 products matching criteria
-  const matchedProducts = dummyProducts.slice(1, 4);
+  const { data } = useQuery(GET_PRODUCTS);
+  const matchedProducts: Product[] = (data?.products || []).slice(1, 4);
 
   return (
     <AnimatePresence>

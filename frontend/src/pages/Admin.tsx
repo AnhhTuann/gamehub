@@ -25,7 +25,9 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
-import { dummyProducts } from '../data/products';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '../graphql/queries';
+import { Product } from '../types';
 
 const salesData = [
   { name: '1', revenue: 4000 },
@@ -52,7 +54,8 @@ const STAFF = [
   { id: 'EMP-04', name: 'Michael Brown', role: 'Editor', lastLogin: '1 week ago', status: 'On Leave' },
 ];
 
-const LOW_STOCK = dummyProducts.slice(0, 4).map((p, i) => ({ ...p, stock: i + 1 }));
+  const { data } = useQuery(GET_PRODUCTS);
+  const LOW_STOCK = (data?.products || []).slice(0, 4).map((p: any, i: number) => ({ ...p, stock: i + 1 }));
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles = {

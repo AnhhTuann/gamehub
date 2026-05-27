@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { dummyProducts } from '../../data/products';
+import { Search, X, ArrowRight, History } from 'lucide-react';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '../../graphql/queries';
+import { Product } from '../../types';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -25,7 +26,8 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   }, [isOpen]);
 
   const trendingSearches = ['Leather Jacket', 'Black Denim', 'Oversized Tee', 'Combat Boots'];
-  const suggestedProducts = dummyProducts.slice(0, 3);
+  const { data } = useQuery(GET_PRODUCTS);
+  const suggestedProducts: Product[] = (data?.products || []).slice(0, 3);
 
   return (
     <AnimatePresence>

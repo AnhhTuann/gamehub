@@ -3,7 +3,7 @@
 OmniWear là một dự án Fullstack 3 lớp mô phỏng hệ thống bán hàng và quản lý tồn kho theo thời gian thực. Hệ thống bao gồm 3 thành phần chính:
 
 1. **Backend (Node.js + GraphQL + Prisma):** Quản lý kết nối tới cơ sở dữ liệu PostgreSQL. Cung cấp GraphQL API để thao tác với dữ liệu.
-2. **Storefront (Next.js):** Website bán hàng với giao diện người dùng trực quan, sang trọng, sử dụng React Server Components và Apollo Client.
+2. **Frontend (Vite + React + Apollo):** Website bán hàng với giao diện người dùng trực quan, sang trọng, tương tác mượt mà nhờ React và Apollo Client.
 3. **Warehouse App (C# WPF):** Ứng dụng Desktop dành cho nhân viên quản lý kho, theo dõi và cập nhật số lượng hàng tồn kho.
 
 ---
@@ -38,12 +38,12 @@ npm run seed     # Chạy lệnh này để tải 10 sản phẩm mẫu vào CSD
 npm run dev      # Khởi động server (Mặc định: http://localhost:4000/graphql)
 ```
 
-### Bước 3: Chạy Website Storefront (Next.js)
+### Bước 3: Chạy Website Frontend (Vite + React)
 
-Mở một Terminal khác, truy cập vào thư mục `storefront` và khởi chạy Web:
+Mở một Terminal khác, truy cập vào thư mục `frontend` và khởi chạy Web:
 
 ```bash
-cd storefront
+cd frontend
 npm install
 npm run dev      # Khởi động Web tại: http://localhost:3000
 ```
@@ -76,5 +76,5 @@ Mở thư mục `desktop-app/OmniWear.Warehouse`. Bạn có thể sử dụng 2 
 
 ## 🛠 Công nghệ sử dụng
 - **Backend:** Node.js, Express, Apollo Server, Prisma ORM, PostgreSQL (Docker).
-- **Frontend:** Next.js (App Router), React, Apollo Client, Vanilla CSS hiện đại.
+- **Frontend:** Vite, React, Apollo Client, Tailwind CSS.
 - **Desktop App:** C# WPF (.NET 8), GraphQL.Client.

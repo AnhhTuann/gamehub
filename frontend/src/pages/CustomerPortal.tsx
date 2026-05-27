@@ -13,9 +13,14 @@ import {
   Clock, 
   Home,
   Menu,
-  X
+  X,
+  LogOut,
+  CreditCard,
+  ChevronRight,
+  Bell
 } from 'lucide-react';
-import { dummyProducts } from '../data/products';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '../graphql/queries';
 import { ProductCard } from '../components/common/ProductCard';
 
 const STEPS = [
@@ -42,8 +47,9 @@ export const CustomerPortal = () => {
     { id: 'Settings', icon: Settings },
   ];
 
-  const wishlistProducts = dummyProducts.slice(3, 6);
-  const orderedProduct = dummyProducts[0];
+  const { data } = useQuery(GET_PRODUCTS);
+  const wishlistProducts = (data?.products || []).slice(3, 6);
+  const orderedProduct = data?.products?.[0] || null;
 
   const renderOrders = () => (
     <div className="flex flex-col gap-8 animate-in fade-in duration-500">
@@ -68,7 +74,7 @@ export const CustomerPortal = () => {
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Total Amount</span>
-              <span className="text-white font-bold tracking-wider">${orderedProduct.price.toFixed(2)}</span>
+              {orderedProduct && <span className="text-white font-bold tracking-wider">${orderedProduct.price.toFixed(2)}</span>}
             </div>
           </div>
           <button className="bg-white text-black font-bold uppercase tracking-wider text-xs px-8 py-3 hover:bg-zinc-200 transition-colors duration-300">
@@ -114,12 +120,14 @@ export const CustomerPortal = () => {
         {/* Product Details & Shipping Info */}
         <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8 xl:gap-12 relative bg-zinc-900/10">
           <div className="flex-1 flex flex-col sm:flex-row gap-6">
-            <Link to={`/product/${orderedProduct.id}`} className="w-24 sm:w-32 shrink-0 aspect-square bg-zinc-800 border border-zinc-800 block overflow-hidden group">
-              <img src={orderedProduct.imageUrl} alt={orderedProduct.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            </Link>
+            {orderedProduct && (
+              <Link to={`/product/${orderedProduct.id}`} className="w-24 sm:w-32 shrink-0 aspect-square bg-zinc-800 border border-zinc-800 block overflow-hidden group">
+                <img src={orderedProduct.imageUrl} alt={orderedProduct.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              </Link>
+            )}
             <div className="flex flex-col justify-center gap-2">
-              <Link to={`/product/${orderedProduct.id}`} className="font-sans text-white text-lg font-medium leading-relaxed max-w-md hover:text-zinc-300 transition-colors">
-                {orderedProduct.name}
+              <Link to={`/product/${orderedProduct?.id}`} className="font-sans text-white text-lg font-medium leading-relaxed max-w-md hover:text-zinc-300 transition-colors">
+                {orderedProduct?.name}
               </Link>
               <div className="flex flex-col gap-1.5 mt-2">
                 <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Size: <span className="text-zinc-300 font-medium ml-2 tracking-normal capitalize">Medium</span></span>
