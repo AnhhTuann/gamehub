@@ -1,18 +1,19 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
+import { ProductCard } from '../../../components/storefront/ProductCard';
+import { Input } from '../../../components/ui/Input';
 
 export default function ProductsPage() {
   const [filter, setFilter] = useState('All');
 
   const products = [
-    { id: 1, name: 'Essential Cotton Tee', price: 29.99, category: 'Men', img: 1 },
-    { id: 2, name: 'Urban Denim Jacket', price: 89.99, category: 'Women', img: 2 },
-    { id: 3, name: 'Classic Sneakers', price: 119.99, category: 'Shoes', img: 3 },
-    { id: 4, name: 'Leather Crossbody Bag', price: 149.99, category: 'Accessories', img: 4 },
-    { id: 5, name: 'Linen Summer Dress', price: 79.99, category: 'Women', img: 5 },
-    { id: 6, name: 'Tailored Chinos', price: 59.99, category: 'Men', img: 6 },
+    { id: '1', name: 'Essential Cotton Tee', price: 29.99, category: 'Men', img: 'https://source.unsplash.com/random/400x500/?clothing,1' },
+    { id: '2', name: 'Urban Denim Jacket', price: 89.99, category: 'Women', img: 'https://source.unsplash.com/random/400x500/?clothing,2' },
+    { id: '3', name: 'Classic Sneakers', price: 119.99, category: 'Shoes', img: 'https://source.unsplash.com/random/400x500/?clothing,3' },
+    { id: '4', name: 'Leather Crossbody Bag', price: 149.99, category: 'Accessories', img: 'https://source.unsplash.com/random/400x500/?clothing,4' },
+    { id: '5', name: 'Linen Summer Dress', price: 79.99, category: 'Women', img: 'https://source.unsplash.com/random/400x500/?clothing,5' },
+    { id: '6', name: 'Tailored Chinos', price: 59.99, category: 'Men', img: 'https://source.unsplash.com/random/400x500/?clothing,6' },
   ];
 
   const filteredProducts = filter === 'All' ? products : products.filter(p => p.category === filter);
@@ -24,7 +25,7 @@ export default function ProductsPage() {
         
         {/* Search */}
         <div style={{ width: '300px' }}>
-          <input type="text" placeholder="Search products..." className="input-field" style={{ borderRadius: 'var(--radius-full)' }} />
+          <Input placeholder="Search products..." style={{ borderRadius: 'var(--radius-full)' }} />
         </div>
       </div>
 
@@ -69,30 +70,7 @@ export default function ProductsPage() {
         {/* Product Grid */}
         <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'var(--spacing-lg)' }}>
           {filteredProducts.map(product => (
-            <Link href={`/products/${product.id}`} key={product.id} style={{ 
-              borderRadius: 'var(--radius-md)', 
-              overflow: 'hidden',
-              boxShadow: 'var(--shadow-sm)',
-              backgroundColor: 'var(--bg-color)',
-              border: '1px solid var(--border)',
-              transition: 'var(--transition)',
-              display: 'block'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-lg)'}
-            onMouseOut={(e) => e.currentTarget.style.boxShadow = 'var(--shadow-sm)'}
-            >
-              <div style={{ height: '300px', backgroundColor: '#f1f5f9' }}>
-                <img src={`https://source.unsplash.com/random/400x500/?clothing,${product.img}`} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div style={{ padding: 'var(--spacing-md)' }}>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>{product.name}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: 'var(--spacing-sm)' }}>{product.category}</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>${product.price}</span>
-                  <button className="btn btn-primary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem' }} onClick={(e) => { e.preventDefault(); /* Add to cart */ }}>Add to Cart</button>
-                </div>
-              </div>
-            </Link>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>

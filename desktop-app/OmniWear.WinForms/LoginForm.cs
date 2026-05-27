@@ -1,24 +1,22 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using OmniWear.WinForms.Services;
+using OmniWear.WinForms.Helpers;
 
 namespace OmniWear.WinForms
 {
-    public class GlobalState
-    {
-        public static string AccessToken { get; set; } = string.Empty;
-        public static string UserRole { get; set; } = string.Empty;
-    }
-
     public partial class LoginForm : Form
     {
         private TextBox txtUsername;
         private TextBox txtPassword;
         private Button btnLogin;
+        private ApiService _apiService;
 
         public LoginForm()
         {
             InitializeComponent();
+            _apiService = new ApiService();
         }
 
         private void InitializeComponent()
@@ -29,15 +27,15 @@ namespace OmniWear.WinForms
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
 
-            Label lblTitle = new Label { Text = "OMNIWEAR ADMIN", Font = new Font("Segoe UI", 16, FontStyle.Bold), Location = new Point(100, 20), AutoSize = true };
+            Label lblTitle = new Label { Text = "OMNIWEAR", Font = new Font("Segoe UI", 24, FontStyle.Bold), Location = new Point(90, 30), AutoSize = true };
             
-            Label lblUser = new Label { Text = "Email:", Location = new Point(50, 80), AutoSize = true };
-            txtUsername = new TextBox { Location = new Point(50, 100), Width = 280 };
-            
+            Label lblUser = new Label { Text = "Username:", Location = new Point(50, 100), AutoSize = true };
+            txtUsername = new TextBox { Location = new Point(140, 97), Width = 180 };
+
             Label lblPass = new Label { Text = "Password:", Location = new Point(50, 140), AutoSize = true };
-            txtPassword = new TextBox { Location = new Point(50, 160), Width = 280, PasswordChar = '*' };
-            
-            btnLogin = new Button { Text = "Login", Location = new Point(50, 200), Width = 280, Height = 40, BackColor = Color.DodgerBlue, ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+            txtPassword = new TextBox { Location = new Point(140, 137), Width = 180, PasswordChar = '*' };
+
+            btnLogin = new Button { Text = "LOGIN", Location = new Point(140, 180), Width = 180, Height = 40, BackColor = Color.Black, ForeColor = Color.White };
             btnLogin.Click += BtnLogin_Click;
 
             this.Controls.Add(lblTitle);
@@ -48,39 +46,28 @@ namespace OmniWear.WinForms
             this.Controls.Add(btnLogin);
         }
 
-        private async void BtnLogin_Click(object sender, EventArgs e)
+        private async void BtnLogin_Click(object? sender, EventArgs e)
         {
-            // Simulate API Call
-            string email = txtUsername.Text;
-            string password = txtPassword.Text;
-
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-            {
-                MessageBox.Show("Please enter email and password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            btnLogin.Text = "Logging in...";
             btnLogin.Enabled = false;
+            btnLogin.Text = "Logging in...";
 
-            // MOCK API CALL
-            await System.Threading.Tasks.Task.Delay(1000);
+            var result = await _apiService.LoginAsync(txtUsername.Text, txtPassword.Text);
 
-            if (email == "admin@omniwear.com" && password == "admin123")
+            if (result.success)
             {
-                GlobalState.AccessToken = "mock_jwt_token_12345";
-                GlobalState.UserRole = "ADMIN";
-                
+                GlobalState.JwtToken = result.token;
+                GlobalState.Role = result.role;
+
                 this.Hide();
                 var mainForm = new MainLayoutForm();
-                mainForm.Closed += (s, args) => this.Close();
+                mainForm.FormClosed += (s, args) => this.Close();
                 mainForm.Show();
             }
             else
             {
-                MessageBox.Show("Invalid credentials. Try admin@omniwear.com / admin123", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                btnLogin.Text = "Login";
+                UIHelper.ShowError(result.error);
                 btnLogin.Enabled = true;
+                btnLogin.Text = "LOGIN";
             }
         }
     }

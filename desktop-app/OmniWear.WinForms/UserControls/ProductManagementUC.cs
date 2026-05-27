@@ -52,12 +52,9 @@ namespace OmniWear.WinForms.UserControls
             {
                 Location = new Point(20, 110),
                 Width = 760,
-                Height = 500,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                AllowUserToAddRows = false,
-                ReadOnly = true,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect
+                Height = 500
             };
+            OmniWear.WinForms.Helpers.UIHelper.ConfigureDataGridView(dgvProducts);
 
             this.Controls.Add(lblTitle);
             this.Controls.Add(txtSearch);
