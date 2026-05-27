@@ -54,8 +54,6 @@ const STAFF = [
   { id: 'EMP-04', name: 'Michael Brown', role: 'Editor', lastLogin: '1 week ago', status: 'On Leave' },
 ];
 
-  const { data } = useQuery(GET_PRODUCTS);
-  const LOW_STOCK = (data?.products || []).slice(0, 4).map((p: any, i: number) => ({ ...p, stock: i + 1 }));
 
 const StatusBadge = ({ status }: { status: string }) => {
   const styles = {
@@ -72,6 +70,8 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 export const Admin = () => {
+  const { data } = useQuery(GET_PRODUCTS);
+  const LOW_STOCK = (data?.products || []).slice(0, 4).map((p: any, i: number) => ({ ...p, stock: i + 1 }));
   const [activeMenu, setActiveMenu] = useState('Dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
