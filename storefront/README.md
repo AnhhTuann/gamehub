@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OmniWear Storefront & Admin Web App
 
-## Getting Started
+This directory contains the Next.js web application for OmniWear. It serves a dual purpose: it acts as the customer-facing storefront (e-commerce site) and the internal Admin Dashboard for managing the platform.
 
-First, run the development server:
+## Directory Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+storefront/
+├── src/
+│   ├── app/
+│   │   ├── (storefront)/         # Route group for customer-facing pages
+│   │   │   ├── page.js           # Homepage
+│   │   │   ├── layout.js         # Shared layout (Navbar, Footer)
+│   │   │   └── products/         # Product listing and details
+│   │   ├── (admin)/              # Route group for admin dashboard
+│   │   │   ├── layout.js         # Admin layout (Sidebar)
+│   │   │   └── dashboard/        # Dashboard metrics and management tables
+│   │   ├── globals.css           # Global design system (CSS variables, utilities)
+│   │   └── layout.js             # Root HTML/Body layout
+│   └── components/               # Reusable React components
+│       ├── ui/                   # Generic elements (Button, Input, Card)
+│       ├── storefront/           # Storefront specific (Navbar, ProductCard, HeroBanner)
+│       └── admin/                # Admin specific (Sidebar, StatCard, ChartMock)
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Packages Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **`next`**: The React framework used to build the application. It provides the App Router (`src/app`), Server-Side Rendering (SSR), and Static Site Generation (SSG) capabilities out of the box.
+- **`react` & `react-dom`**: The core libraries for building user interfaces using components and managing DOM updates efficiently.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How It Works (Mechanism)
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Next.js App Router**: The application utilizes the new Next.js App Router paradigm. Folders inside `src/app` define the routing structure.
+2. **Route Groups**: Folders with parentheses like `(storefront)` and `(admin)` are "Route Groups". They do not affect the URL path but allow us to share different layout architectures (e.g., a Sidebar for admin, but a top Navbar for the storefront) without clashing.
+3. **Server vs Client Components**: 
+   - By default, components in the `app` directory are **Server Components**. They are rendered on the Node.js server, which improves SEO and performance by sending less JavaScript to the browser.
+   - Components that require browser interactivity (like `useState`, `onClick`, `onMouseOver`) are explicitly marked as **Client Components** using the `'use client';` directive at the top of the file (e.g., `Sidebar.jsx`, `Products/page.js`).
+4. **Component-Driven Architecture**: The UI is built by composing small, isolated functions in the `src/components/` directory. For example, the `Home` page doesn't contain raw HTML for buttons; it imports `<Button>` and `<ProductCard>` components. This ensures visual consistency and makes maintenance easier.
+5. **Styling**: We utilize a custom CSS variable system in `globals.css` to manage themes, colors, and responsive design natively without relying on heavy external CSS frameworks.
