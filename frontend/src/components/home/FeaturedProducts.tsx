@@ -14,8 +14,8 @@ export const FeaturedProducts = ({ products, loading = false }: FeaturedProducts
     <section className="py-16 px-6 max-w-7xl mx-auto w-full">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-theme-primary">New Arrivals</h2>
-          <p className="text-theme-muted text-sm mt-1">Fresh drops you don't want to miss</p>
+          <h2 className="font-mono text-2xl md:text-3xl font-bold text-theme-primary">Trending Now</h2>
+          <p className="text-theme-muted font-mono text-sm mt-1">Hottest games on the market</p>
         </div>
         <Link to="/shop" className="hidden md:flex items-center gap-2 text-accent text-sm font-semibold hover:underline transition-all group">
           View All
@@ -26,7 +26,7 @@ export const FeaturedProducts = ({ products, loading = false }: FeaturedProducts
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="aspect-[3/4] rounded-2xl bg-theme-secondary mb-4" />
+              <div className="aspect-video rounded-xl bg-theme-secondary mb-4" />
               <div className="h-3 rounded bg-theme-secondary mb-2 w-1/3" />
               <div className="h-4 rounded bg-theme-secondary mb-2 w-2/3" />
               <div className="h-4 rounded bg-theme-secondary w-1/4" />

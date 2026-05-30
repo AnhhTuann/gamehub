@@ -23,46 +23,30 @@ model User {
   reviews  Review[]
 }
 
-model Category {
-  id       String    @id @default(uuid())
-  name     String
-  slug     String    @unique
-  products Product[]
+model Genre {
+  id     String @id @default(uuid())
+  rawgId Int?   @unique
+  name   String
+  slug   String @unique
+  games  Game[]
 }
 
-model Brand {
-  id       String    @id @default(uuid())
-  name     String
-  products Product[]
-}
-
-model Product {
+model Game {
   id          String   @id @default(uuid())
+  rawgId      Int      @unique
   title       String
-  description String
+  description String?
   image       String?
-  categoryId  String?
-  brandId     String?
+  price       Float    @default(59.99)
+  rating      Float    @default(0)
+  released    String?
   createdAt   DateTime @default(now())
 
-  category Category? @relation(fields: [categoryId], references: [id])
-  brand    Brand?    @relation(fields: [brandId], references: [id])
-  variants ProductVariant[]
-  reviews  Review[]
-}
-
-model ProductVariant {
-  id        String  @id @default(uuid())
-  productId String
-  sku       String? @unique
-  color     String?
-  size      String?
-  price     Float
-  inventory Int     @default(0)
-
-  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  cartItems  CartItem[]
-  orderItems OrderItem[]
+  genreId     String?
+  genre       Genre?   @relation(fields: [genreId], references: [id])
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  reviews     Review[]
 }
 
 model Cart {
@@ -76,13 +60,13 @@ model Cart {
 }
 
 model CartItem {
-  id               String @id @default(uuid())
-  cartId           String
-  productVariantId String
-  quantity         Int
+  id       String @id @default(uuid())
+  cartId   String
+  gameId   String
+  quantity Int
 
-  cart           Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+  cart   Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  game   Game @relation(fields: [gameId], references: [id])
 }
 
 model Order {
@@ -103,14 +87,14 @@ model Order {
 }
 
 model OrderItem {
-  id               String @id @default(uuid())
-  orderId          String
-  productVariantId String
-  quantity         Int
-  price            Float
+  id       String @id @default(uuid())
+  orderId  String
+  gameId   String
+  quantity Int
+  price    Float
 
-  order          Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productVariant ProductVariant @relation(fields: [productVariantId], references: [id])
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  game  Game  @relation(fields: [gameId], references: [id])
 }
 
 model Payment {
@@ -139,11 +123,11 @@ model Coupon {
 model Review {
   id        String   @id @default(uuid())
   userId    String
-  productId String
+  gameId    String
   rating    Int
   comment   String?
   createdAt DateTime @default(now())
 
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
 }

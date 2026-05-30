@@ -5,21 +5,30 @@ class CartService {
   async getOrCreateCart(userId) {
     let cart = await prisma.cart.findUnique({
       where: { userId },
-      include: { items: { include: { variant: true } } }
+      include: { items: { include: { game: true } } }
     });
 
     if (!cart) {
       cart = await prisma.cart.create({
         data: { userId },
-        include: { items: { include: { variant: true } } }
+        include: { items: { include: { game: true } } }
       });
     }
     return cart;
   }
 
-  async addToCart(userId, variantId, quantity) {
+  async addToCart(userId, rawgId, title, price, image, quantity) {
     const cart = await this.getOrCreateCart(userId);
-    const existingItem = cart.items.find(item => item.variantId === variantId);
+    
+    // Ensure Game exists in DB
+    let game = await prisma.game.findUnique({ where: { rawgId } });
+    if (!game) {
+      game = await prisma.game.create({
+        data: { rawgId, title, price, image }
+      });
+    }
+
+    const existingItem = cart.items.find(item => item.gameId === game.id);
 
     if (existingItem) {
       await prisma.cartItem.update({
@@ -28,7 +37,7 @@ class CartService {
       });
     } else {
       await prisma.cartItem.create({
-        data: { cartId: cart.id, variantId, quantity }
+        data: { cartId: cart.id, gameId: game.id, quantity }
       });
     }
 

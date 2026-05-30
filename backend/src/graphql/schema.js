@@ -15,45 +15,30 @@ const typeDefs = `#graphql
     user: User!
   }
 
-  type Category {
+  type Genre {
     id: ID!
+    rawgId: Int
     name: String!
     slug: String!
   }
 
-  type Brand {
+  type Game {
     id: ID!
-    name: String!
-  }
-
-  type ProductVariant {
-    id: ID!
-    productId: ID!
-    sku: String
-    color: String
-    size: String
-    price: Float!
-    inventory: Int!
-    product: Product
-  }
-
-  type Product {
-    id: ID!
+    rawgId: Int!
     title: String!
-    price: Float!
-    description: String!
-    category: String!
-    brand: String
+    description: String
     image: String
-    inventory: Int!
-    variants: [ProductVariant!]!
+    price: Float!
+    rating: Float!
+    released: String
     createdAt: String!
+    genre: Genre
   }
 
   type CartItem {
     id: ID!
     cartId: ID!
-    productVariant: ProductVariant!
+    game: Game!
     quantity: Int!
   }
 
@@ -67,7 +52,7 @@ const typeDefs = `#graphql
   type OrderItem {
     id: ID!
     orderId: ID!
-    productVariant: ProductVariant!
+    game: Game!
     quantity: Int!
     price: Float!
   }
@@ -85,21 +70,12 @@ const typeDefs = `#graphql
     createdAt: String!
   }
 
-  type Coupon {
-    id: ID!
-    code: String!
-    type: String!
-    value: Float!
-    expiryDate: String
-    usageLimit: Int
-    usedCount: Int!
-    isActive: Boolean!
-  }
-
   input OrderItemInput {
-    productId: ID!
-    quantity: Int!
+    rawgId: Int!
+    title: String!
     price: Float!
+    image: String
+    quantity: Int!
   }
 
   type Query {
@@ -107,11 +83,9 @@ const typeDefs = `#graphql
     user(id: ID!): User
     me: User
 
-    categories: [Category!]!
-    brands: [Brand!]!
-
-    products(categoryId: ID, brandId: ID, search: String): [Product!]!
-    product(id: ID!): Product
+    games: [Game!]!
+    game(id: ID!): Game
+    gameByRawgId(rawgId: Int!): Game
 
     cart(id: ID!): Cart
     myCart: Cart
@@ -119,33 +93,17 @@ const typeDefs = `#graphql
     orders: [Order!]!
     myOrders: [Order!]!
     order(id: ID!): Order
-
-    coupons: [Coupon!]!
   }
 
   type Mutation {
     register(email: String!, password: String!, name: String!, phone: String, address: String): AuthPayload!
     login(email: String!, password: String!): AuthPayload!
 
-    createCategory(name: String!, slug: String!): Category!
-    createBrand(name: String!): Brand!
-
-    createProduct(title: String!, description: String!, image: String, categoryId: ID, brandId: ID): Product!
-    updateProduct(id: ID!, title: String, description: String, image: String, categoryId: ID, brandId: ID): Product!
-    deleteProduct(id: ID!): Boolean!
-
-    createProductVariant(productId: ID!, sku: String, color: String, size: String, price: Float!, inventory: Int!): ProductVariant!
-    updateProductVariant(id: ID!, sku: String, color: String, size: String, price: Float, inventory: Int): ProductVariant!
-
-    addToCart(cartId: ID, productVariantId: ID!, quantity: Int!): Cart!
-    removeFromCart(cartId: ID!, cartItemId: ID!): Cart!
+    addToCart(rawgId: Int!, title: String!, price: Float!, image: String, quantity: Int!): Cart!
+    removeFromCart(cartItemId: ID!): Cart!
     
     createOrder(customerName: String!, customerPhone: String!, items: [OrderItemInput!]!): Order!
     updateOrderStatus(id: ID!, status: String!): Order!
-
-    createCoupon(code: String!, type: String!, value: Float!, expiryDate: String, usageLimit: Int): Coupon!
-    
-    updateInventory(id: ID!, newInventory: Int!): Product!
   }
 `;
 

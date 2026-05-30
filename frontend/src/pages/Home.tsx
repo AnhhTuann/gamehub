@@ -1,7 +1,6 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_PRODUCTS } from '../graphql/queries';
-import { Product } from '../types';
+import React, { useEffect, useState } from 'react';
+import { Game } from '../types';
+import { getTrendingGames } from '../services/api';
 
 import { HeroBanner } from '../components/home/HeroBanner';
 import { ShopByCategory } from '../components/home/ShopByCategory';
@@ -12,10 +11,17 @@ import { ShopByBrands } from '../components/home/ShopByBrands';
 import { RecentPosts } from '../components/home/RecentPosts';
 
 export const Home = () => {
-  const { data, loading } = useQuery(GET_PRODUCTS);
-  const products: Product[] = data?.products || [];
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const newArrivals = products.slice(0, 8);
+  useEffect(() => {
+    getTrendingGames().then(data => {
+      setGames(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const newArrivals = games.slice(0, 8);
 
   return (
     <>

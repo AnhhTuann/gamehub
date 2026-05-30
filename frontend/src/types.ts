@@ -1,27 +1,23 @@
-export interface ProductVariant {
-  id: string;
-  sku?: string;
-  color?: string;
-  size?: string;
-  price: number;
-  inventory: number;
-}
-
-export interface Product {
-  id: string;
+export interface Game {
+  id: string; // Internal DB ID or generated
+  rawgId: number; // RAWG API ID
   title: string;
-  price: number;
   description?: string;
-  category?: string;
-  brand?: string;
   image?: string;
-  inventory?: number;
+  price: number;
+  rating: number;
+  released?: string;
   createdAt?: string;
-  variants?: ProductVariant[];
-  originalPrice?: number;
-  badge?: string;
+  genre?: {
+    name: string;
+    slug: string;
+  };
+  originalPrice?: number; // Used for UI only
+  badge?: string; // Used for UI only
 }
 
-export interface CartItem extends Product {
+export interface CartItem {
+  id?: string;
+  game: Game;
   quantity: number;
 }
