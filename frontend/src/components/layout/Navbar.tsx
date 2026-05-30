@@ -17,6 +17,8 @@ export const Navbar = () => {
   const navLinks = [
     { label: 'Home', path: '/' },
     { label: 'Shop', path: '/shop' },
+    { label: 'Men', path: '/shop?gender=men' },
+    { label: 'Women', path: '/shop?gender=women' },
     { label: 'New In', path: '/shop' },
     { label: 'Collections', path: '/shop' },
   ];
@@ -50,13 +52,13 @@ export const Navbar = () => {
                 key={link.label}
                 to={link.path}
                 className={`text-sm font-medium transition-all duration-300 relative py-1 ${
-                  location.pathname === link.path
+                  (location.pathname + location.search) === link.path
                     ? 'text-accent'
                     : 'text-theme-secondary hover:text-theme-primary'
                 }`}
               >
                 {link.label}
-                {location.pathname === link.path && (
+                {(location.pathname + location.search) === link.path && (
                   <motion.div
                     layoutId="nav-indicator"
                     className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-accent rounded-full"
@@ -150,7 +152,7 @@ export const Navbar = () => {
                     to={link.path}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                      location.pathname === link.path 
+                      (location.pathname + location.search) === link.path 
                         ? 'bg-accent-subtle text-accent' 
                         : 'text-theme-secondary hover:bg-theme-secondary'
                     }`}

@@ -35,9 +35,18 @@ export const Shop = () => {
   const { data: categoriesData } = useQuery(GET_CATEGORIES);
   const { data: brandsData } = useQuery(GET_BRANDS);
 
+  const searchParams = new URLSearchParams(location.search);
+  const genderQuery = searchParams.get('gender');
+
   let displayProducts: Product[] = productsData?.products || [];
 
   // Filter logic
+  if (genderQuery === 'men') {
+    displayProducts = displayProducts.filter(p => p.category?.startsWith('mens-'));
+  } else if (genderQuery === 'women') {
+    displayProducts = displayProducts.filter(p => p.category?.startsWith('womens-'));
+  }
+
   if (selectedCategories.length > 0) {
     displayProducts = displayProducts.filter(p => p.category && selectedCategories.includes(p.category));
   }
@@ -50,7 +59,12 @@ export const Shop = () => {
   if (maxPrice) {
     displayProducts = displayProducts.filter(p => p.price <= parseFloat(maxPrice));
   }
-  const CATEGORIES = categoriesData?.categories.map((c: any) => c.name) || [];
+  let CATEGORIES = categoriesData?.categories.map((c: any) => c.name) || [];
+  if (genderQuery === 'men') {
+    CATEGORIES = CATEGORIES.filter((c: string) => c.startsWith('mens-'));
+  } else if (genderQuery === 'women') {
+    CATEGORIES = CATEGORIES.filter((c: string) => c.startsWith('womens-'));
+  }
   const BRANDS = brandsData?.brands.map((b: any) => b.name) || [];
 
   const Sidebar = () => (
@@ -170,7 +184,9 @@ export const Shop = () => {
     <div className="max-w-7xl mx-auto w-full px-6 py-8 flex-1 flex flex-col">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="font-serif text-4xl md:text-5xl font-bold text-theme-primary mb-3">The Collection</h1>
+        <h1 className="font-serif text-4xl md:text-5xl font-bold text-theme-primary mb-3">
+          {genderQuery === 'men' ? "Men's Collection" : genderQuery === 'women' ? "Women's Collection" : "The Collection"}
+        </h1>
         <p className="text-theme-muted max-w-lg mx-auto text-sm">
           Explore our curated selection of premium fashion pieces.
         </p>
