@@ -15,27 +15,24 @@ export const Navbar = () => {
   const location = useLocation();
 
   const navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Shop', path: '/shop' },
-    { label: 'Men', path: '/shop?gender=men' },
-    { label: 'Women', path: '/shop?gender=women' },
-    { label: 'New In', path: '/shop' },
-    { label: 'Collections', path: '/shop' },
+    { label: 'CATALOG', path: '/shop' },
+    { label: 'SPECIALS', path: '/shop' },
+    { label: 'NEWS', path: '/shop' },
   ];
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="bg-accent text-white text-center text-xs py-2 font-medium tracking-wider">
-        FREE SHIPPING ON ORDERS OVER $150 — LIMITED TIME ONLY
+      {/* Announcement bar — retro ticker */}
+      <div className="bg-[var(--accent)] text-black text-center font-pixel text-[8px] md:text-[9px] py-2 tracking-wider">
+        ⚡ FREE SHIPPING ON ORDERS OVER $50 — USE CODE: RETRO2025 ⚡
       </div>
 
-      <nav className="sticky top-0 z-50 bg-theme-elevated backdrop-blur-xl border-b border-theme-primary transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-theme-elevated border-b-4 border-[var(--accent)] transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           {/* Left: Mobile menu + Logo */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 md:gap-6">
             <button
-              className="lg:hidden p-1 text-theme-secondary hover:text-theme-primary transition-colors"
+              className="lg:hidden p-1 text-theme-secondary hover:text-[var(--accent)] transition-colors"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu className="w-5 h-5" />
@@ -46,40 +43,49 @@ export const Navbar = () => {
           </div>
 
           {/* Center: Nav links */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 to={link.path}
-                className={`text-sm font-medium transition-all duration-300 relative py-1 ${
-                  (location.pathname + location.search) === link.path
-                    ? 'text-accent'
-                    : 'text-theme-secondary hover:text-theme-primary'
+                className={`font-pixel text-[9px] tracking-wider transition-all duration-200 relative py-1 border-b-2 ${
+                  location.pathname === link.path
+                    ? 'text-[var(--accent)] border-[var(--accent)]'
+                    : 'text-theme-secondary border-transparent hover:text-[var(--neon-cyan)] hover:border-[var(--neon-cyan)]'
                 }`}
               >
                 {link.label}
-                {(location.pathname + location.search) === link.path && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-accent rounded-full"
-                  />
-                )}
               </Link>
             ))}
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-1 md:gap-2">
+            {/* Search bar (desktop) */}
+            <div className="hidden md:flex items-center">
+              <div className="relative">
+                <input 
+                  type="text" 
+                  placeholder="SEARCH..." 
+                  onClick={() => setIsSearchOpen(true)}
+                  readOnly
+                  className="font-pixel text-[8px] bg-theme-secondary border-2 border-theme-secondary text-theme-primary placeholder:text-theme-muted px-3 py-2 w-36 focus:outline-none focus:border-[var(--neon-cyan)] transition-colors cursor-pointer"
+                />
+                <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-theme-muted" />
+              </div>
+            </div>
+
+            {/* Search icon (mobile) */}
             <button 
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-theme-secondary hover:text-theme-primary transition-colors rounded-lg hover:bg-theme-secondary/50"
+              className="md:hidden p-2 text-theme-secondary hover:text-[var(--neon-cyan)] transition-colors"
             >
               <Search className="w-5 h-5" />
             </button>
 
             <button 
               onClick={toggleTheme}
-              className="p-2 text-theme-secondary hover:text-theme-primary transition-colors rounded-lg hover:bg-theme-secondary/50"
+              className="p-2 text-theme-secondary hover:text-[var(--neon-yellow)] transition-colors"
               aria-label="Toggle theme"
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -87,14 +93,15 @@ export const Navbar = () => {
 
             <Link 
               to="/portal" 
-              className="hidden sm:flex p-2 text-theme-secondary hover:text-theme-primary transition-colors rounded-lg hover:bg-theme-secondary/50"
+              className="hidden sm:flex p-2 text-theme-secondary hover:text-[var(--neon-cyan)] transition-colors"
             >
               <User className="w-5 h-5" />
             </Link>
 
+            {/* Cart button with retro badge */}
             <button 
               onClick={openCart}
-              className="relative p-2 text-theme-secondary hover:text-theme-primary transition-colors rounded-lg hover:bg-theme-secondary/50"
+              className="relative p-2 text-theme-secondary hover:text-[var(--accent)] transition-colors"
             >
               <ShoppingBag className="w-5 h-5" />
               <AnimatePresence>
@@ -104,7 +111,7 @@ export const Navbar = () => {
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     key={cartCount}
-                    className="absolute top-0.5 right-0.5 bg-accent text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+                    className="absolute -top-0.5 -right-0.5 bg-red-500 text-white font-pixel text-[6px] w-4 h-4 flex items-center justify-center border-2 border-[var(--bg-primary)]"
                   >
                     {cartCount}
                   </motion.span>
@@ -132,7 +139,7 @@ export const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-theme-primary border-r border-theme-primary z-50 flex flex-col p-6 lg:hidden shadow-2xl"
+              className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-theme-primary border-r-4 border-[var(--accent)] z-50 flex flex-col p-6 lg:hidden"
             >
               <div className="flex justify-between items-center mb-10">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
@@ -140,35 +147,35 @@ export const Navbar = () => {
                 </Link>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 text-theme-muted hover:text-theme-primary transition-colors"
+                  className="p-2 text-theme-muted hover:text-[var(--accent)] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.label}
                     to={link.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                      (location.pathname + location.search) === link.path 
-                        ? 'bg-accent-subtle text-accent' 
-                        : 'text-theme-secondary hover:bg-theme-secondary'
+                    className={`px-4 py-3 font-pixel text-[9px] tracking-wider transition-colors border-l-4 ${
+                      location.pathname === link.path
+                        ? 'bg-[var(--accent-subtle)] text-[var(--accent)] border-[var(--accent)]'
+                        : 'text-theme-secondary hover:text-[var(--neon-cyan)] border-transparent hover:border-[var(--neon-cyan)]'
                     }`}
                   >
-                    {link.label}
+                    {'> '}{link.label}
                   </Link>
                 ))}
               </div>
-              <div className="mt-auto border-t border-theme-primary pt-6 flex flex-col gap-2">
-                <Link to="/portal" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-lg text-theme-secondary hover:bg-theme-secondary transition-colors">
-                  <User className="w-5 h-5" />
-                  <span className="font-medium">Account</span>
+              <div className="mt-auto border-t-2 border-theme-primary pt-6 flex flex-col gap-1">
+                <Link to="/portal" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 font-pixel text-[8px] text-theme-secondary hover:text-[var(--neon-cyan)] transition-colors">
+                  <User className="w-4 h-4" />
+                  ACCOUNT
                 </Link>
-                <button onClick={() => { setIsMobileMenuOpen(false); openCart(); }} className="flex items-center gap-3 px-4 py-3 rounded-lg text-theme-secondary hover:bg-theme-secondary transition-colors w-full text-left">
-                  <ShoppingBag className="w-5 h-5" />
-                  <span className="font-medium">Cart ({cartCount})</span>
+                <button onClick={() => { setIsMobileMenuOpen(false); openCart(); }} className="flex items-center gap-3 px-4 py-3 font-pixel text-[8px] text-theme-secondary hover:text-[var(--accent)] transition-colors w-full text-left">
+                  <ShoppingBag className="w-4 h-4" />
+                  CART ({cartCount})
                 </button>
               </div>
             </motion.div>

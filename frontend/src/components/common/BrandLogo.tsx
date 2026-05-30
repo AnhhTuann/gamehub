@@ -6,8 +6,15 @@ interface BrandLogoProps {
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({ collapsed = false }) => {
   return (
-    <div className="flex items-center gap-2 md:gap-3 cursor-pointer group">
-      <img src="/logo.png" alt="GameHub Logo" className={`object-contain transition-all duration-300 ${collapsed ? 'h-8' : 'h-10'}`} />
+    <div className="flex items-center gap-2 cursor-pointer group">
+      {/* Pixel controller icon */}
+      <div className="text-[var(--neon-cyan)] text-lg">🎮</div>
+      {!collapsed && (
+        <span className="font-pixel text-sm md:text-base text-white tracking-wider">
+          <span className="text-[var(--accent)]">GAME</span>
+          <span className="text-[var(--neon-cyan)]">HUB</span>
+        </span>
+      )}
     </div>
   );
 };
