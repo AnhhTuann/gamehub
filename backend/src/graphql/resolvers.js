@@ -32,6 +32,14 @@ const resolvers = {
       });
       return cat ? cat.name : "Uncategorized";
     },
+    brand: async (product) => {
+      if (product.brand) return product.brand.name;
+      if (!product.brandId) return null;
+      const brand = await prisma.brand.findUnique({
+        where: { id: product.brandId }
+      });
+      return brand ? brand.name : null;
+    },
     variants: async (product) => {
       if (product.variants) return product.variants;
       return await prisma.productVariant.findMany({

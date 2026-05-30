@@ -4,34 +4,28 @@ import { GET_PRODUCTS } from '../graphql/queries';
 import { Product } from '../types';
 
 import { HeroBanner } from '../components/home/HeroBanner';
-import { FlashSale } from '../components/home/FlashSale';
-import { TrendingProducts } from '../components/home/TrendingProducts';
+import { ShopByCategory } from '../components/home/ShopByCategory';
 import { FeaturedProducts } from '../components/home/FeaturedProducts';
+import { PromoBanners } from '../components/home/PromoBanners';
+import { FeaturedDeals } from '../components/home/FeaturedDeals';
+import { ShopByBrands } from '../components/home/ShopByBrands';
+import { RecentPosts } from '../components/home/RecentPosts';
 
 export const Home = () => {
   const { data, loading } = useQuery(GET_PRODUCTS);
   const products: Product[] = data?.products || [];
 
-  const featuredProducts = products.slice(0, 4);
-
-  // Derive Flash Sale Products
-  const flashSaleProducts = products.slice(4, 8).map(p => ({
-    ...p,
-    originalPrice: p.price * 1.4,
-    badge: 'SALE'
-  }));
-
-  // Derive Trending Products
-  const trendingProducts = products.length >= 12 
-    ? [products[8], products[9], products[10], products[11], products[0], products[1]]
-    : products;
+  const newArrivals = products.slice(0, 8);
 
   return (
     <>
       <HeroBanner />
-      <FlashSale products={flashSaleProducts} />
-      <TrendingProducts products={trendingProducts} />
-      <FeaturedProducts products={featuredProducts} loading={loading} />
+      <ShopByCategory />
+      <FeaturedProducts products={newArrivals} loading={loading} />
+      <PromoBanners />
+      <FeaturedDeals />
+      <ShopByBrands />
+      <RecentPosts />
     </>
   );
 };

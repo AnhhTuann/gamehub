@@ -43,6 +43,7 @@ const typeDefs = `#graphql
     price: Float!
     description: String!
     category: String!
+    brand: String
     image: String
     inventory: Int!
     variants: [ProductVariant!]!

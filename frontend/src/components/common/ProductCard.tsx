@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShoppingBag } from 'lucide-react';
+import { Heart, ShoppingBag, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Product } from '../../types';
 import { useCart } from '../../context/CartContext';
@@ -15,56 +15,61 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.4 }}
-      className="group flex flex-col bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:shadow-2xl hover:shadow-black/50 transition-all duration-300 overflow-hidden w-full"
+      className="group flex flex-col w-full"
     >
-      <Link to={`/product/${product.id}`} className="relative aspect-[4/5] overflow-hidden bg-zinc-800 block">
+      <Link to={`/product/${product.id}`} className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-theme-secondary block mb-4">
         {product.badge && (
-          <div className="absolute top-4 left-4 z-10 bg-white text-black text-xs font-bold tracking-widest uppercase px-3 py-1 shadow-md">
+          <div className="absolute top-3 left-3 z-10 bg-accent text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full">
             {product.badge}
           </div>
         )}
         <img
           src={product.image || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop'}
           alt={product.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </Link>
-      <div className="p-6 md:p-8 flex flex-col flex-grow">
-        <Link to={`/product/${product.id}`} className="flex flex-col flex-grow">
-          <span className="text-zinc-500 text-xs font-semibold tracking-widest uppercase mb-3">
-            {product.category || 'Uncategorized'}
-          </span>
-          <h3 className="font-sans text-zinc-300 text-lg leading-relaxed mb-6 hover:text-white transition-colors">
-            {product.title}
-          </h3>
-        </Link>
-        <div className="mt-auto flex items-center justify-between border-t border-zinc-800/50 pt-6">
-          <div className="flex flex-col">
-            {product.originalPrice && (
-              <span className="text-zinc-500 text-sm line-through mb-0.5">
-                ${product.originalPrice.toFixed(2)}
-              </span>
-            )}
-            <span className="text-white font-bold tracking-wider text-xl">
-              ${product.price.toFixed(2)}
-            </span>
-          </div>
+        {/* Hover overlay with actions */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+        <div className="absolute bottom-4 left-4 right-4 flex items-center gap-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
           <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               addToCart(product);
             }}
-            className="flex items-center justify-center bg-black hover:bg-zinc-800 text-white p-4 rounded-full transition-all duration-300 group/btn border border-zinc-800/50 hover:border-zinc-700"
-            aria-label="Add to cart"
+            className="flex-1 flex items-center justify-center gap-2 bg-accent text-white shadow-lg shadow-accent/30 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:brightness-110 transition-all"
           >
-            <ShoppingBag className="w-5 h-5 transition-transform group-hover/btn:scale-110" />
+            <ShoppingBag className="w-3.5 h-3.5" />
+            Add to Cart
           </button>
+          <button className="w-11 h-11 flex items-center justify-center bg-white/95 backdrop-blur-sm rounded-xl text-black hover:bg-accent hover:text-white transition-colors">
+            <Heart className="w-4 h-4" />
+          </button>
+        </div>
+      </Link>
+      
+      <div className="flex flex-col px-1">
+        <span className="text-theme-muted text-[10px] font-semibold uppercase tracking-widest mb-1">
+          {product.category || 'Fashion'}
+        </span>
+        <Link to={`/product/${product.id}`}>
+          <h3 className="font-sans text-theme-primary font-semibold text-sm leading-snug hover:text-accent transition-colors line-clamp-1 mb-2">
+            {product.title}
+          </h3>
+        </Link>
+        <div className="flex items-center gap-2">
+          {product.originalPrice && (
+            <span className="text-theme-muted text-xs line-through">
+              ${product.originalPrice.toFixed(2)}
+            </span>
+          )}
+          <span className="text-accent font-bold text-base">
+            ${product.price.toFixed(2)}
+          </span>
         </div>
       </div>
     </motion.div>

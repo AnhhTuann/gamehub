@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, SlidersHorizontal, X, Check, ChevronUp } from 'lucide-react';
+import { ChevronDown, SlidersHorizontal, X, Check, ChevronUp, LayoutGrid, List } from 'lucide-react';
 import { useQuery } from '@apollo/client';
 import { GET_PRODUCTS, GET_CATEGORIES, GET_BRANDS } from '../graphql/queries';
 import { Product } from '../types';
@@ -8,8 +9,13 @@ import { ProductCard } from '../components/common/ProductCard';
 
 export const Shop = () => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const location = useLocation();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    location.state?.category ? [location.state.category] : []
+  );
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(
+    location.state?.brand ? [location.state.brand] : []
+  );
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   
@@ -29,20 +35,34 @@ export const Shop = () => {
   const { data: categoriesData } = useQuery(GET_CATEGORIES);
   const { data: brandsData } = useQuery(GET_BRANDS);
 
-  const displayProducts: Product[] = productsData?.products || [];
+  let displayProducts: Product[] = productsData?.products || [];
+
+  // Filter logic
+  if (selectedCategories.length > 0) {
+    displayProducts = displayProducts.filter(p => p.category && selectedCategories.includes(p.category));
+  }
+  if (selectedBrands.length > 0) {
+    displayProducts = displayProducts.filter(p => p.brand && selectedBrands.includes(p.brand));
+  }
+  if (minPrice) {
+    displayProducts = displayProducts.filter(p => p.price >= parseFloat(minPrice));
+  }
+  if (maxPrice) {
+    displayProducts = displayProducts.filter(p => p.price <= parseFloat(maxPrice));
+  }
   const CATEGORIES = categoriesData?.categories.map((c: any) => c.name) || [];
   const BRANDS = brandsData?.brands.map((b: any) => b.name) || [];
 
   const Sidebar = () => (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       {/* Categories */}
-      <div className="border-b border-zinc-800/80 pb-6">
+      <div className="border-b border-theme-primary pb-6">
         <button 
           onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-          className="flex items-center justify-between w-full text-left font-serif text-lg text-white mb-4 group focus:outline-none"
+          className="flex items-center justify-between w-full text-left font-semibold text-theme-primary mb-4 group focus:outline-none text-sm"
         >
           Categories
-          {isCategoryOpen ? <ChevronUp className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" /> : <ChevronDown className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />}
+          {isCategoryOpen ? <ChevronUp className="w-4 h-4 text-theme-muted" /> : <ChevronDown className="w-4 h-4 text-theme-muted" />}
         </button>
         <AnimatePresence>
           {isCategoryOpen && (
@@ -50,15 +70,15 @@ export const Shop = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="flex flex-col gap-3 overflow-hidden"
+              className="flex flex-col gap-2 overflow-hidden"
             >
-              {CATEGORIES.map(cat => (
-                <label key={cat} className="flex items-center gap-3 cursor-pointer group">
-                  <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${selectedCategories.includes(cat) ? 'bg-white border-white' : 'bg-transparent border-zinc-700 group-hover:border-zinc-400'}`}>
-                    {selectedCategories.includes(cat) && <Check className="w-3 h-3 text-black" />}
+              {CATEGORIES.map((cat: string) => (
+                <label key={cat} className="flex items-center gap-3 cursor-pointer group/item py-1">
+                  <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedCategories.includes(cat) ? 'bg-accent border-accent' : 'bg-transparent border-theme-secondary group-hover/item:border-accent'}`}>
+                    {selectedCategories.includes(cat) && <Check className="w-3 h-3 text-white" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={selectedCategories.includes(cat)} onChange={() => toggleCategory(cat)} />
-                  <span className={`text-sm transition-colors ${selectedCategories.includes(cat) ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
+                  <span className={`text-sm transition-colors ${selectedCategories.includes(cat) ? 'text-theme-primary font-medium' : 'text-theme-secondary group-hover/item:text-theme-primary'}`}>
                     {cat}
                   </span>
                 </label>
@@ -69,13 +89,13 @@ export const Shop = () => {
       </div>
 
       {/* Brands */}
-      <div className="border-b border-zinc-800/80 pb-6">
+      <div className="border-b border-theme-primary pb-6">
         <button 
           onClick={() => setIsBrandOpen(!isBrandOpen)}
-          className="flex items-center justify-between w-full text-left font-serif text-lg text-white mb-4 group focus:outline-none"
+          className="flex items-center justify-between w-full text-left font-semibold text-theme-primary mb-4 group focus:outline-none text-sm"
         >
           Brands
-          {isBrandOpen ? <ChevronUp className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" /> : <ChevronDown className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />}
+          {isBrandOpen ? <ChevronUp className="w-4 h-4 text-theme-muted" /> : <ChevronDown className="w-4 h-4 text-theme-muted" />}
         </button>
         <AnimatePresence>
           {isBrandOpen && (
@@ -83,15 +103,15 @@ export const Shop = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="flex flex-col gap-3 overflow-hidden"
+              className="flex flex-col gap-2 overflow-hidden"
             >
-              {BRANDS.map(brand => (
-                <label key={brand} className="flex items-center gap-3 cursor-pointer group">
-                  <div className={`w-4 h-4 border flex items-center justify-center transition-colors ${selectedBrands.includes(brand) ? 'bg-white border-white' : 'bg-transparent border-zinc-700 group-hover:border-zinc-400'}`}>
-                    {selectedBrands.includes(brand) && <Check className="w-3 h-3 text-black" />}
+              {BRANDS.map((brand: string) => (
+                <label key={brand} className="flex items-center gap-3 cursor-pointer group/item py-1">
+                  <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedBrands.includes(brand) ? 'bg-accent border-accent' : 'bg-transparent border-theme-secondary group-hover/item:border-accent'}`}>
+                    {selectedBrands.includes(brand) && <Check className="w-3 h-3 text-white" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={selectedBrands.includes(brand)} onChange={() => toggleBrand(brand)} />
-                  <span className={`text-sm transition-colors ${selectedBrands.includes(brand) ? 'text-white' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
+                  <span className={`text-sm transition-colors ${selectedBrands.includes(brand) ? 'text-theme-primary font-medium' : 'text-theme-secondary group-hover/item:text-theme-primary'}`}>
                     {brand}
                   </span>
                 </label>
@@ -102,13 +122,13 @@ export const Shop = () => {
       </div>
 
       {/* Price Range */}
-      <div className="border-b border-zinc-800/80 pb-6">
+      <div className="pb-6">
         <button 
           onClick={() => setIsPriceOpen(!isPriceOpen)}
-          className="flex items-center justify-between w-full text-left font-serif text-lg text-white mb-4 group focus:outline-none"
+          className="flex items-center justify-between w-full text-left font-semibold text-theme-primary mb-4 group focus:outline-none text-sm"
         >
-          Price
-          {isPriceOpen ? <ChevronUp className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" /> : <ChevronDown className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors" />}
+          Price Range
+          {isPriceOpen ? <ChevronUp className="w-4 h-4 text-theme-muted" /> : <ChevronDown className="w-4 h-4 text-theme-muted" />}
         </button>
         <AnimatePresence>
           {isPriceOpen && (
@@ -116,27 +136,27 @@ export const Shop = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="flex items-center gap-4 overflow-hidden pt-2"
+              className="flex items-center gap-3 overflow-hidden pt-1"
             >
               <div className="flex-1 relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted text-sm">$</span>
                 <input 
                   type="number" 
                   placeholder="Min"
                   value={minPrice}
                   onChange={(e) => setMinPrice(e.target.value)}
-                  className="w-full bg-zinc-900 border border-zinc-800 text-white pl-7 pr-3 py-3 text-sm focus:outline-none focus:border-zinc-500 transition-colors"
+                  className="w-full bg-theme-secondary border border-theme-primary text-theme-primary pl-7 pr-3 py-2.5 text-sm rounded-xl focus:outline-none focus:ring-2 ring-accent/30 transition-all"
                 />
               </div>
-              <span className="text-zinc-600">-</span>
+              <span className="text-theme-muted text-sm">—</span>
               <div className="flex-1 relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted text-sm">$</span>
                 <input 
                   type="number" 
                   placeholder="Max"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  className="w-full bg-zinc-900 border border-zinc-800 text-white pl-7 pr-3 py-3 text-sm focus:outline-none focus:border-zinc-500 transition-colors"
+                  className="w-full bg-theme-secondary border border-theme-primary text-theme-primary pl-7 pr-3 py-2.5 text-sm rounded-xl focus:outline-none focus:ring-2 ring-accent/30 transition-all"
                 />
               </div>
             </motion.div>
@@ -147,60 +167,65 @@ export const Shop = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto w-full px-6 py-12 flex-1 flex flex-col">
-      <div className="text-center mb-16">
-        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-white">The Collection</h1>
-        <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
-          Explore our complete range of high-end dark luxury apparel and accessories.
+    <div className="max-w-7xl mx-auto w-full px-6 py-8 flex-1 flex flex-col">
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h1 className="font-serif text-4xl md:text-5xl font-bold text-theme-primary mb-3">The Collection</h1>
+        <p className="text-theme-muted max-w-lg mx-auto text-sm">
+          Explore our curated selection of premium fashion pieces.
         </p>
       </div>
 
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between border-b border-zinc-800/80 pb-6 mb-12 gap-4">
+      <div className="flex items-center justify-between border-b border-theme-primary pb-4 mb-8 gap-4">
         <button 
           onClick={() => setIsMobileFiltersOpen(true)}
-          className="lg:hidden flex items-center gap-2 text-white font-medium uppercase tracking-wider text-sm border border-zinc-800 px-6 py-3 w-full sm:w-auto justify-center hover:bg-zinc-900 transition-colors"
+          className="lg:hidden flex items-center gap-2 text-theme-primary font-medium text-sm border border-theme-primary px-4 py-2.5 rounded-xl hover:bg-theme-secondary transition-colors"
         >
           <SlidersHorizontal className="w-4 h-4" />
-          Filter
+          Filters
         </button>
-        <div className="text-zinc-400 text-sm tracking-wide w-full sm:w-auto text-center sm:text-left">
-          Showing 1-{displayProducts.length} of 124 Products
-        </div>
-        <div className="flex items-center gap-4 w-full sm:w-auto">
-          <span className="text-zinc-500 text-sm font-medium uppercase tracking-widest hidden sm:inline">Sort By</span>
-          <div className="relative w-full sm:w-56">
-            <select className="w-full bg-zinc-900 border border-zinc-800 text-white px-4 py-3 text-sm appearance-none focus:outline-none focus:border-zinc-500 cursor-pointer transition-colors">
-              <option>Newest Arrivals</option>
+        <span className="text-theme-muted text-sm hidden sm:block">
+          {displayProducts.length} products
+        </span>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <select className="bg-theme-secondary border border-theme-primary text-theme-primary px-4 py-2.5 pr-10 text-sm appearance-none rounded-xl focus:outline-none focus:ring-2 ring-accent/30 cursor-pointer transition-all">
+              <option>Newest</option>
               <option>Price: Low to High</option>
               <option>Price: High to Low</option>
-              <option>Most Popular</option>
+              <option>Popular</option>
             </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-theme-muted pointer-events-none" />
           </div>
         </div>
       </div>
 
-      <div className="flex gap-12 items-start">
+      <div className="flex gap-10 items-start">
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-1/4 shrink-0 sticky top-28">
+        <aside className="hidden lg:block w-60 shrink-0 sticky top-24">
           <Sidebar />
         </aside>
 
         {/* Product Grid */}
-        <div className="w-full lg:w-3/4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-12">
+        <div className="w-full lg:flex-1">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 gap-y-10">
             <AnimatePresence mode="popLayout">
               {loading ? (
-                <div className="col-span-full text-center py-12 text-zinc-500 font-sans">
-                  Loading collection...
-                </div>
+                [...Array(6)].map((_, i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="aspect-[3/4] rounded-2xl bg-theme-secondary mb-4" />
+                    <div className="h-3 rounded bg-theme-secondary mb-2 w-1/3" />
+                    <div className="h-4 rounded bg-theme-secondary mb-2 w-2/3" />
+                    <div className="h-4 rounded bg-theme-secondary w-1/4" />
+                  </div>
+                ))
               ) : error ? (
-                <div className="col-span-full text-center py-12 text-red-500 font-sans">
+                <div className="col-span-full text-center py-12 text-red-500">
                   Error loading products.
                 </div>
               ) : displayProducts.length === 0 ? (
-                <div className="col-span-full text-center py-12 text-zinc-500 font-sans">
+                <div className="col-span-full text-center py-12 text-theme-muted">
                   No products found.
                 </div>
               ) : (
@@ -213,7 +238,7 @@ export const Shop = () => {
         </div>
       </div>
 
-      {/* Mobile Filters Drawer */}
+      {/* Mobile Filters */}
       <AnimatePresence>
         {isMobileFiltersOpen && (
           <>
@@ -222,22 +247,24 @@ export const Shop = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileFiltersOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 lg:hidden cursor-pointer"
+              className="fixed inset-0 z-50 lg:hidden cursor-pointer"
+              style={{ backgroundColor: 'var(--overlay)' }}
             />
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'tween', duration: 0.4, ease: 'easeInOut' }}
-              className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-zinc-950 border-r border-zinc-800 z-50 flex flex-col shadow-2xl lg:hidden"
+              className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-theme-primary border-r border-theme-primary z-50 flex flex-col shadow-2xl lg:hidden"
             >
-              <div className="flex items-center justify-between p-6 border-b border-zinc-800/80">
-                <h2 className="font-serif text-xl font-bold text-white tracking-wide">
+              <div className="flex items-center justify-between p-6 border-b border-theme-primary">
+                <h2 className="font-semibold text-lg text-theme-primary flex items-center gap-2">
+                  <SlidersHorizontal className="w-5 h-5 text-accent" />
                   Filters
                 </h2>
                 <button
                   onClick={() => setIsMobileFiltersOpen(false)}
-                  className="p-2 text-zinc-400 hover:text-white transition-colors"
+                  className="p-2 text-theme-muted hover:text-theme-primary transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -245,7 +272,7 @@ export const Shop = () => {
               <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
                 <Sidebar />
               </div>
-              <div className="p-6 border-t border-zinc-800/80 bg-zinc-950 flex gap-4">
+              <div className="p-6 border-t border-theme-primary flex gap-3">
                 <button 
                   onClick={() => {
                     setSelectedCategories([]);
@@ -253,13 +280,13 @@ export const Shop = () => {
                     setMinPrice('');
                     setMaxPrice('');
                   }}
-                  className="flex-1 border border-zinc-800 text-white py-3 text-sm font-semibold uppercase tracking-wider hover:bg-zinc-900 transition-colors"
+                  className="flex-1 border border-theme-primary text-theme-primary py-3 text-sm font-semibold rounded-xl hover:bg-theme-secondary transition-colors"
                 >
-                  Clear All
+                  Clear
                 </button>
                 <button 
                   onClick={() => setIsMobileFiltersOpen(false)}
-                  className="flex-1 bg-white text-black py-3 text-sm font-semibold uppercase tracking-wider hover:bg-zinc-200 transition-colors"
+                  className="flex-1 bg-accent text-white py-3 text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
                   Apply
                 </button>
@@ -268,7 +295,6 @@ export const Shop = () => {
           </>
         )}
       </AnimatePresence>
-
     </div>
   );
 };

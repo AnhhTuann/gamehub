@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -6,9 +6,68 @@
   --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+/* ===== DARK THEME (default) ===== */
+:root, .dark {
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --bg-tertiary: #27272a;
+  --bg-card: #18181b;
+  --bg-elevated: rgba(24,24,27,0.8);
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border-primary: #27272a;
+  --border-secondary: #3f3f46;
+  --accent: #c084fc;
+  --accent-hover: #a855f7;
+  --accent-subtle: rgba(192,132,252,0.1);
+  --accent-glow: rgba(168,85,247,0.3);
+  --overlay: rgba(0,0,0,0.7);
+  --shadow: rgba(0,0,0,0.5);
+  --btn-primary-bg: #fafafa;
+  --btn-primary-text: #09090b;
+  --btn-primary-hover: #e4e4e7;
+  --danger: #ef4444;
+  --success: #22c55e;
+}
+
+/* ===== LIGHT THEME ===== */
+.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f5;
+  --bg-tertiary: #e4e4e7;
+  --bg-card: #ffffff;
+  --bg-elevated: rgba(255,255,255,0.9);
+  --text-primary: #09090b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --border-primary: #e4e4e7;
+  --border-secondary: #d4d4d8;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-subtle: rgba(124,58,237,0.08);
+  --accent-glow: rgba(124,58,237,0.15);
+  --overlay: rgba(0,0,0,0.4);
+  --shadow: rgba(0,0,0,0.08);
+  --btn-primary-bg: #09090b;
+  --btn-primary-text: #fafafa;
+  --btn-primary-hover: #27272a;
+  --danger: #dc2626;
+  --success: #16a34a;
+}
+
 @layer base {
   body {
-    @apply bg-zinc-950 text-zinc-100 font-sans selection:bg-zinc-800 selection:text-white antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  ::selection {
+    background-color: var(--accent-subtle);
+    color: var(--accent);
   }
 }
 
@@ -20,7 +79,7 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #3f3f46; /* zinc-700 */
+    background-color: var(--border-secondary);
     border-radius: 4px;
   }
   
@@ -28,12 +87,46 @@
     display: none;
   }
   .hide-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
+
+  /* Theme-aware utility classes */
+  .bg-theme-primary { background-color: var(--bg-primary); }
+  .bg-theme-secondary { background-color: var(--bg-secondary); }
+  .bg-theme-tertiary { background-color: var(--bg-tertiary); }
+  .bg-theme-card { background-color: var(--bg-card); }
+  .bg-theme-elevated { background-color: var(--bg-elevated); }
+  .text-theme-primary { color: var(--text-primary); }
+  .text-theme-secondary { color: var(--text-secondary); }
+  .text-theme-muted { color: var(--text-muted); }
+  .border-theme-primary { border-color: var(--border-primary); }
+  .border-theme-secondary { border-color: var(--border-secondary); }
+  .text-accent { color: var(--accent); }
+  .bg-accent { background-color: var(--accent); }
+  .bg-accent-hover:hover { background-color: var(--accent-hover); }
+  .bg-accent-subtle { background-color: var(--accent-subtle); }
+  .shadow-accent-glow { box-shadow: 0 0 30px var(--accent-glow); }
+  .bg-btn-primary { background-color: var(--btn-primary-bg); }
+  .text-btn-primary { color: var(--btn-primary-text); }
+  .bg-btn-primary-hover:hover { background-color: var(--btn-primary-hover); }
+  .ring-accent { --tw-ring-color: var(--accent); }
 
   .animate-scan {
     animation: scan 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 }
 
@@ -42,4 +135,14 @@
   15% { opacity: 1; }
   85% { opacity: 1; }
   100% { top: 98%; opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }

@@ -13,6 +13,7 @@ export interface Product {
   price: number;
   description?: string;
   category?: string;
+  brand?: string;
   image?: string;
   inventory?: number;
   createdAt?: string;

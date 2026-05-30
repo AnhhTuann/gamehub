@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OmniWear.Warehouse")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a11cf4fc5ab97a70a55e282c2c84c599363a2052")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ad1f3ed84d0c62371015c8cfd6e15928820caf1")]
 [assembly: System.Reflection.AssemblyProductAttribute("OmniWear.Warehouse")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OmniWear.Warehouse")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

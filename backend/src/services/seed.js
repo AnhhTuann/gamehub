@@ -5,7 +5,7 @@ const path = require('path');
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Bắt đầu quy trình seeding dữ liệu từ Kaggle Fashion Dataset...');
+  console.log('Bắt đầu quy trình seeding dữ liệu từ DummyJSON...');
 
   try {
     const jsonPath = path.join(__dirname, 'products_seed.json');
@@ -27,14 +27,9 @@ async function main() {
     await prisma.category.deleteMany();
     await prisma.brand.deleteMany();
 
-    // 2. Tạo thương hiệu OmniWear mặc định
-    const brand = await prisma.brand.create({
-      data: { name: 'OmniWear' }
-    });
-    console.log(`Đã tạo thương hiệu mặc định: ${brand.name}`);
-
-    // 3. Tạo các danh mục và sản phẩm tương ứng
+    // 2. Khởi tạo maps để lưu trữ categories và brands
     const categoriesMap = {};
+    const brandsMap = {};
     let count = 0;
 
     for (const item of productsData) {
@@ -54,14 +49,28 @@ async function main() {
         categoriesMap[catName] = category.id;
       }
 
+      // Đảm bảo brand tồn tại
+      const brandName = item.brand || 'Generic';
+      if (!brandsMap[brandName]) {
+        let brand = await prisma.brand.findFirst({
+          where: { name: brandName }
+        });
+        if (!brand) {
+          brand = await prisma.brand.create({
+            data: { name: brandName }
+          });
+        }
+        brandsMap[brandName] = brand.id;
+      }
+
       // Tạo sản phẩm
       const createdProduct = await prisma.product.create({
         data: {
           title: item.title,
           description: item.description,
-          image: item.image,
+          image: (item.images && item.images.length > 0) ? item.images[0] : item.image,
           categoryId: categoriesMap[catName],
-          brandId: brand.id
+          brandId: brandsMap[brandName]
         }
       });
 
@@ -83,7 +92,7 @@ async function main() {
       console.log(`[${catName}] Đã chèn sản phẩm: "${item.title}"`);
     }
 
-    console.log(`\nSeeding thành công! Đã chèn ${count} sản phẩm mới từ Kaggle Fashion Dataset vào CSDL PostgreSQL!`);
+    console.log(`\nSeeding thành công! Đã chèn ${count} sản phẩm mới từ DummyJSON vào CSDL PostgreSQL!`);
   } catch (error) {
     console.error('Lỗi khi seeding dữ liệu:', error);
   } finally {
