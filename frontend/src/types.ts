@@ -14,6 +14,10 @@ export interface Game {
   };
   originalPrice?: number; // Used for UI only
   badge?: string; // Used for UI only
+  screenshots?: string[];
+  developers?: string[];
+  publishers?: string[];
+  platforms?: string[];
 }
 
 export interface CartItem {

@@ -50,8 +50,12 @@ export const getFeaturedGames = () => fetchGames('/games', '&ordering=-added&pag
 
 export const getGameDetails = async (rawgId: number): Promise<Game | null> => {
   try {
-    const res = await fetch(`${RAWG_BASE_URL}/games/${rawgId}?key=${RAWG_API_KEY}`);
-    const g = await res.json();
+    const [detailRes, screenshotRes] = await Promise.all([
+      fetch(`${RAWG_BASE_URL}/games/${rawgId}?key=${RAWG_API_KEY}`),
+      fetch(`${RAWG_BASE_URL}/games/${rawgId}/screenshots?key=${RAWG_API_KEY}`),
+    ]);
+    const g = await detailRes.json();
+    const screenshotData = await screenshotRes.json();
     const price = await getCheapSharkPrice(g.name);
     return {
       id: g.id.toString(),
@@ -62,7 +66,11 @@ export const getGameDetails = async (rawgId: number): Promise<Game | null> => {
       rating: g.rating,
       released: g.released,
       price,
-      genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined
+      genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined,
+      screenshots: screenshotData?.results?.map((s: any) => s.image).slice(0, 5) || [],
+      developers: g.developers?.map((d: any) => d.name) || [],
+      publishers: g.publishers?.map((p: any) => p.name) || [],
+      platforms: g.platforms?.map((p: any) => p.platform.name).slice(0, 4) || [],
     };
   } catch (error) {
     console.error('Failed to fetch game details:', error);

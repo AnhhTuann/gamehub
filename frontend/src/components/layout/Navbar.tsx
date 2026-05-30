@@ -15,19 +15,21 @@ export const Navbar = () => {
   const location = useLocation();
 
   const navLinks = [
-    { label: 'CATALOG', path: '/shop' },
-    { label: 'SPECIALS', path: '/shop' },
-    { label: 'NEWS', path: '/shop' },
+    { label: 'Catalog', path: '/shop' },
+    { label: 'Specials', path: '/shop' },
+    { label: 'News', path: '/shop' },
   ];
 
   return (
     <>
-      {/* Announcement bar — retro ticker */}
-      <div className="bg-[var(--accent)] text-black text-center font-pixel text-[8px] md:text-[9px] py-2 tracking-wider">
-        ⚡ FREE SHIPPING ON ORDERS OVER $50 — USE CODE: RETRO2025 ⚡
+      {/* Announcement bar — dark with glowing pink text */}
+      <div className="bg-[#191a21] text-center text-xs font-medium py-2.5 tracking-wide border-b border-[var(--border-primary)]">
+        <span className="text-[var(--neon-pink)]" style={{ textShadow: '0 0 10px rgba(255,121,198,0.5)' }}>
+          ⚡ FREE SHIPPING ON ORDERS OVER $50 — USE CODE: <span className="font-bold">DRACULA25</span> ⚡
+        </span>
       </div>
 
-      <nav className="sticky top-0 z-50 bg-theme-elevated border-b-4 border-[var(--accent)] transition-colors duration-300">
+      <nav className="sticky top-0 z-50 bg-theme-elevated border-b border-[var(--border-primary)] backdrop-blur-md transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           {/* Left: Mobile menu + Logo */}
           <div className="flex items-center gap-4 md:gap-6">
@@ -42,16 +44,16 @@ export const Navbar = () => {
             </Link>
           </div>
 
-          {/* Center: Nav links */}
-          <div className="hidden lg:flex items-center gap-6">
+          {/* Center: Nav links - SANS-SERIF font */}
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 to={link.path}
-                className={`font-pixel text-[9px] tracking-wider transition-all duration-200 relative py-1 border-b-2 ${
+                className={`text-sm font-medium tracking-wide transition-all duration-200 relative py-1 border-b-2 ${
                   location.pathname === link.path
                     ? 'text-[var(--accent)] border-[var(--accent)]'
-                    : 'text-theme-secondary border-transparent hover:text-[var(--neon-cyan)] hover:border-[var(--neon-cyan)]'
+                    : 'text-[var(--text-secondary)] border-transparent hover:text-[var(--accent)] hover:border-[var(--accent)]'
                 }`}
               >
                 {link.label}
@@ -61,31 +63,31 @@ export const Navbar = () => {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-1 md:gap-2">
-            {/* Search bar (desktop) */}
+            {/* Search bar (desktop) - SANS-SERIF */}
             <div className="hidden md:flex items-center">
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="SEARCH..." 
+                  placeholder="Search games..." 
                   onClick={() => setIsSearchOpen(true)}
                   readOnly
-                  className="font-pixel text-[8px] bg-theme-secondary border-2 border-theme-secondary text-theme-primary placeholder:text-theme-muted px-3 py-2 w-36 focus:outline-none focus:border-[var(--neon-cyan)] transition-colors cursor-pointer"
+                  className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] px-4 py-2 w-44 rounded-md focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent-glow)] transition-all cursor-pointer"
                 />
-                <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-theme-muted" />
+                <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
               </div>
             </div>
 
             {/* Search icon (mobile) */}
             <button 
               onClick={() => setIsSearchOpen(true)}
-              className="md:hidden p-2 text-theme-secondary hover:text-[var(--neon-cyan)] transition-colors"
+              className="md:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
             >
               <Search className="w-5 h-5" />
             </button>
 
             <button 
               onClick={toggleTheme}
-              className="p-2 text-theme-secondary hover:text-[var(--neon-yellow)] transition-colors"
+              className="p-2 text-[var(--text-secondary)] hover:text-[var(--neon-yellow)] transition-colors"
               aria-label="Toggle theme"
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -93,15 +95,15 @@ export const Navbar = () => {
 
             <Link 
               to="/portal" 
-              className="hidden sm:flex p-2 text-theme-secondary hover:text-[var(--neon-cyan)] transition-colors"
+              className="hidden sm:flex p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
             >
               <User className="w-5 h-5" />
             </Link>
 
-            {/* Cart button with retro badge */}
+            {/* Cart button with Dracula badge */}
             <button 
               onClick={openCart}
-              className="relative p-2 text-theme-secondary hover:text-[var(--accent)] transition-colors"
+              className="relative p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
             >
               <ShoppingBag className="w-5 h-5" />
               <AnimatePresence>
@@ -111,7 +113,7 @@ export const Navbar = () => {
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     key={cartCount}
-                    className="absolute -top-0.5 -right-0.5 bg-red-500 text-white font-pixel text-[6px] w-4 h-4 flex items-center justify-center border-2 border-[var(--bg-primary)]"
+                    className="absolute -top-0.5 -right-0.5 bg-[var(--danger)] text-white text-[10px] font-bold w-4.5 h-4.5 flex items-center justify-center rounded-full border-2 border-[var(--bg-primary)]"
                   >
                     {cartCount}
                   </motion.span>
@@ -139,7 +141,7 @@ export const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-theme-primary border-r-4 border-[var(--accent)] z-50 flex flex-col p-6 lg:hidden"
+              className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-[var(--bg-primary)] border-r-2 border-[var(--accent)] z-50 flex flex-col p-6 lg:hidden"
             >
               <div className="flex justify-between items-center mb-10">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
@@ -147,7 +149,7 @@ export const Navbar = () => {
                 </Link>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 text-theme-muted hover:text-[var(--accent)] transition-colors"
+                  className="p-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -158,24 +160,24 @@ export const Navbar = () => {
                     key={link.label}
                     to={link.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`px-4 py-3 font-pixel text-[9px] tracking-wider transition-colors border-l-4 ${
+                    className={`px-4 py-3 text-sm font-medium tracking-wide transition-colors rounded-md border-l-3 ${
                       location.pathname === link.path
                         ? 'bg-[var(--accent-subtle)] text-[var(--accent)] border-[var(--accent)]'
-                        : 'text-theme-secondary hover:text-[var(--neon-cyan)] border-transparent hover:border-[var(--neon-cyan)]'
+                        : 'text-[var(--text-secondary)] hover:text-[var(--accent)] border-transparent hover:border-[var(--accent)] hover:bg-[var(--accent-subtle)]'
                     }`}
                   >
-                    {'> '}{link.label}
+                    {link.label}
                   </Link>
                 ))}
               </div>
-              <div className="mt-auto border-t-2 border-theme-primary pt-6 flex flex-col gap-1">
-                <Link to="/portal" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 font-pixel text-[8px] text-theme-secondary hover:text-[var(--neon-cyan)] transition-colors">
+              <div className="mt-auto border-t border-[var(--border-primary)] pt-6 flex flex-col gap-1">
+                <Link to="/portal" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors rounded-md">
                   <User className="w-4 h-4" />
-                  ACCOUNT
+                  Account
                 </Link>
-                <button onClick={() => { setIsMobileMenuOpen(false); openCart(); }} className="flex items-center gap-3 px-4 py-3 font-pixel text-[8px] text-theme-secondary hover:text-[var(--accent)] transition-colors w-full text-left">
+                <button onClick={() => { setIsMobileMenuOpen(false); openCart(); }} className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors w-full text-left rounded-md">
                   <ShoppingBag className="w-4 h-4" />
-                  CART ({cartCount})
+                  Cart ({cartCount})
                 </button>
               </div>
             </motion.div>
