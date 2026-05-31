@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Menu, X, User, Search, Sun, Moon } from 'lucide-react';
+import { ShoppingBag, Menu, X, User, Search, Sun, Moon, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
 import { SearchModal } from './SearchModal';
 import { BrandLogo } from '../common/BrandLogo';
 
@@ -12,6 +13,7 @@ export const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { cartCount, openCart } = useCart();
   const { toggleTheme, isDark } = useTheme();
+  const { isLoggedIn, user, logout } = useAuth();
   const location = useLocation();
 
   const navLinks = [
@@ -93,12 +95,27 @@ export const Navbar = () => {
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            <Link 
-              to="/portal" 
-              className="hidden sm:flex p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
-            >
-              <User className="w-5 h-5" />
-            </Link>
+            {isLoggedIn ? (
+              <div className="hidden sm:flex items-center gap-3 ml-2 border-l border-[var(--border-primary)] pl-4">
+                <Link to="/portal" className="text-sm font-bold text-[var(--accent)] hover:text-[var(--neon-pink)] transition-colors">
+                  Hi, {user?.username}
+                </Link>
+                <button 
+                  onClick={logout}
+                  className="p-1.5 text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--bg-tertiary)] rounded transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <Link 
+                to="/auth" 
+                className="hidden sm:flex p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+              >
+                <User className="w-5 h-5" />
+              </Link>
+            )}
 
             {/* Cart button with Dracula badge */}
             <button 
