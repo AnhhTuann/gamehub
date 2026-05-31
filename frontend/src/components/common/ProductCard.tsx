@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star, ShoppingCart, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Game } from '../../types';
 import { useCart } from '../../context/CartContext';
 
 interface ProductCardProps {
   product: Game;
+  onRemove?: (id: string) => void;
 }
 
 const PixelRating = ({ rating }: { rating: number }) => {
@@ -31,7 +32,7 @@ const PixelRating = ({ rating }: { rating: number }) => {
   );
 };
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) => {
   const { addToCart } = useCart();
 
   return (
@@ -65,9 +66,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* Rating badge */}
         {product.rating > 0 && (
-          <div className="absolute top-2 left-2 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-[var(--accent)] px-2.5 py-1 rounded-md">
+          <div className="absolute top-2 left-2 z-10 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-[var(--accent)] px-2.5 py-1 rounded-md">
             <span className="text-xs font-bold text-[var(--accent)]">★ {product.rating.toFixed(1)}</span>
           </div>
+        )}
+
+        {/* Remove Button (Optional) */}
+        {onRemove && (
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(product.id); }}
+            className="absolute top-2 right-2 z-20 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-[#6272a4] text-[#6272a4] p-1.5 rounded-md hover:text-[var(--neon-pink)] hover:border-[var(--neon-pink)] transition-all"
+            title="Remove from Wishlist"
+          >
+            <X className="w-4 h-4" />
+          </button>
         )}
       </Link>
 

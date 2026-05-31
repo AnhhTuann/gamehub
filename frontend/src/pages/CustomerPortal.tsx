@@ -45,8 +45,36 @@ export const CustomerPortal = () => {
     { id: 'Settings', icon: Settings },
   ];
 
+  const MOCK_WISHLIST = [
+    {
+      id: "w1",
+      rawgId: 101,
+      title: "Cyber Neon 2077",
+      price: 59.99,
+      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80",
+      rating: 4.8,
+      released: "2024-10-12",
+      genre: { name: "Action", slug: "action" }
+    },
+    {
+      id: "w2",
+      rawgId: 102,
+      title: "Vampire's Requiem",
+      price: 29.99,
+      image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80",
+      rating: 4.5,
+      released: "2023-05-20",
+      genre: { name: "RPG", slug: "rpg" }
+    }
+  ];
+
+  const [wishlistItems, setWishlistItems] = useState<any[]>(MOCK_WISHLIST);
+
+  const handleRemoveWishlist = (id: string) => {
+    setWishlistItems(prev => prev.filter(item => item.id !== id));
+  };
+
   const { data } = useQuery(GET_PRODUCTS);
-  const wishlistProducts = (data?.products || []).slice(3, 6);
   const orderedProduct = data?.products?.[0] || null;
 
   const renderOrders = () => (
@@ -125,14 +153,38 @@ export const CustomerPortal = () => {
         <h2 className="font-pixel text-lg md:text-xl text-[var(--text-primary)] tracking-wider">
           YOUR WISHLIST
         </h2>
-        <span className="text-[var(--text-muted)] font-medium tracking-wide text-xs uppercase">{wishlistProducts.length} GAMES SAVED</span>
+        <span className="text-[var(--text-muted)] font-medium tracking-wide text-xs uppercase">{wishlistItems.length} GAMES SAVED</span>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-12">
-        {wishlistProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {wishlistItems.length === 0 ? (
+        <div className="flex flex-col items-center justify-center min-h-[300px] bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg p-12 text-center relative overflow-hidden" style={{ boxShadow: '4px 4px 0 0 var(--card-shadow)' }}>
+          <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.02)_2px,rgba(0,0,0,0.02)_4px)] pointer-events-none opacity-50" />
+          
+          <div className="w-24 h-24 flex items-center justify-center bg-[var(--bg-tertiary)] border-2 border-[var(--border-primary)] rounded-full mb-6 relative z-10" style={{ boxShadow: '0 0 15px rgba(98, 114, 164, 0.2)' }}>
+            <span className="text-5xl opacity-80 grayscale">💔</span>
+          </div>
+          <p className="text-[var(--text-secondary)] font-sans text-base mb-8 relative z-10 font-medium">
+            Your wishlist is empty, Player 1. Go explore the catalog.
+          </p>
+          <Link 
+            to="/shop" 
+            className="relative z-10 bg-[var(--accent)] text-black font-pixel text-xs tracking-widest px-8 py-4 rounded hover:bg-[var(--neon-pink)] hover:-translate-y-1 transition-all duration-300"
+            style={{ boxShadow: '4px 4px 0 0 rgba(0,0,0,0.5)' }}
+          >
+            BROWSE GAMES
+          </Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-12">
+          {wishlistItems.map(product => (
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              onRemove={handleRemoveWishlist}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 
