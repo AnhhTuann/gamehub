@@ -55,8 +55,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(to bottom right, var(--card-fallback-from), var(--card-fallback-to))' }}>
-            <span className="text-4xl">🎮</span>
+          <div className="w-full h-full flex flex-col items-center justify-center bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+            <span className="text-4xl opacity-50 mb-2">👾</span>
+            <span className="font-pixel text-[10px] text-[var(--text-muted)] tracking-widest">DATA MISSING</span>
           </div>
         )}
         {/* Subtle scanline overlay */}
@@ -85,7 +86,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </Link>
 
         {/* Rating */}
-        <PixelRating rating={product.rating} />
+        {product.rating > 0 ? (
+          <PixelRating rating={product.rating} />
+        ) : (
+          <span className="text-xs font-medium text-[var(--text-muted)]">Unrated</span>
+        )}
 
         {/* Price + Cart */}
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-[var(--border-primary)]">

@@ -1,161 +1,166 @@
 import React, { useEffect, useState } from 'react';
 import { Game } from '../types';
-import { getTrendingGames } from '../services/api';
+import { getTrendingGames, getNewReleases, getAllGames } from '../services/api';
 import { HeroBanner } from '../components/home/HeroBanner';
 import { ProductCard } from '../components/common/ProductCard';
 import { Link } from 'react-router-dom';
-import { Gamepad2, Swords, Crosshair, Joystick, Trophy, ChevronRight, Flame } from 'lucide-react';
+import { Flame, Tag, Grid, LayoutTemplate } from 'lucide-react';
+import { motion } from 'motion/react';
 
-/* ===== Sidebar Filters ===== */
-const CATEGORIES = [
-  { name: 'RPG', icon: <Swords className="w-4 h-4" /> },
-  { name: 'Action', icon: <Crosshair className="w-4 h-4" /> },
-  { name: 'Arcade', icon: <Joystick className="w-4 h-4" /> },
-  { name: 'Retro', icon: <Gamepad2 className="w-4 h-4" /> },
+const BROWSE_CATEGORIES = [
+  { name: 'Action', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800' },
+  { name: 'RPG', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800' },
+  { name: 'Strategy', image: 'https://images.unsplash.com/photo-1518908336710-4e1cf821d3d1?auto=format&fit=crop&q=80&w=800' },
+  { name: 'Indie', image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=800' }
 ];
 
-const Sidebar = ({ selected, onToggle }: { selected: string[]; onToggle: (cat: string) => void }) => {
-  const [priceRange, setPriceRange] = useState([0, 60]);
-
-  return (
-    <aside className="w-full lg:w-64 shrink-0">
-      <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg p-5" style={{ boxShadow: '4px 4px 0 0 var(--card-shadow)' }}>
-        {/* Categories */}
-        <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-5 tracking-wider">CATEGORIES</h3>
-        <div className="flex flex-col gap-2 mb-6">
-          {CATEGORIES.map((cat) => (
-            <label 
-              key={cat.name} 
-              className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md"
-            >
-              <input
-                type="checkbox"
-                checked={selected.includes(cat.name)}
-                onChange={() => onToggle(cat.name)}
-                className="pixel-checkbox"
-              />
-              <span className={`transition-colors ${
-                selected.includes(cat.name) ? 'text-[var(--accent)]' : 'text-[var(--text-muted)] group-hover:text-[var(--text-secondary)]'
-              }`}>{cat.icon}</span>
-              <span className={`text-sm font-medium tracking-wide ${
-                selected.includes(cat.name) ? 'text-[var(--accent)]' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'
-              } transition-colors`}>
-                {cat.name}
-              </span>
-            </label>
-          ))}
-        </div>
-
-        {/* Price Range */}
-        <div className="border-t border-[var(--border-primary)] pt-5">
-          <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-5 tracking-wider">PRICE RANGE</h3>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex-1 bg-[var(--bg-tertiary)] h-2.5 relative overflow-hidden rounded-full border border-[var(--border-primary)]">
-              <div 
-                className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[var(--accent)] to-[var(--neon-pink)] rounded-full"
-                style={{ width: `${(priceRange[1] / 100) * 100}%` }}
-              />
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-xs font-medium text-[var(--accent)]">${priceRange[0]}</span>
-            <span className="text-xs font-medium text-[var(--accent)]">${priceRange[1]}</span>
-          </div>
-        </div>
-
-        {/* Platforms */}
-        <div className="border-t border-[var(--border-primary)] pt-5 mt-5">
-          <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-5 tracking-wider">PLATFORMS</h3>
-          <div className="flex flex-col gap-2">
-            {['PC', 'PlayStation 5', 'Xbox Series', 'Nintendo Switch'].map((platform) => (
-              <label key={platform} className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md">
-                <input type="checkbox" className="pixel-checkbox" />
-                <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">
-                  {platform}
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-    </aside>
-  );
-};
-
-/* ===== Main Page ===== */
 export const Home = () => {
-  const [games, setGames] = useState<Game[]>([]);
+  const [trending, setTrending] = useState<Game[]>([]);
+  const [newReleases, setNewReleases] = useState<Game[]>([]);
+  const [allGames, setAllGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<'New Releases' | 'Specials' | 'Free Games' | 'By User Tags'>('New Releases');
 
   useEffect(() => {
-    getTrendingGames().then(data => {
-      setGames(data);
+    Promise.all([
+      getTrendingGames(),
+      getNewReleases(),
+      getAllGames()
+    ]).then(([trendData, newData, allData]) => {
+      setTrending(trendData);
+      setNewReleases(newData);
+      setAllGames(allData);
       setLoading(false);
     });
   }, []);
 
-  const toggleCategory = (cat: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
-    );
-  };
-
-  const displayGames = selectedCategories.length > 0
-    ? games.filter(g => g.genre && selectedCategories.includes(g.genre.name))
-    : games;
+  // Compute tab data
+  let tabGames: Game[] = [];
+  if (activeTab === 'New Releases') {
+    tabGames = newReleases.slice(0, 12);
+  } else if (activeTab === 'Specials') {
+    // Mock specials by picking a slice
+    tabGames = allGames.slice(10, 22);
+  } else if (activeTab === 'Free Games') {
+    // Mock free games by taking another slice
+    tabGames = allGames.slice(22, 34);
+  } else if (activeTab === 'By User Tags') {
+    tabGames = allGames.slice(0, 12);
+  }
 
   return (
     <div className="bg-theme-primary min-h-screen">
-      {/* Hero Banner */}
+      
+      {/* 1. Featured & Recommended */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-8">
+        <h2 className="font-pixel text-lg md:text-xl text-[var(--text-primary)] tracking-wider mb-6">
+          FEATURED & RECOMMENDED
+        </h2>
+      </div>
       <HeroBanner />
 
-      {/* Main Content: Sidebar + Product Grid */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 pb-16">
-        {/* Section title */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <Flame className="w-5 h-5 text-[var(--neon-orange)]" />
-            <h2 className="font-pixel text-sm md:text-base text-[var(--text-primary)] tracking-wider">TRENDING GAMES</h2>
+      {/* 2. Discounts & Events */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 border-t border-[var(--border-primary)] mt-12">
+        <div className="flex items-center gap-3 mb-8">
+          <Tag className="w-6 h-6 text-[var(--neon-green)]" />
+          <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">DISCOUNTS & EVENTS</h2>
+        </div>
+        
+        {loading ? (
+          <div className="flex gap-6 overflow-x-hidden">
+             {[...Array(4)].map((_, i) => (
+                <div key={i} className="min-w-[280px] w-[280px] h-[350px] bg-[var(--bg-tertiary)] rounded-lg animate-pulse" />
+             ))}
           </div>
-          <Link to="/shop" className="text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-hover)] flex items-center gap-1 transition-colors">
-            View All <ChevronRight className="w-4 h-4" />
-          </Link>
+        ) : (
+          <div className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
+            {trending.map((game, idx) => (
+              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 snap-start">
+                <ProductCard product={game} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 3. Browse by Category */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
+        <div className="flex items-center gap-3 mb-8">
+          <Grid className="w-6 h-6 text-[var(--neon-orange)]" />
+          <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">BROWSE BY CATEGORY</h2>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {BROWSE_CATEGORIES.map(cat => (
+            <Link 
+              to="/shop" 
+              state={{ category: `${cat.name} Games` }} 
+              key={cat.name}
+              className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer border-2 border-[var(--border-primary)] hover:border-[var(--accent)] transition-all"
+            >
+              <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60 group-hover:opacity-100" />
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/80 to-transparent">
+                <span className="font-pixel text-sm md:text-base text-white tracking-widest drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
+                  {cat.name.toUpperCase()}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. Browse Gamehub */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
+        <div className="flex items-center gap-3 mb-8">
+          <LayoutTemplate className="w-6 h-6 text-[#bd93f9]" />
+          <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">BROWSE GAMEHUB</h2>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar */}
-          <Sidebar selected={selectedCategories} onToggle={toggleCategory} />
+        {/* Tabs */}
+        <div className="flex flex-wrap border-b border-[var(--border-primary)] gap-2 md:gap-6 mb-8">
+          {['New Releases', 'Specials', 'Free Games', 'By User Tags'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab as any)}
+              className={`pb-3 text-xs md:text-sm font-semibold tracking-wide transition-all duration-200 border-b-2 uppercase ${
+                activeTab === tab
+                  ? 'text-[var(--accent)] border-[var(--accent)]'
+                  : 'text-[var(--text-muted)] border-transparent hover:text-[var(--text-secondary)] hover:border-[var(--accent)]'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
 
-          {/* Product Grid */}
-          <div className="flex-1">
-            {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg animate-pulse overflow-hidden">
-                    <div className="aspect-video bg-[var(--bg-tertiary)]" />
-                    <div className="p-4 space-y-3">
-                      <div className="h-3 bg-[var(--bg-tertiary)] w-1/3 rounded" />
-                      <div className="h-4 bg-[var(--bg-tertiary)] w-2/3 rounded" />
-                      <div className="h-3 bg-[var(--bg-tertiary)] w-1/4 rounded" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : displayGames.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <span className="text-5xl mb-4">🎮</span>
-                <p className="font-pixel text-xs text-[var(--text-muted)] tracking-wider mb-2">NO GAMES FOUND</p>
-                <p className="text-[var(--text-muted)] text-sm">Try adjusting your filters</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {displayGames.slice(0, 9).map((game, idx) => (
-                  <ProductCard key={`${game.id}-${idx}`} product={game} />
-                ))}
-              </div>
-            )}
+        {/* Tab Content Grid */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-[3/4] bg-[var(--bg-tertiary)] rounded-lg animate-pulse" />
+            ))}
           </div>
+        ) : (
+          <motion.div 
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            {tabGames.map((game, idx) => (
+              <ProductCard key={`tab-${activeTab}-${idx}`} product={game} />
+            ))}
+          </motion.div>
+        )}
+        
+        <div className="mt-10 flex justify-center">
+          <Link 
+            to="/shop" 
+            className="px-8 py-3 bg-[var(--bg-card)] border-2 border-[var(--border-primary)] text-[var(--text-primary)] font-bold text-sm tracking-widest rounded hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
+          >
+            VIEW FULL CATALOG
+          </Link>
         </div>
       </div>
     </div>

@@ -3,14 +3,36 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { SlidersHorizontal, X, Swords, Crosshair, Joystick, Gamepad2 } from 'lucide-react';
 import { Game } from '../types';
-import { getTrendingGames } from '../services/api';
+import { getAllGames } from '../services/api';
 import { ProductCard } from '../components/common/ProductCard';
 
 const CATEGORIES = [
-  { name: 'RPG', icon: <Swords className="w-4 h-4" /> },
-  { name: 'Action', icon: <Crosshair className="w-4 h-4" /> },
-  { name: 'Arcade', icon: <Joystick className="w-4 h-4" /> },
-  { name: 'Retro', icon: <Gamepad2 className="w-4 h-4" /> },
+  'Action Games',
+  'FPS Games',
+  'Strategy Games',
+  'MMO Games',
+  'RPG Games',
+  'Simulation Games',
+  'Adventure Games',
+  'Indie Games',
+  'Fighting Games',
+  'Platformer Games',
+  'Racing Games',
+  'Sports Games'
+];
+
+const PLATFORMS = [
+  'Steam Games',
+  'XBOX Games',
+  'PlayStation Games',
+  'Nintendo Switch Games',
+  'EA App Games',
+  'Ubisoft Connect Games',
+  'Epic Games',
+  'GOG Games',
+  'Battle.net Games',
+  'Other Games',
+  'DLCs'
 ];
 
 export const Shop = () => {
@@ -19,61 +41,127 @@ export const Shop = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     location.state?.category ? [location.state.category] : []
   );
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
   const toggleCategory = (cat: string) => {
     setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
   };
 
+  const togglePlatform = (plat: string) => {
+    setSelectedPlatforms(prev => prev.includes(plat) ? prev.filter(p => p !== plat) : [...prev, plat]);
+  };
+
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    getTrendingGames().then(data => {
-      setGames(data);
+    if (page === 1) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+    
+    getAllGames(page).then(data => {
+      setGames(prev => page === 1 ? data : [...prev, ...data]);
       setLoading(false);
+      setLoadingMore(false);
     });
+  }, [page]);
+
+  const displayProducts = games.filter(g => {
+    const matchCategory = selectedCategories.length === 0 || selectedCategories.some(cat => {
+      const gStr = g.genre?.name?.toLowerCase() || '';
+      if (cat === 'Action Games') return gStr.includes('action');
+      if (cat === 'FPS Games') return gStr.includes('shooter');
+      if (cat === 'Strategy Games') return gStr.includes('strategy');
+      if (cat === 'MMO Games') return gStr.includes('massively') || gStr.includes('mmo');
+      if (cat === 'RPG Games') return gStr.includes('rpg') || gStr.includes('role');
+      if (cat === 'Simulation Games') return gStr.includes('simulation');
+      if (cat === 'Adventure Games') return gStr.includes('adventure');
+      if (cat === 'Indie Games') return gStr.includes('indie');
+      if (cat === 'Fighting Games') return gStr.includes('fighting');
+      if (cat === 'Platformer Games') return gStr.includes('platformer');
+      if (cat === 'Racing Games') return gStr.includes('racing');
+      if (cat === 'Sports Games') return gStr.includes('sports');
+      return false;
+    });
+    
+    const matchPlatform = selectedPlatforms.length === 0 || selectedPlatforms.some(p => {
+      const pStr = g.platforms?.join(' ').toLowerCase() || '';
+      if (['Steam Games', 'Epic Games', 'GOG Games', 'EA App Games', 'Battle.net Games', 'Ubisoft Connect Games'].includes(p)) {
+        return pStr.includes('pc') || pStr.includes('mac') || pStr.includes('linux');
+      }
+      if (p === 'XBOX Games') return pStr.includes('xbox');
+      if (p === 'PlayStation Games') return pStr.includes('playstation') || pStr.includes('ps4') || pStr.includes('ps5');
+      if (p === 'Nintendo Switch Games') return pStr.includes('nintendo') || pStr.includes('switch');
+      if (p === 'Other Games') return !pStr.includes('pc') && !pStr.includes('xbox') && !pStr.includes('playstation') && !pStr.includes('nintendo');
+      if (p === 'DLCs') return g.title.toLowerCase().includes('dlc') || g.title.toLowerCase().includes('expansion');
+      return false;
+    });
+
+    return matchCategory && matchPlatform;
+  });
+
+  const [openDropdown, setOpenDropdown] = useState<'genres' | 'platforms' | null>(null);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!(e.target as Element).closest('.filter-dropdown')) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const displayProducts = games.filter(g =>
-    selectedCategories.length === 0 ||
-    (g.genre && selectedCategories.includes(g.genre.name))
-  );
+  const FilterDropdown = ({ title, type, items, selected, toggleFn }: any) => (
+    <div className="relative filter-dropdown">
+      <button 
+        onClick={() => setOpenDropdown(openDropdown === type ? null : type)}
+        className={`flex items-center gap-2 px-4 py-2.5 rounded-md border-2 transition-all font-medium text-sm ${
+          openDropdown === type || selected.length > 0
+            ? 'border-[var(--accent)] text-[var(--accent)] bg-[var(--accent-subtle)]' 
+            : 'border-[var(--border-primary)] text-[var(--text-primary)] hover:border-[var(--accent)]'
+        }`}
+      >
+        {title}
+        {selected.length > 0 && (
+          <span className="bg-[var(--accent)] text-black text-xs font-bold px-1.5 py-0.5 rounded-full ml-1">
+            {selected.length}
+          </span>
+        )}
+      </button>
 
-  const Sidebar = () => (
-    <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg p-5" style={{ boxShadow: '4px 4px 0 0 var(--card-shadow)' }}>
-      <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-5 tracking-wider">GENRES</h3>
-      <div className="flex flex-col gap-2 mb-6">
-        {CATEGORIES.map((cat) => (
-          <label key={cat.name} className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md">
-            <input
-              type="checkbox"
-              checked={selectedCategories.includes(cat.name)}
-              onChange={() => toggleCategory(cat.name)}
-              className="pixel-checkbox"
-            />
-            <span className={`transition-colors ${
-              selectedCategories.includes(cat.name) ? 'text-[var(--accent)]' : 'text-[var(--text-muted)] group-hover:text-[var(--text-secondary)]'
-            }`}>{cat.icon}</span>
-            <span className={`text-sm font-medium tracking-wide ${
-              selectedCategories.includes(cat.name) ? 'text-[var(--accent)]' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'
-            } transition-colors`}>
-              {cat.name}
-            </span>
-          </label>
-        ))}
-      </div>
-      <div className="border-t border-[var(--border-primary)] pt-5">
-        <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-5 tracking-wider">PLATFORMS</h3>
-        <div className="flex flex-col gap-2">
-          {['PC', 'PlayStation 5', 'Xbox Series', 'Nintendo Switch'].map((p) => (
-            <label key={p} className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md">
-              <input type="checkbox" className="pixel-checkbox" />
-              <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">{p}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+      <AnimatePresence>
+        {openDropdown === type && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute top-full left-0 mt-2 w-64 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg shadow-xl z-40 max-h-[400px] overflow-y-auto custom-scrollbar"
+            style={{ boxShadow: '4px 4px 0 0 var(--card-shadow)' }}
+          >
+            <div className="p-4 flex flex-col gap-1">
+              {items.map((item: string) => (
+                <label key={item} className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md">
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(item)}
+                    onChange={() => toggleFn(item)}
+                    className="pixel-checkbox"
+                  />
+                  <span className={`text-sm font-medium tracking-wide transition-colors ${
+                    selected.includes(item) ? 'text-[var(--accent)]' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'
+                  }`}>{item}</span>
+                </label>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 
@@ -89,27 +177,55 @@ export const Shop = () => {
         </p>
       </div>
 
-      {/* Top Bar */}
-      <div className="flex items-center justify-between border-b border-[var(--border-primary)] pb-4 mb-8 gap-4">
+      {/* Horizontal Filter Navbar */}
+      <div className="flex items-center justify-between border-b border-[var(--border-primary)] pb-4 mb-8 gap-4 sticky top-16 z-30 bg-theme-primary/90 backdrop-blur pt-4">
+        
+        {/* Desktop Filter Dropdowns */}
+        <div className="hidden lg:flex items-center gap-4">
+          <span className="font-pixel text-[10px] text-[var(--text-muted)] tracking-widest mr-2">FILTERS:</span>
+          
+          <FilterDropdown 
+            title="Genres" 
+            type="genres" 
+            items={CATEGORIES} 
+            selected={selectedCategories} 
+            toggleFn={toggleCategory} 
+          />
+          
+          <FilterDropdown 
+            title="Platforms" 
+            type="platforms" 
+            items={PLATFORMS} 
+            selected={selectedPlatforms} 
+            toggleFn={togglePlatform} 
+          />
+          
+          {(selectedCategories.length > 0 || selectedPlatforms.length > 0) && (
+            <button
+              onClick={() => { setSelectedCategories([]); setSelectedPlatforms([]); }}
+              className="text-xs text-[var(--text-muted)] hover:text-[var(--danger)] ml-2 transition-colors flex items-center gap-1 font-medium"
+            >
+              <X className="w-3 h-3" /> Clear All
+            </button>
+          )}
+        </div>
+
+        {/* Mobile Filter Button */}
         <button
           onClick={() => setIsMobileFiltersOpen(true)}
           className="lg:hidden flex items-center gap-2 text-sm font-medium text-[var(--text-primary)] border border-[var(--border-primary)] px-4 py-2 rounded-md hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
         >
           <SlidersHorizontal className="w-4 h-4" />
-          Filters
+          Filters {(selectedCategories.length > 0 || selectedPlatforms.length > 0) && `(${selectedCategories.length + selectedPlatforms.length})`}
         </button>
-        <span className="text-sm text-[var(--text-muted)] hidden sm:block">
-          {displayProducts.length} games found
+
+        <span className="text-sm font-medium text-[var(--accent)] hidden sm:block">
+          {displayProducts.length} GAMES FOUND
         </span>
       </div>
 
       <div className="flex gap-8 items-start">
-        {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-64 shrink-0 sticky top-24">
-          <Sidebar />
-        </aside>
-
-        {/* Product Grid */}
+        {/* Product Grid (Full Width) */}
         <div className="w-full lg:flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
@@ -137,6 +253,27 @@ export const Shop = () => {
               )}
             </AnimatePresence>
           </div>
+          
+          {/* Load More Button */}
+          {displayProducts.length > 0 && !loading && (
+            <div className="mt-12 flex justify-center">
+              <button
+                onClick={() => setPage(p => p + 1)}
+                disabled={loadingMore}
+                className="px-8 py-3 bg-[var(--bg-card)] border-2 border-[var(--border-primary)] text-[var(--text-primary)] font-bold text-sm tracking-widest rounded hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all disabled:opacity-50 flex items-center gap-2"
+                style={{ boxShadow: '4px 4px 0 0 var(--card-shadow)' }}
+              >
+                {loadingMore ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+                    LOADING...
+                  </>
+                ) : (
+                  'LOAD MORE GAMES'
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -168,8 +305,29 @@ export const Shop = () => {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
-                <Sidebar />
+              <div className="flex-1 overflow-y-auto p-5 custom-scrollbar flex flex-col gap-8">
+                <div>
+                  <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-4 tracking-wider">GENRES</h3>
+                  <div className="flex flex-col gap-1">
+                    {CATEGORIES.map(cat => (
+                      <label key={cat} className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md">
+                        <input type="checkbox" checked={selectedCategories.includes(cat)} onChange={() => toggleCategory(cat)} className="pixel-checkbox" />
+                        <span className={`text-sm font-medium tracking-wide transition-colors ${selectedCategories.includes(cat) ? 'text-[var(--accent)]' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'}`}>{cat}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-pixel text-[10px] text-[var(--accent)] mb-4 tracking-wider">PLATFORMS</h3>
+                  <div className="flex flex-col gap-1">
+                    {PLATFORMS.map(p => (
+                      <label key={p} className="flex items-center gap-3 cursor-pointer group py-2.5 px-3 hover:bg-[var(--accent-subtle)] transition-colors rounded-md">
+                        <input type="checkbox" checked={selectedPlatforms.includes(p)} onChange={() => togglePlatform(p)} className="pixel-checkbox" />
+                        <span className={`text-sm font-medium tracking-wide transition-colors ${selectedPlatforms.includes(p) ? 'text-[var(--accent)]' : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'}`}>{p}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div className="p-5 border-t border-[var(--border-primary)] flex gap-3">
                 <button

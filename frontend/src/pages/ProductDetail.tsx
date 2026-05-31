@@ -187,33 +187,29 @@ export const ProductDetail = () => {
         <span className="text-[var(--text-secondary)]">{game.title}</span>
       </div>
 
-      {/* ===== Main Product Container with glowing purple border ===== */}
+      {/* ===== Main Layout Container ===== */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="border-2 border-[var(--accent)] rounded-lg overflow-hidden"
-        style={{ boxShadow: '0 0 30px var(--accent-glow), inset 0 0 20px rgba(0,0,0,0.1)' }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-          <div className="bg-[var(--bg-secondary)] p-6 md:p-8 h-full">
-            <div className="sticky top-24">
-              {/* Main Image */}
-              <div
-                className="relative w-full rounded-lg overflow-hidden border border-[var(--border-primary)] mb-4 flex items-center justify-center"
-                style={{ background: 'radial-gradient(ellipse at center, rgba(68,71,90,0.6) 0%, rgba(30,31,41,0.95) 100%)', aspectRatio: '16/10' }}
-              >
-                <img
-                  src={selectedImage}
-                  alt={game.title}
-                  className="max-w-full max-h-full w-full h-full object-contain transition-all duration-500 drop-shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
-                  style={{ objectPosition: 'center' }}
-                />
-                {/* Corner pixel decoration */}
-                <span className="absolute top-2 left-2 text-[var(--accent)] opacity-40 font-pixel text-[7px] tracking-widest select-none">▸ PREVIEW</span>
-                {/* Subtle scanline overlay */}
-                <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.025)_2px,rgba(0,0,0,0.025)_4px)] pointer-events-none" />
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 items-start">
+          
+          {/* ===== LEFT COLUMN — Media ===== */}
+          <div className="flex flex-col gap-4 sticky top-24">
+            {/* Main Image */}
+            <div
+              className="relative w-full rounded-xl overflow-hidden border-2 border-[var(--accent)] flex items-center justify-center p-6 shadow-[0_0_20px_var(--accent-glow)]"
+              style={{ background: '#1c1c24', aspectRatio: '3/4' }}
+            >
+              <img
+                src={selectedImage}
+                alt={game.title}
+                className="max-w-full max-h-full object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.8)]"
+              />
+              {/* Subtle scanline overlay */}
+              <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.025)_2px,rgba(0,0,0,0.025)_4px)] pointer-events-none" />
+            </div>
 
             {/* Thumbnail Gallery */}
             <div className="grid grid-cols-5 gap-2">
@@ -237,118 +233,116 @@ export const ProductDetail = () => {
                 </div>
               ))}
             </div>
-            </div>
           </div>
 
           {/* ===== RIGHT COLUMN — Product Info ===== */}
-          <div className="bg-[var(--bg-card)] p-6 md:p-8 flex flex-col">
-            {/* Genre Badge */}
-            <span className="text-[11px] font-semibold text-[var(--accent)] tracking-wider uppercase mb-3">
-              {game.genre?.name || 'GAME'}
-            </span>
-
+          <div className="flex flex-col py-4">
             {/* Title — Pixel font, purple-pink glow */}
-            <h1 className="font-pixel text-lg md:text-xl lg:text-2xl leading-relaxed mb-4 tracking-wider">
+            <h1 className="font-pixel text-3xl md:text-4xl leading-tight mb-4 tracking-wider">
               <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, var(--logo-from), var(--logo-to))' }}>
                 {game.title.toUpperCase()}
               </span>
             </h1>
 
             {/* Description — Sans-serif */}
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-6">
+            <p className="text-base text-[var(--text-secondary)] leading-relaxed mb-6">
               {game.description
-                ? game.description.substring(0, 250) + (game.description.length > 250 ? '...' : '')
+                ? game.description.substring(0, 300) + (game.description.length > 300 ? '...' : '')
                 : 'Experience this incredible game. A masterpiece of the genre, crafted with modern technology and a captivating atmosphere.'}
             </p>
 
-            {/* Metadata */}
-            <div className="border-t border-b border-[var(--border-primary)] py-2 mb-6 space-y-0.5">
-              <MetaRow icon={<Gamepad2 className="w-4 h-4" />} label="Category" value={game.genre?.name?.toUpperCase() || 'GAME'} />
-              <MetaRow icon={<Monitor className="w-4 h-4" />} label="Platform" value={game.platforms?.join(', ') || 'PC, CONSOLE'} />
-              <MetaRow icon={<Building2 className="w-4 h-4" />} label="Developer" value={game.developers?.join(', ') || 'Unknown'} />
-              <MetaRow icon={<Calendar className="w-4 h-4" />} label="Release Date" value={game.released ? new Date(game.released).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'TBA'} />
+            <hr className="border-[var(--border-primary)] mb-8" />
+
+            {/* Meta & Price / Buttons Row */}
+            <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
+              
+              {/* Left Side: Metadata & Rating */}
+              <div className="flex flex-col gap-2">
+                <div className="text-sm">
+                  <span className="text-[var(--text-muted)] w-24 inline-block">Category:</span>
+                  <span className="font-semibold text-[#f8f8f2]">{game.genre?.name?.toUpperCase() || 'GAME'}</span>
+                </div>
+                <div className="text-sm">
+                  <span className="text-[var(--text-muted)] w-24 inline-block">Platform:</span>
+                  <span className="font-semibold text-[#f8f8f2]">{game.platforms?.join(', ') || 'PC (STEAM)'}</span>
+                </div>
+                <div className="text-sm">
+                  <span className="text-[var(--text-muted)] w-24 inline-block">Developer:</span>
+                  <span className="font-semibold text-[#f8f8f2]">{game.developers?.join(', ') || 'Unknown'}</span>
+                </div>
+                <div className="text-sm">
+                  <span className="text-[var(--text-muted)] w-24 inline-block">Release Date:</span>
+                  <span className="font-semibold text-[#f8f8f2]">{game.released ? new Date(game.released).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase() : 'TBA'}</span>
+                </div>
+                
+                {/* Rating */}
+                <div className="mt-4">
+                  <PixelRating rating={game.rating} />
+                </div>
+              </div>
+
+              {/* Right Side: Price & CTA Buttons */}
+              <div className="flex flex-col items-end gap-4 min-w-[220px]">
+                {/* Price */}
+                <div className="flex items-end gap-3">
+                  <span className="text-4xl font-bold text-[var(--neon-green)]">
+                    ${game.price.toFixed(2)}
+                  </span>
+                  <span className="text-sm text-[var(--text-muted)] line-through mb-1">
+                    MSRP: ${(game.price * 1.15).toFixed(2)}
+                  </span>
+                </div>
+
+                {/* ADD TO CART */}
+                <button
+                  onClick={() => addToCart(game)}
+                  className="w-full py-3.5 flex items-center justify-center text-sm font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] rounded-md border-2 border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200"
+                  style={{ boxShadow: '0 0 15px var(--accent-glow)' }}
+                >
+                  ADD TO CART
+                </button>
+
+                {/* ADD TO WISH LIST */}
+                <button
+                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  className={`w-full py-3 flex items-center justify-center text-sm font-semibold uppercase tracking-wide rounded-md border border-[var(--accent)] transition-all duration-200 ${
+                    isWishlisted
+                      ? 'bg-[var(--accent-subtle)] text-[var(--accent)]'
+                      : 'bg-transparent text-[var(--accent)] hover:bg-[var(--accent-subtle)]'
+                  }`}
+                >
+                  {isWishlisted ? 'WISHLISTED ✓' : 'ADD TO WISH LIST'}
+                </button>
+              </div>
             </div>
 
-            {/* Rating */}
-            <div className="mb-6">
-              <PixelRating rating={game.rating} />
-            </div>
+            {/* ===== Tabs Section ===== */}
+            <div className="mt-4">
+              {/* Tab headers */}
+              <div className="flex border-b border-[var(--border-primary)] mb-6 gap-6">
+                {TABS.map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`pb-3 text-sm font-medium tracking-wide transition-all duration-200 border-b-2 ${
+                      activeTab === tab
+                        ? 'text-[var(--accent)] border-[var(--accent)]'
+                        : 'text-[var(--text-muted)] border-transparent hover:text-[var(--text-secondary)] hover:border-[var(--accent)]'
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
 
-            {/* Price */}
-            <div className="mb-6">
-              <span className="text-3xl font-bold text-[var(--neon-green)]">
-                ${game.price.toFixed(2)}
-              </span>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col gap-3 mb-6">
-              {/* ADD TO CART — massive purple button */}
-              <button
-                onClick={() => addToCart(game)}
-                className="w-full py-4 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] rounded-md border-2 border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200"
-                style={{ boxShadow: '4px 4px 0 0 var(--card-shadow), 0 0 15px var(--accent-glow)' }}
-              >
-                <ShoppingCart className="w-5 h-5" />
-                ADD TO CART
-              </button>
-
-              {/* ADD TO WISH LIST — secondary dark button */}
-              <button
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                className={`w-full py-3 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-wide rounded-md border border-[var(--border-primary)] transition-all duration-200 ${
-                  isWishlisted
-                    ? 'bg-[var(--accent-subtle)] text-[var(--accent)] border-[var(--accent)]'
-                    : 'bg-[var(--bg-tertiary)] text-[var(--accent)] hover:border-[var(--accent)] hover:bg-[var(--accent-subtle)]'
-                }`}
-              >
-                <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-[var(--accent)]' : ''}`} />
-                {isWishlisted ? 'WISHLISTED ✓' : 'ADD TO WISH LIST'}
-              </button>
-            </div>
-
-            {/* Pixel collectibles — dark pill */}
-            <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[var(--border-primary)]">
-              <span className="text-[10px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">Collect</span>
-              <div
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-                style={{ background: 'rgba(68,71,90,0.6)', border: '1px solid rgba(189,147,249,0.25)' }}
-              >
-                <span className="text-base leading-none" title="Achievement">🏆</span>
-                <span className="text-base leading-none" title="Gem">💎</span>
-                <span className="text-base leading-none" title="Star">⭐</span>
-                <span className="text-base leading-none" title="Shield">🛡️</span>
-                <span className="text-base leading-none" title="Sword">⚔️</span>
+              {/* Tab content */}
+              <div className="border border-[var(--border-primary)] rounded-lg p-6 bg-transparent" style={{ borderColor: 'rgba(189,147,249,0.3)' }}>
+                <TabContent tab={activeTab} game={game} />
               </div>
             </div>
           </div>
         </div>
       </motion.div>
-
-      {/* ===== Tabs Section ===== */}
-      <div className="mt-10">
-        {/* Tab headers */}
-        <div className="flex border-b border-[var(--border-primary)] mb-6 gap-0">
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 text-sm font-medium tracking-wide transition-all duration-200 border-b-2 ${
-                activeTab === tab
-                  ? 'text-[var(--accent)] border-[var(--accent)]'
-                  : 'text-[var(--text-muted)] border-transparent hover:text-[var(--text-secondary)] hover:border-[var(--accent)]'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab content */}
-        <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg p-6 md:p-8">
-          <TabContent tab={activeTab} game={game} />
-        </div>
-      </div>
     </div>
   );
 };
