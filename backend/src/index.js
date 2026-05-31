@@ -20,7 +20,24 @@ async function startServer() {
 
   await server.start();
   
-  app.use('/graphql', expressMiddleware(server));
+  const jwt = require('jsonwebtoken');
+  const JWT_SECRET = process.env.JWT_SECRET || 'omniwear_super_secret_key';
+
+  app.use('/graphql', expressMiddleware(server, {
+    context: async ({ req }) => {
+      let user = null;
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7);
+        try {
+          user = jwt.verify(token, JWT_SECRET);
+        } catch (e) {
+          console.warn("Invalid token:", e.message);
+        }
+      }
+      return { user };
+    },
+  }));
 
   const PORT = process.env.PORT || 4000;
   

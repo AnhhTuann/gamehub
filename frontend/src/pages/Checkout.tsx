@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, ChevronLeft, CreditCard, Lock, DownloadCloud } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { OrderSuccessModal } from '../components/shop/OrderSuccessModal';
+import { useMutation } from '@apollo/client';
+import { CREATE_ORDER } from '../graphql/mutations';
 
 export const Checkout = () => {
   const cart = useCartStore((state) => state.cart);
@@ -19,16 +21,45 @@ export const Checkout = () => {
   const taxes = 0; // Digital goods
   const orderTotal = cartTotal + shipping + taxes;
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const [createOrder] = useMutation(CREATE_ORDER);
+
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Simulate API call for payment with a 2-second delay
-    setTimeout(() => {
+    try {
+      // Map cart to expected OrderItemInput
+      const orderItems = cart.map(item => ({
+        rawgId: item.rawgId || parseInt(item.id),
+        title: item.title,
+        price: item.price,
+        image: item.coverImage || item.image,
+        quantity: 1 // cart items usually don't have quantity in this UI, defaulting to 1 or you can add quantity to cart
+      }));
+
+      // Assuming we get the name from the form (we can just mock it for now from the form if we want)
+      const form = e.target as HTMLFormElement;
+      const firstName = (form.elements.namedItem('firstName') as HTMLInputElement).value;
+      const lastName = (form.elements.namedItem('lastName') as HTMLInputElement).value;
+      const customerName = `${firstName} ${lastName}`;
+      const customerPhone = '000000000'; // mocked since form doesn't have it
+
+      await createOrder({
+        variables: {
+          customerName,
+          customerPhone,
+          items: orderItems
+        }
+      });
+
       setIsProcessing(false);
       setIsSuccessModalOpen(true);
-      clearCart(); // Empty the cart upon success
-    }, 2000);
+      clearCart();
+    } catch (error) {
+      console.error(error);
+      setIsProcessing(false);
+      alert(error.message || "Failed to place order");
+    }
   };
 
   // Empty cart fallback
@@ -91,8 +122,8 @@ export const Checkout = () => {
                 <div className="flex flex-col gap-5">
                   <Input label="Email Address" type="email" required placeholder="player1@example.com" />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <Input label="First Name" type="text" required placeholder="Cloud" />
-                    <Input label="Last Name" type="text" required placeholder="Strife" />
+                    <Input name="firstName" label="First Name" type="text" required placeholder="Cloud" />
+                    <Input name="lastName" label="Last Name" type="text" required placeholder="Strife" />
                   </div>
                 </div>
               </section>

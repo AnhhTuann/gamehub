@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Trash2, ArrowRight } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore';
+import { AuthModal } from '../common/AuthModal';
 
 export const CartDrawer = () => {
   const cart = useCartStore((state) => state.cart);
@@ -10,6 +12,19 @@ export const CartDrawer = () => {
   const closeCart = useCartStore((state) => state.closeCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const cartTotal = useCartStore((state) => state.cartTotal)();
+
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleCheckoutClick = () => {
+    if (isAuthenticated) {
+      closeCart();
+      navigate('/checkout');
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -125,18 +140,26 @@ export const CartDrawer = () => {
                   </span>
                 </div>
                 <p className="text-[10px] text-[#6272a4] text-center mb-4 font-medium">Digital licenses are delivered instantly.</p>
-                <Link to="/checkout" onClick={closeCart} className="w-full block">
-                  <button 
-                    className="w-full py-3.5 text-sm font-bold font-sans bg-[#bd93f9] text-[#282a36] tracking-widest uppercase rounded hover:-translate-y-0.5 hover:bg-[#ff79c6] active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2"
-                    style={{ boxShadow: '0 4px 15px rgba(189,147,249,0.3)' }}
-                  >
-                    PROCEED TO CHECKOUT
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </Link>
+                <button 
+                  onClick={handleCheckoutClick}
+                  className="w-full block py-3.5 text-sm font-bold font-sans bg-[#bd93f9] text-[#282a36] tracking-widest uppercase rounded hover:-translate-y-0.5 hover:bg-[#ff79c6] active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2"
+                  style={{ boxShadow: '0 4px 15px rgba(189,147,249,0.3)' }}
+                >
+                  PROCEED TO CHECKOUT
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             )}
           </motion.div>
+          <AuthModal 
+            isOpen={isAuthModalOpen} 
+            onClose={() => setIsAuthModalOpen(false)} 
+            onSuccess={() => {
+              setIsAuthModalOpen(false);
+              closeCart();
+              navigate('/checkout');
+            }} 
+          />
         </>
       )}
     </AnimatePresence>

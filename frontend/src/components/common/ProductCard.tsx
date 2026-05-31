@@ -116,19 +116,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
               ${product.price.toFixed(2)}
             </span>
           </div>
-          <button
-            onClick={() => addToCart({
-              id: product.id,
-              title: product.title,
-              price: product.price,
-              coverImage: product.image
-            })}
-            className="flex items-center gap-1.5 text-xs font-bold bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] px-4 py-2.5 rounded-md border border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 uppercase tracking-wide cursor-pointer"
-            style={{ boxShadow: '3px 3px 0 0 var(--card-shadow)' }}
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            ADD TO CART
-          </button>
+          {product.stockQuantity === 0 ? (
+            <button
+              disabled
+              className="flex items-center gap-1.5 text-xs font-bold bg-[#ff5555]/20 text-[#ff5555] px-4 py-2.5 rounded-md border border-[#ff5555]/50 uppercase tracking-wide cursor-not-allowed"
+            >
+              OUT OF STOCK
+            </button>
+          ) : (
+            <button
+              onClick={() => addToCart({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                coverImage: product.image
+              })}
+              className="flex items-center gap-1.5 text-xs font-bold bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] px-4 py-2.5 rounded-md border border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 uppercase tracking-wide cursor-pointer"
+              style={{ boxShadow: '3px 3px 0 0 var(--card-shadow)' }}
+            >
+              <ShoppingCart className="w-3.5 h-3.5" />
+              ADD TO CART
+            </button>
+          )}
         </div>
       </div>
     </motion.div>

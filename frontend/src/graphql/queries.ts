@@ -1,47 +1,38 @@
 import { gql } from '@apollo/client';
 
 export const GET_PRODUCTS = gql`
-  query GetProducts($categoryId: ID, $brandId: ID, $search: String) {
-    products(categoryId: $categoryId, brandId: $brandId, search: $search) {
+  query GetGames {
+    games {
       id
       title
       price
       description
-      category
-      brand
       image
-      inventory
+      stockQuantity
       createdAt
-      variants {
-        id
-        sku
-        color
-        size
-        price
-        inventory
+      addedBy {
+        name
+        role
+        createdAt
       }
     }
   }
 `;
 
 export const GET_PRODUCT = gql`
-  query GetProduct($id: ID!) {
-    product(id: $id) {
+  query GetGame($id: ID!) {
+    game(id: $id) {
       id
       title
       price
       description
-      category
       image
-      inventory
+      stockQuantity
       createdAt
-      variants {
-        id
-        sku
-        color
-        size
-        price
-        inventory
+      addedBy {
+        name
+        role
+        createdAt
       }
     }
   }

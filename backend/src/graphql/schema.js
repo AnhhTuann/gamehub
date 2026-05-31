@@ -32,7 +32,9 @@ const typeDefs = `#graphql
     rating: Float!
     released: String
     createdAt: String!
+    stockQuantity: Int!
     genre: Genre
+    addedBy: User
   }
 
   type CartItem {
@@ -104,6 +106,8 @@ const typeDefs = `#graphql
     
     createOrder(customerName: String!, customerPhone: String!, items: [OrderItemInput!]!): Order!
     updateOrderStatus(id: ID!, status: String!): Order!
+    
+    addGame(rawgId: Int!, title: String!, price: Float!, image: String, stockQuantity: Int!): Game!
   }
 `;
 

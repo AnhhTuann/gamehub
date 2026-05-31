@@ -21,6 +21,7 @@ model User {
   carts    Cart[]
   orders   Order[]
   reviews  Review[]
+  addedGames Game[] @relation("AddedGames")
 }
 
 model Genre {
@@ -38,9 +39,13 @@ model Game {
   description String?
   image       String?
   price       Float    @default(59.99)
+  stockQuantity Int    @default(0)
   rating      Float    @default(0)
   released    String?
   createdAt   DateTime @default(now())
+
+  addedById   String?
+  addedBy     User?    @relation("AddedGames", fields: [addedById], references: [id])
 
   genreId     String?
   genre       Genre?   @relation(fields: [genreId], references: [id])
@@ -75,7 +80,7 @@ model Order {
   customerName    String
   customerPhone   String
   customerAddress String?
-  status          String   @default("PENDING") // PENDING, PROCESSING, SHIPPING, DELIVERED, CANCELLED
+  status          String   @default("PENDING") // PENDING, SUCCESS, FAILED
   totalAmount     Float
   discount        Float    @default(0)
   shippingFee     Float    @default(0)

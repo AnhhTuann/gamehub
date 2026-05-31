@@ -20,7 +20,7 @@ import {
   Bell
 } from 'lucide-react';
 import { useQuery } from '@apollo/client';
-import { GET_PRODUCTS } from '../graphql/queries';
+import { MY_ORDERS } from '../graphql/mutations';
 import { ProductCard } from '../components/common/ProductCard';
 
 const STEPS = [
@@ -74,10 +74,14 @@ export const CustomerPortal = () => {
     setWishlistItems(prev => prev.filter(item => item.id !== id));
   };
 
-  const { data } = useQuery(GET_PRODUCTS);
-  const orderedProduct = data?.products?.[0] || null;
+  const { data, loading } = useQuery(MY_ORDERS);
+  const orders = data?.myOrders || [];
 
-  const renderOrders = () => (
+  const renderOrders = () => {
+    if (loading) return <div className="text-white text-center py-20 font-pixel">LOADING ORDERS...</div>;
+    if (orders.length === 0) return <div className="text-white text-center py-20 font-pixel text-[#6272a4]">NO ORDERS FOUND</div>;
+
+    return (
     <div className="flex flex-col gap-8 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
         <h2 className="font-pixel text-lg md:text-xl text-[var(--text-primary)] tracking-wider">
@@ -85,22 +89,22 @@ export const CustomerPortal = () => {
         </h2>
       </div>
 
-      {/* Detailed Order Card */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-none overflow-hidden hover:border-zinc-700 transition-colors duration-300">
+      {orders.map((order: any) => (
+      <div key={order.id} className="bg-zinc-900 border border-zinc-800 rounded-none overflow-hidden hover:border-zinc-700 transition-colors duration-300">
         {/* Header */}
         <div className="p-6 md:p-8 border-b border-zinc-800/80 bg-zinc-900/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-col sm:flex-row sm:items-center gap-6 md:gap-12 text-sm">
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Order ID</span>
-              <span className="text-white font-mono text-base font-bold tracking-widest">#OMNI-98234</span>
+              <span className="text-white font-mono text-base font-bold tracking-widest">#{order.id.slice(-6).toUpperCase()}</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Date Placed</span>
-              <span className="text-zinc-300 font-medium">May 25, 2026</span>
+              <span className="text-zinc-300 font-medium">{new Date(parseInt(order.createdAt)).toLocaleDateString()}</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Total Amount</span>
-              {orderedProduct && <span className="text-white font-bold tracking-wider">${orderedProduct.price.toFixed(2)}</span>}
+              <span className="text-white font-bold tracking-wider">${order.totalAmount.toFixed(2)}</span>
             </div>
           </div>
           <button className="bg-[var(--accent)] text-black font-bold uppercase tracking-wider text-xs px-8 py-3 hover:bg-[var(--accent-hover)] transition-colors duration-300">
@@ -110,30 +114,31 @@ export const CustomerPortal = () => {
 
         {/* Product Details & Activation Code Info */}
         <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8 xl:gap-12 relative bg-zinc-900/10">
-          <div className="flex-1 flex flex-col sm:flex-row gap-6">
-            {orderedProduct && (
-              <Link to={`/product/${orderedProduct.id}`} className="w-24 sm:w-32 shrink-0 aspect-video bg-zinc-800 border border-zinc-800 block overflow-hidden group">
-                <img src={orderedProduct.imageUrl} alt={orderedProduct.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              </Link>
-            )}
-            <div className="flex flex-col justify-center gap-2">
-              <Link to={`/product/${orderedProduct?.id}`} className="font-sans text-[var(--neon-pink)] text-lg font-bold leading-relaxed max-w-md hover:text-[var(--accent)] transition-colors">
-                {orderedProduct?.name}
-              </Link>
-              <div className="flex flex-col gap-1.5 mt-2">
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Format: <span className="text-zinc-300 font-medium ml-2 tracking-normal capitalize">Digital License</span></span>
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Platform: <span className="text-zinc-300 font-medium ml-2 tracking-normal capitalize">PC / Steam</span></span>
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Status: <span className="text-emerald-400 font-medium ml-2 tracking-normal capitalize">Delivered</span></span>
+          <div className="flex-1 flex flex-col gap-6">
+            {order.items.map((item: any) => (
+              <div key={item.id} className="flex flex-col sm:flex-row gap-6">
+                <div className="w-24 sm:w-32 shrink-0 aspect-video bg-zinc-800 border border-zinc-800 block overflow-hidden group">
+                  <img src={item.game.image || 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&q=80'} alt={item.game.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <div className="flex flex-col justify-center gap-2">
+                  <span className="font-sans text-[var(--neon-pink)] text-lg font-bold leading-relaxed max-w-md">
+                    {item.game.title}
+                  </span>
+                  <div className="flex flex-col gap-1.5 mt-2">
+                    <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Format: <span className="text-zinc-300 font-medium ml-2 tracking-normal capitalize">Digital License</span></span>
+                    <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Status: <span className="text-emerald-400 font-medium ml-2 tracking-normal capitalize">{order.status}</span></span>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
           
-          <div className="w-full xl:w-96 bg-[#0A0A0A]/50 border border-[var(--border-primary)] p-6 flex flex-col gap-5 rounded-md">
+          <div className="w-full xl:w-96 bg-[#0A0A0A]/50 border border-[var(--border-primary)] p-6 flex flex-col gap-5 rounded-md h-fit">
              <h4 className="text-[var(--accent)] font-pixel text-xs tracking-wider border-b border-zinc-800/80 pb-3">ACTIVATION KEY</h4>
              <div className="flex flex-col gap-3.5 text-sm mt-1">
                <div className="bg-zinc-900 p-4 border border-zinc-800 rounded flex items-center justify-center cursor-pointer hover:border-[var(--accent)] transition-all group">
                  <span className="text-emerald-400 font-mono text-lg tracking-widest font-bold group-hover:text-emerald-300">
-                   XXXX-XXXX-XXXX-XXXX
+                   {order.id.slice(-4).toUpperCase()}-{Math.random().toString(36).substring(2, 6).toUpperCase()}-{Math.random().toString(36).substring(2, 6).toUpperCase()}
                  </span>
                </div>
                <p className="text-zinc-500 text-xs text-center">Click to reveal your product code</p>
@@ -144,8 +149,9 @@ export const CustomerPortal = () => {
           </div>
         </div>
       </div>
+      ))}
     </div>
-  );
+  )};
 
   const renderWishlist = () => (
     <div className="flex flex-col gap-8 animate-in fade-in duration-500">

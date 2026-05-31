@@ -10,6 +10,10 @@ const resolvers = {
       if (game.genre) return game.genre;
       if (!game.genreId) return null;
       return await prisma.genre.findUnique({ where: { id: game.genreId } });
+    },
+    addedBy: async (game) => {
+      if (!game.addedById) return null;
+      return await prisma.user.findUnique({ where: { id: game.addedById } });
     }
   },
 
@@ -74,17 +78,25 @@ const resolvers = {
       return await cartService.removeFromCart(user.userId, cartItemId);
     },
 
-    createOrder: async (_, { customerName, customerPhone, items }) => {
+    createOrder: async (_, { customerName, customerPhone, items }, { user }) => {
+      if (!user) throw new Error("Not authenticated");
       return await prisma.$transaction(async (tx) => {
         let totalAmount = 0;
         
         const orderItemsData = await Promise.all(items.map(async item => {
           let game = await tx.game.findUnique({ where: { rawgId: item.rawgId } });
           if (!game) {
-            game = await tx.game.create({
-              data: { rawgId: item.rawgId, title: item.title, price: item.price, image: item.image }
-            });
+            throw new Error(`Game ${item.title} not found in inventory.`);
           }
+          if (game.stockQuantity < item.quantity) {
+            throw new Error(`Rất tiếc, sản phẩm này vừa hết hàng!`);
+          }
+          
+          await tx.game.update({
+            where: { id: game.id },
+            data: { stockQuantity: game.stockQuantity - item.quantity }
+          });
+
           totalAmount += item.quantity * item.price;
           return {
             gameId: game.id,
@@ -95,10 +107,11 @@ const resolvers = {
 
         const order = await tx.order.create({
           data: {
+            userId: user.userId,
             customerName,
             customerPhone,
             totalAmount,
-            status: "COMPLETED",
+            status: "SUCCESS",
             items: { create: orderItemsData }
           },
           include: { items: true }
@@ -113,6 +126,23 @@ const resolvers = {
         where: { id },
         data: { status },
         include: { items: true }
+      });
+    },
+
+    addGame: async (_, { rawgId, title, price, image, stockQuantity }, { user }) => {
+      if (!user) throw new Error("Not authenticated");
+      if (user.role !== 'STAFF' && user.role !== 'ADMIN') {
+        throw new Error("Unauthorized. Only STAFF or ADMIN can add games.");
+      }
+      return await prisma.game.create({
+        data: {
+          rawgId,
+          title,
+          price,
+          image,
+          stockQuantity,
+          addedById: user.userId
+        }
       });
     }
   }

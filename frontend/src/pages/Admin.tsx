@@ -41,15 +41,17 @@ interface Game {
   price: number;
   status: 'Active' | 'Draft';
   coverGradient: string;
+  addedBy?: string;
+  addedDate?: string;
 }
 
 // Initial Mock Games Data
 const INITIAL_GAMES: Game[] = [
-  { id: '1', title: 'Chrono Trigger Reborn', category: 'RPG', price: 14.99, status: 'Active', coverGradient: 'from-[#bd93f9] to-[#ff79c6]' },
-  { id: '2', title: 'Street Fighter II: Turbo', category: 'Fighting', price: 9.99, status: 'Active', coverGradient: 'from-[#ff5555] to-[#ffb86c]' },
-  { id: '3', title: 'Super Mario World 8-Bit', category: 'Platformer', price: 19.99, status: 'Active', coverGradient: 'from-[#50fa7b] to-[#8be9fd]' },
-  { id: '4', title: 'Metroid Prime: Retro Edition', category: 'Adventure', price: 29.99, status: 'Draft', coverGradient: 'from-[#ffb86c] to-[#ff5555]' },
-  { id: '5', title: 'Castlevania: Symphony', category: 'Metroidvania', price: 15.99, status: 'Active', coverGradient: 'from-[#8be9fd] to-[#bd93f9]' },
+  { id: '1', title: 'Chrono Trigger Reborn', category: 'RPG', price: 14.99, status: 'Active', coverGradient: 'from-[#bd93f9] to-[#ff79c6]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31' },
+  { id: '2', title: 'Street Fighter II: Turbo', category: 'Fighting', price: 9.99, status: 'Active', coverGradient: 'from-[#ff5555] to-[#ffb86c]', addedBy: 'Tifa Lockhart (Admin)', addedDate: '2026-05-30' },
+  { id: '3', title: 'Super Mario World 8-Bit', category: 'Platformer', price: 19.99, status: 'Active', coverGradient: 'from-[#50fa7b] to-[#8be9fd]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31' },
+  { id: '4', title: 'Metroid Prime: Retro Edition', category: 'Adventure', price: 29.99, status: 'Draft', coverGradient: 'from-[#ffb86c] to-[#ff5555]', addedBy: 'Barret Wallace (Staff)', addedDate: '2026-05-29' },
+  { id: '5', title: 'Castlevania: Symphony', category: 'Metroidvania', price: 15.99, status: 'Active', coverGradient: 'from-[#8be9fd] to-[#bd93f9]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31' },
 ];
 
 // Available gradients for covers in form
@@ -1159,6 +1161,16 @@ export const Admin = () => {
               {/* Form Body */}
               <form onSubmit={handleSaveEdit} className="p-6 flex flex-col gap-5">
                 
+                {/* Audit Trail */}
+                {selectedGame?.addedBy && (
+                  <div className="bg-[#44475a]/30 border border-[#6272a4]/40 rounded-lg p-3 mb-1 flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4 text-[#bd93f9]" />
+                    <p className="text-xs font-mono text-[#f8f8f2] tracking-tight">
+                      <span className="text-[#6272a4]">Added by:</span> <span className="text-[#50fa7b] font-bold">{selectedGame.addedBy}</span> <span className="text-[#6272a4]">on {selectedGame.addedDate}</span>
+                    </p>
+                  </div>
+                )}
+
                 {/* Title Input */}
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-bold text-[#ff79c6] tracking-wider font-mono">

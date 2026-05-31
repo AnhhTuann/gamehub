@@ -310,18 +310,27 @@ export const ProductDetail = () => {
                 </div>
 
                 {/* ADD TO CART */}
-                <button
-                  onClick={() => addToCart({
-                    id: game.id,
-                    title: game.title,
-                    price: game.price,
-                    coverImage: game.image
-                  })}
-                  className="w-full py-3.5 flex items-center justify-center text-sm font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] rounded-md border-2 border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 cursor-pointer"
-                  style={{ boxShadow: '0 0 15px var(--accent-glow)' }}
-                >
-                  ADD TO CART
-                </button>
+                {game.stockQuantity === 0 ? (
+                  <button
+                    disabled
+                    className="w-full py-3.5 flex items-center justify-center text-sm font-bold uppercase tracking-wider bg-[#ff5555]/20 text-[#ff5555] rounded-md border-2 border-[#ff5555]/50 cursor-not-allowed"
+                  >
+                    OUT OF STOCK
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => addToCart({
+                      id: game.id,
+                      title: game.title,
+                      price: game.price,
+                      coverImage: game.image
+                    })}
+                    className="w-full py-3.5 flex items-center justify-center text-sm font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] rounded-md border-2 border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 cursor-pointer"
+                    style={{ boxShadow: '0 0 15px var(--accent-glow)' }}
+                  >
+                    ADD TO CART
+                  </button>
+                )}
 
                 {/* ADD TO WISH LIST */}
                 <button

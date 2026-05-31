@@ -12,6 +12,7 @@ export interface Game {
     name: string;
     slug: string;
   };
+  stockQuantity?: number;
   originalPrice?: number; // Used for UI only
   badge?: string; // Used for UI only
   screenshots?: string[];
