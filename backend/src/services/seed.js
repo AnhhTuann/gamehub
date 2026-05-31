@@ -1,100 +1,153 @@
 const { PrismaClient } = require('@prisma/client');
-const fs = require('fs');
-const path = require('path');
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Bắt đầu quy trình seeding dữ liệu từ DummyJSON...');
+  console.log('🎮 Bắt đầu quy trình seeding dữ liệu GameHub...');
 
   try {
-    const jsonPath = path.join(__dirname, 'products_seed.json');
-    if (!fs.existsSync(jsonPath)) {
-      throw new Error(`Không tìm thấy file metadata tại: ${jsonPath}`);
-    }
-
-    const productsData = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
-    console.log(`Đã đọc ${productsData.length} sản phẩm mẫu từ file JSON.`);
-
-    // 1. Dọn dẹp dữ liệu cũ để tránh trùng lặp hoặc xung đột khóa ngoại
-    console.log('Đang dọn dẹp dữ liệu cũ trong CSDL...');
-    await prisma.cartItem.deleteMany();
-    await prisma.cart.deleteMany();
+    // 1. Dọn dẹp dữ liệu cũ theo đúng thứ tự ràng buộc khóa ngoại
+    console.log('🧹 Đang dọn dẹp dữ liệu cũ trong CSDL...');
+    await prisma.review.deleteMany();
+    await prisma.payment.deleteMany();
     await prisma.orderItem.deleteMany();
     await prisma.order.deleteMany();
-    await prisma.productVariant.deleteMany();
-    await prisma.product.deleteMany();
-    await prisma.category.deleteMany();
-    await prisma.brand.deleteMany();
+    await prisma.cartItem.deleteMany();
+    await prisma.cart.deleteMany();
+    await prisma.game.deleteMany();
+    await prisma.genre.deleteMany();
+    await prisma.user.deleteMany();
+    await prisma.coupon.deleteMany();
 
-    // 2. Khởi tạo maps để lưu trữ categories và brands
-    const categoriesMap = {};
-    const brandsMap = {};
-    let count = 0;
+    console.log('✅ Đã dọn dẹp xong toàn bộ CSDL.');
 
-    for (const item of productsData) {
-      // Đảm bảo danh mục tồn tại
-      const catName = item.category;
-      const catSlug = catName.toLowerCase();
-      
-      if (!categoriesMap[catName]) {
-        let category = await prisma.category.findUnique({
-          where: { slug: catSlug }
-        });
-        if (!category) {
-          category = await prisma.category.create({
-            data: { name: catName, slug: catSlug }
-          });
-        }
-        categoriesMap[catName] = category.id;
+    // 2. Khởi tạo mã giảm giá Coupon mẫu
+    console.log('🎫 Đang khởi tạo Coupon mẫu...');
+    await prisma.coupon.createMany({
+      data: [
+        { code: 'WELCOMENEOGAMER', type: 'PERCENTAGE', value: 15, isActive: true },
+        { code: '8BITNOSTALGIA', type: 'FIXED', value: 5, isActive: true }
+      ]
+    });
+
+    // 3. Khởi tạo người dùng (Users)
+    console.log('👤 Đang tạo tài khoản mẫu...');
+    const hashedAdminPassword = await bcrypt.hash('admin123', 10);
+    const hashedGamerPassword = await bcrypt.hash('gamer123', 10);
+
+    const adminUser = await prisma.user.create({
+      data: {
+        email: 'admin@gamehub.io',
+        name: 'RetroAdmin_01',
+        password: hashedAdminPassword,
+        role: 'ADMIN',
+        isActive: true
       }
+    });
 
-      // Đảm bảo brand tồn tại
-      const brandName = item.brand || 'Generic';
-      if (!brandsMap[brandName]) {
-        let brand = await prisma.brand.findFirst({
-          where: { name: brandName }
-        });
-        if (!brand) {
-          brand = await prisma.brand.create({
-            data: { name: brandName }
-          });
-        }
-        brandsMap[brandName] = brand.id;
+    const gamerUser = await prisma.user.create({
+      data: {
+        email: 'gamer99@gamehub.io',
+        name: 'RetroGamer99',
+        password: hashedGamerPassword,
+        role: 'CUSTOMER',
+        isActive: true
       }
+    });
 
-      // Tạo sản phẩm
-      const createdProduct = await prisma.product.create({
-        data: {
-          title: item.title,
-          description: item.description,
-          image: (item.images && item.images.length > 0) ? item.images[0] : item.image,
-          categoryId: categoriesMap[catName],
-          brandId: brandsMap[brandName]
-        }
-      });
+    console.log('✅ Đã tạo tài khoản Admin (admin@gamehub.io / admin123) và Gamer (gamer99@gamehub.io / gamer123)');
 
-      // Tạo ProductVariant mặc định cho sản phẩm
-      // Random tồn kho từ 15 đến 60
-      const inventory = Math.floor(Math.random() * 46) + 15;
-      await prisma.productVariant.create({
-        data: {
-          productId: createdProduct.id,
-          sku: `OW-${createdProduct.id.slice(0, 8).toUpperCase()}-M`,
-          color: item.color || 'Black',
-          size: 'M',
-          price: parseFloat(item.price),
-          inventory: inventory
-        }
-      });
+    // 4. Tạo Genres (Thể loại game)
+    console.log('📂 Đang tạo các thể loại game (Genres)...');
+    
+    const rpgGenre = await prisma.genre.create({
+      data: { name: 'RPG', rawgId: 5, slug: 'role-playing-games-rpg' }
+    });
 
-      count++;
-      console.log(`[${catName}] Đã chèn sản phẩm: "${item.title}"`);
+    const fightingGenre = await prisma.genre.create({
+      data: { name: 'Fighting', rawgId: 6, slug: 'fighting' }
+    });
+
+    const platformerGenre = await prisma.genre.create({
+      data: { name: 'Platformer', rawgId: 83, slug: 'platformer' }
+    });
+
+    const actionGenre = await prisma.genre.create({
+      data: { name: 'Action', rawgId: 4, slug: 'action' }
+    });
+
+    const shooterGenre = await prisma.genre.create({
+      data: { name: 'Shooter', rawgId: 2, slug: 'shooter' }
+    });
+
+    console.log('✅ Đã tạo các Genres thành công.');
+
+    // 5. Tạo Games mẫu
+    console.log('👾 Đang chèn danh sách Game mẫu vào CSDL...');
+    
+    const gamesData = [
+      {
+        rawgId: 52864,
+        title: 'Chrono Trigger Reborn',
+        description: 'Chrono Trigger is a classic role-playing game developed by Square. It features active-time battles, deep characters, and time-travel mechanics.',
+        image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
+        price: 14.99,
+        rating: 4.9,
+        released: '1995-03-11',
+        genreId: rpgGenre.id
+      },
+      {
+        rawgId: 52932,
+        title: 'Street Fighter II: Turbo',
+        description: 'The legendary head-to-head fighting game that set the standard for fighting combat and introduced legendary warriors like Ryu and Ken.',
+        image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80',
+        price: 9.99,
+        rating: 4.4,
+        released: '1991-02-06',
+        genreId: fightingGenre.id
+      },
+      {
+        rawgId: 25076,
+        title: 'Super Mario World 8-Bit',
+        description: 'Guide Mario and Luigi through dinosaur land to rescue Princess Peach. The definitive platformer game introducing Yoshi!',
+        image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=800&q=80',
+        price: 19.99,
+        rating: 4.8,
+        released: '1990-11-21',
+        genreId: platformerGenre.id
+      },
+      {
+        rawgId: 56123,
+        title: 'Metroid Prime: Retro Edition',
+        description: 'Step into Samus Aran\'s boots in a gorgeous first-person adventure through the alien world of Tallon IV, optimizing exploration and battle.',
+        image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&q=80',
+        price: 29.99,
+        rating: 4.6,
+        released: '2002-11-17',
+        genreId: actionGenre.id
+      },
+      {
+        rawgId: 24003,
+        title: 'Castlevania: Symphony of the Night',
+        description: 'Explore Dracula\'s massive castle as Alucard, fighting night creatures and unlocking epic Metroidvania abilities in this legendary title.',
+        image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&q=80',
+        price: 15.99,
+        rating: 4.7,
+        released: '1997-03-20',
+        genreId: platformerGenre.id
+      }
+    ];
+
+    for (const game of gamesData) {
+      await prisma.game.create({ data: game });
+      console.log(`🎮 Đã chèn Game: "${game.title}"`);
     }
 
-    console.log(`\nSeeding thành công! Đã chèn ${count} sản phẩm mới từ DummyJSON vào CSDL PostgreSQL!`);
+    console.log('\n🌟 Seeding thành công! Toàn bộ cơ sở dữ liệu GameHub đã sẵn sàng để hoạt động!');
+
   } catch (error) {
-    console.error('Lỗi khi seeding dữ liệu:', error);
+    console.error('❌ Lỗi khi thực hiện Seeding dữ liệu:', error);
   } finally {
     await prisma.$disconnect();
   }
