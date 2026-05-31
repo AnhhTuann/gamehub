@@ -1,20 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Menu, X, User, Search, Sun, Moon, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { SearchModal } from './SearchModal';
 import { BrandLogo } from '../common/BrandLogo';
 
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { cartCount, openCart } = useCart();
   const { toggleTheme, isDark } = useTheme();
   const { isLoggedIn, user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Search input local state
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+
+  // Debounce search input and update URL query param
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const currentParam = searchParams.get('search') || '';
+      if (searchTerm !== currentParam) {
+        if (searchTerm) {
+          if (location.pathname !== '/shop') {
+            navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
+          } else {
+            setSearchParams({ search: searchTerm });
+          }
+        } else {
+          const newParams = new URLSearchParams(searchParams);
+          newParams.delete('search');
+          setSearchParams(newParams);
+        }
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm, searchParams, setSearchParams, navigate, location.pathname]);
+
+  // Keep local search input state in sync with URL param changes
+  const urlSearch = searchParams.get('search') || '';
+  useEffect(() => {
+    setSearchTerm(urlSearch);
+  }, [urlSearch]);
 
   const navLinks = [
     { label: 'Catalog', path: '/shop' },
@@ -65,27 +95,19 @@ export const Navbar = () => {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-1 md:gap-2">
-            {/* Search bar (desktop) - SANS-SERIF */}
-            <div className="hidden md:flex items-center">
+            {/* Search bar (desktop & mobile) */}
+            <div className="flex items-center mr-1">
               <div className="relative">
                 <input 
                   type="text" 
                   placeholder="Search games..." 
-                  onClick={() => setIsSearchOpen(true)}
-                  readOnly
-                  className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] px-4 py-2 w-44 rounded-md focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent-glow)] transition-all cursor-pointer"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="text-xs sm:text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] pl-4 pr-8 py-2 w-28 sm:w-44 rounded-md focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent-glow)] transition-all"
                 />
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+                <Search className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)] pointer-events-none" />
               </div>
             </div>
-
-            {/* Search icon (mobile) */}
-            <button 
-              onClick={() => setIsSearchOpen(true)}
-              className="md:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
-            >
-              <Search className="w-5 h-5" />
-            </button>
 
             <button 
               onClick={toggleTheme}
@@ -201,7 +223,6 @@ export const Navbar = () => {
           </>
         )}
       </AnimatePresence>
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 };
