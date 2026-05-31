@@ -56,9 +56,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
-            <span className="text-4xl opacity-50 mb-2">👾</span>
-            <span className="font-pixel text-[10px] text-[var(--text-muted)] tracking-widest">DATA MISSING</span>
+          <div className="w-full h-full flex flex-col items-center justify-center bg-[#44475a]/50 border-b border-[var(--border-primary)]">
+            <span className="text-4xl opacity-60 mb-2">👾</span>
+            <span className="font-pixel text-[10px] text-[#6272a4] tracking-widest font-bold">DATA MISSING</span>
           </div>
         )}
         {/* Subtle scanline overlay */}

@@ -52,23 +52,60 @@ export const Shop = () => {
   };
 
   const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  // Helper to fetch CheapShark price or fall back to a stable price based on game title length
+  const getCheapSharkPrice = async (title: string): Promise<number> => {
+    try {
+      const res = await fetch(`https://www.cheapshark.com/api/1.0/games?title=${encodeURIComponent(title)}&limit=1`);
+      const data = await res.json();
+      if (data && data.length > 0 && data[0].cheapest) {
+        return parseFloat(data[0].cheapest);
+      }
+    } catch (error) {
+      console.error('CheapShark fetch error:', error);
+    }
+    return 19.99 + (title.length % 5) * 10;
+  };
+
+  const fetchGames = async (page: number) => {
+    setIsLoading(true);
+    try {
+      const key = (import.meta as any).env.VITE_RAWG_API_KEY || 'b01eca51fc9c49b7be3a217fc76f779f';
+      const response = await fetch(`https://api.rawg.io/api/games?key=${key}&page_size=40&page=${page}&ordering=-metacritic`);
+      const data = await response.json();
+      const results = data.results || [];
+
+      // Fetch prices for the newly loaded games
+      const newGames = await Promise.all(results.map(async (g: any) => {
+        const price = await getCheapSharkPrice(g.name);
+        return {
+          id: g.id.toString(),
+          rawgId: g.id,
+          title: g.name,
+          image: g.background_image,
+          rating: g.rating,
+          released: g.released,
+          price,
+          genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined,
+          platforms: g.platforms?.map((p: any) => p.platform.name) || []
+        } as Game;
+      }));
+
+      setGames(prev => page === 1 ? newGames : [...prev, ...newGames]);
+      setHasMore(data.next !== null);
+    } catch (error) {
+      console.error('Failed to fetch from RAWG:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (page === 1) {
-      setLoading(true);
-    } else {
-      setLoadingMore(true);
-    }
-    
-    getAllGames(page).then(data => {
-      setGames(prev => page === 1 ? data : [...prev, ...data]);
-      setLoading(false);
-      setLoadingMore(false);
-    });
-  }, [page]);
+    fetchGames(currentPage);
+  }, [currentPage]);
 
   const displayProducts = games.filter(g => {
     const matchCategory = selectedCategories.length === 0 || selectedCategories.some(cat => {
@@ -229,7 +266,7 @@ export const Shop = () => {
         <div className="w-full lg:flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
-              {loading ? (
+              {(isLoading && currentPage === 1) ? (
                 [...Array(6)].map((_, i) => (
                   <div key={i} className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg animate-pulse overflow-hidden">
                     <div className="aspect-video bg-[var(--bg-tertiary)]" />
@@ -255,17 +292,16 @@ export const Shop = () => {
           </div>
           
           {/* Load More Button */}
-          {displayProducts.length > 0 && !loading && (
+          {displayProducts.length > 0 && hasMore && (
             <div className="mt-12 flex justify-center">
               <button
-                onClick={() => setPage(p => p + 1)}
-                disabled={loadingMore}
-                className="px-8 py-3 bg-[var(--bg-card)] border-2 border-[var(--border-primary)] text-[var(--text-primary)] font-bold text-sm tracking-widest rounded hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all disabled:opacity-50 flex items-center gap-2"
-                style={{ boxShadow: '4px 4px 0 0 var(--card-shadow)' }}
+                onClick={() => setCurrentPage(p => p + 1)}
+                disabled={isLoading}
+                className="px-8 py-3 bg-[#bd93f9] text-[#282a36] font-bold text-sm tracking-widest rounded hover:-translate-y-1 hover:shadow-[0_4px_15px_rgba(189,147,249,0.3)] transition-all duration-200 disabled:opacity-60 flex items-center gap-2 uppercase select-none cursor-pointer"
               >
-                {loadingMore ? (
+                {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4.5 h-4.5 border-2 border-[#282a36] border-t-transparent rounded-full animate-spin" />
                     LOADING...
                   </>
                 ) : (
