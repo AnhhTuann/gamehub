@@ -1,45 +1,74 @@
-# OmniWear Backend
+# 🔌 GameHub GraphQL API Engine (Node.js Backend)
 
-This directory contains the backend source code for the OmniWear e-commerce platform. It provides a robust, scalable GraphQL API that handles all business logic, data persistence, and authentication for both the web storefront and the desktop application.
+This directory contains the robust, scalable backend server for the **GameHub** platform. It provides a GraphQL API that handles gamer authentication, game catalog management, order processing, and transactional database updates for both storefront clients and administrative desktop applications.
 
-## Directory Structure
+---
+
+## 📂 Key Architecture & Directories
 
 ```
 backend/
-├── prisma/                 # Database schema and migrations
-│   └── schema.prisma       # Prisma models definition (User, Product, Order, etc.)
+├── prisma/
+│   ├── schema.prisma       # Prisma database models definition (User, Game, Order, etc.)
+│   └── seed.js             # Seeding utility to populate hot retro game titles
 ├── src/
-│   ├── index.js            # Entry point for the Express server and Apollo Server setup
-│   ├── graphql/            # GraphQL specific configurations
-│   │   ├── schema.js       # GraphQL TypeDefs (Queries, Mutations, Types)
-│   │   └── resolvers.js    # GraphQL Resolvers (Controllers mapping requests to services)
-│   └── services/           # Business Logic Layer
-│       ├── authService.js  # JWT generation, password hashing, user validation
-│       ├── cartService.js  # Cart manipulation (add/remove items)
-│       ├── orderService.js # Checkout logic and Prisma Transactions
-│       └── productService.js # Product CRUD operations
-├── .env                    # Environment variables (DB Connection, JWT Secret)
-└── package.json            # Dependencies and scripts
+│   ├── index.js            # Entry point for Express + Apollo GraphQL server integration
+│   ├── graphql/
+│   │   ├── schema.js       # GraphQL TypeDefs (Queries, Mutations, game types)
+│   │   └── resolvers.js    # Controllers mapping GraphQL operations to operations services
+│   └── services/
+│       ├── authService.js  # JWT-based gamer credentials validation
+│       ├── cartService.js  # Cart cache manipulator
+│       ├── orderService.js # checkout transaction, key dispatch, and inventory updates
+│       └── productService.js # game CRUD database queries via Prisma Client
+├── .env                    # DB connection strings & JWT keys
+└── package.json            # Scripts & module dependencies
 ```
 
-## Packages Used
+---
 
-- **`express`**: Fast, unopinionated, minimalist web framework for Node.js. Used as the base HTTP server.
-- **`apollo-server-express`**: The Apollo Server integration for Express. It handles incoming GraphQL requests, parses them, and executes the appropriate resolvers.
-- **`graphql`**: The core GraphQL implementation used alongside Apollo Server.
-- **`@prisma/client`**: Auto-generated query builder used to interact with the PostgreSQL database. Provides type-safe database access.
-- **`bcrypt`**: Used to securely hash user passwords before storing them in the database, and to compare hashes during login.
-- **`jsonwebtoken`**: Used to generate and verify JSON Web Tokens (JWT) for stateless user authentication.
-- **`dotenv`**: Loads environment variables from a `.env` file into `process.env`.
-- **`nodemon`** (dev dependency): Automatically restarts the node application when file changes in the directory are detected.
+## 🛠️ Main Libraries Used
 
-## How It Works (Mechanism)
+* **`express`**: Fast, lightweight web framework serving HTTP routes.
+* **`apollo-server-express`**: Integrates Apollo Server into Express to parse, validate, and execute incoming GraphQL queries and mutations.
+* **`@prisma/client`**: Auto-generated type-safe database query client used to write and fetch PostgreSQL records easily.
+* **`bcrypt`**: Hashing library ensuring gamer passwords are encrypted securely.
+* **`jsonwebtoken`**: Stateless token manager used to sign and authenticate users via request contexts.
+* **`nodemon`**: Development monitor restarting the Node process on file updates.
 
-1. **Server Initialization**: `src/index.js` initializes an Express application and attaches an Apollo Server instance to the `/graphql` endpoint.
-2. **Request Flow**: 
-   - A client (Frontend or WinForms) sends a POST request with a GraphQL query/mutation to `http://localhost:4000/graphql`.
-   - The request includes an `Authorization` header with a JWT (if the user is logged in).
-   - Apollo Server's `context` function intercepts the request, verifies the JWT using `jsonwebtoken`, and attaches the decoded `user` object to the GraphQL context.
-3. **Resolvers (Controllers)**: The request is routed to the corresponding function in `src/graphql/resolvers.js`. The resolver extracts arguments and the user context, then delegates the heavy lifting to the Service Layer.
-4. **Service Layer (Business Logic)**: Classes in `src/services/` execute the actual business rules (e.g., checking if inventory is sufficient, calculating totals, verifying passwords).
-5. **Database Interaction**: The Service Layer uses `@prisma/client` to execute queries or `$transaction`s against the PostgreSQL database securely. The data is retrieved, mapped, and returned back up the chain to the client.
+---
+
+## ⚙️ How It Works (The Lifecycle)
+
+1. **Server Boot:** `src/index.js` spins up the Express server and binds Apollo Server to the `/graphql` route.
+2. **Context verification:** Incoming requests with an `Authorization` header verify the user's JWT via `jsonwebtoken` and bind the `user` context payload to all queries/mutations.
+3. **Resolvers delegation:** Apollo maps requests to `src/graphql/resolvers.js`, which parses arguments and triggers the proper class in `src/services/` (Business logic layer).
+4. **Prisma Transaction:** Services manipulate tables and commit actions within Prisma `$transaction` blocks (ensuring keys are successfully registered or stock subtracted cleanly without database race conditions).
+
+---
+
+## 🚀 How to Run
+
+### Prerequisites
+* **Node.js** (v18+)
+* **Docker Desktop** (for running PostgreSQL database)
+
+### Steps
+1. **Dumb Database Docker Container:**
+   ```bash
+   docker-compose up -d
+   ```
+2. **Install modules:**
+   ```bash
+   npm install
+   ```
+3. **Sync database schemas and seeds:**
+   ```bash
+   npx prisma db push
+   npm run seed
+   ```
+4. **Run Server:**
+   ```bash
+   npm run dev
+   ```
+   The engine will be accessible via Apollo sandbox at `http://localhost:4000/graphql`.
