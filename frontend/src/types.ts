@@ -21,7 +21,14 @@ export interface Game {
 }
 
 export interface CartItem {
-  id?: string;
-  game: Game;
+  id: string;
+  title: string;
+  price: number;
+  image?: string;
+  category?: string;
   quantity: number;
+  game?: Game;
 }
+
+export type Product = Game;
+

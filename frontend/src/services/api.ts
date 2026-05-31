@@ -1,6 +1,6 @@
 import { Game } from '../types';
 
-const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+const RAWG_API_KEY = (import.meta as any).env.VITE_RAWG_API_KEY;
 const RAWG_BASE_URL = 'https://api.rawg.io/api';
 const CHEAPSHARK_BASE_URL = 'https://www.cheapshark.com/api/1.0';
 
