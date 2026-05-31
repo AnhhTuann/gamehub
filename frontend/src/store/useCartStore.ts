@@ -16,6 +16,7 @@ interface CartStore {
   addToCart: (game: GameItem) => void;
   removeFromCart: (gameId: string) => void;
   cartTotal: () => number;
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
@@ -43,5 +44,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
   cartTotal: () => {
     const { cart } = get();
     return cart.reduce((total, item) => total + item.price, 0);
-  }
+  },
+  clearCart: () => set({ cart: [] })
 }));

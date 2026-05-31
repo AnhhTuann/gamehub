@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, ChevronLeft, CreditCard, Lock, DownloadCloud } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { useCartStore } from '../store/useCartStore';
 import { OrderSuccessModal } from '../components/shop/OrderSuccessModal';
 
 export const Checkout = () => {
-  const { cart, cartTotal, cartCount, clearCart } = useCart();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const cart = useCartStore((state) => state.cart);
+  const cartTotal = useCartStore((state) => state.cartTotal)();
+  const clearCart = useCartStore((state) => state.clearCart);
+
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -17,23 +21,33 @@ export const Checkout = () => {
 
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsModalOpen(true);
+    setIsProcessing(true);
+
+    // Simulate API call for payment with a 2-second delay
+    setTimeout(() => {
+      setIsProcessing(false);
+      setIsSuccessModalOpen(true);
+      clearCart(); // Empty the cart upon success
+    }, 2000);
   };
 
-  if (cartCount === 0) {
+  // Empty cart fallback
+  if (cart.length === 0 && !isSuccessModalOpen) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center bg-[#282a36]">
-        <span className="text-6xl mb-6 opacity-50 grayscale">🎮</span>
-        <h2 className="font-pixel text-xl text-[#ff79c6] mb-4 tracking-wider">YOUR CART IS EMPTY</h2>
-        <p className="text-[#f8f8f2] mb-8 max-w-md opacity-80 font-sans">
-          You need items in your cart to proceed to checkout.
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center bg-[#282a36] min-h-screen">
+        <svg viewBox="0 0 11 8" className="w-16 h-16 text-[#ff79c6] animate-bounce fill-current mb-6 drop-shadow-[0_0_8px_#ff79c6]">
+          <path d="M3 0h1v1H3zm5 0h1v1H8zM4 1h3v1H4zm-2 1h7v1H2zm-2 1h11v1H0zm0 1h2v1H0zm3 0h5v1H3zm6 0h2v1H9zm-9 1h1v1H0zm2 0h1v1H2zm5 0h1v1H7zm3 0h1v1H10zm2 1h2v1H2zm5 0h2v1H7z" />
+        </svg>
+        <h2 className="font-pixel text-xl text-[#bd93f9] mb-4 tracking-wider uppercase">YOUR INVENTORY IS EMPTY</h2>
+        <p className="text-[#6272a4] mb-8 max-w-md font-sans text-sm font-medium">
+          YOUR INVENTORY IS EMPTY. HEAD BACK TO THE CATALOG TO GEAR UP.
         </p>
         <Link 
-          to="/shop"
-          className="px-8 py-4 bg-[#bd93f9] text-black font-pixel text-xs rounded hover:bg-[#ff79c6] hover:-translate-y-1 transition-all"
-          style={{ boxShadow: '4px 4px 0 0 rgba(0,0,0,0.5)' }}
+          to="/"
+          className="px-8 py-4 bg-[#bd93f9] text-black font-pixel text-xs rounded hover:bg-[#ff79c6] hover:-translate-y-1 transition-all duration-200"
+          style={{ boxShadow: '0 4px 15px rgba(189,147,249,0.3)' }}
         >
-          RETURN TO STORE
+          RETURN TO HOME
         </Link>
       </div>
     );
@@ -53,9 +67,9 @@ export const Checkout = () => {
     <div className="bg-[#282a36] flex-1 min-h-screen font-sans pb-20">
       <div className="max-w-7xl mx-auto w-full px-6 py-8">
         
-        <Link to="/cart" className="inline-flex items-center gap-2 text-[#6272a4] hover:text-[#ff79c6] transition-colors mb-8 text-sm font-bold uppercase tracking-widest">
+        <Link to="/shop" className="inline-flex items-center gap-2 text-[#6272a4] hover:text-[#ff79c6] transition-colors mb-8 text-sm font-bold uppercase tracking-widest">
           <ChevronLeft className="w-4 h-4" />
-          Back to Cart
+          Back to Catalog
         </Link>
 
         {/* Header */}
@@ -115,9 +129,9 @@ export const Checkout = () => {
                 {cart.map(item => (
                   <div key={item.id} className="flex gap-4 items-center">
                     <div className="w-16 h-20 shrink-0 bg-[#282a36] relative rounded border border-[#6272a4] overflow-hidden">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                      <img src={item.coverImage || item.image || 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&q=80'} alt={item.title} className="w-full h-full object-cover" />
                       <div className="absolute top-0 right-0 w-5 h-5 bg-[#bd93f9] flex items-center justify-center text-[10px] font-bold text-black border-b border-l border-[#282a36]">
-                        {item.quantity}
+                        1
                       </div>
                     </div>
                     <div className="flex flex-col flex-grow min-w-0">
@@ -125,7 +139,7 @@ export const Checkout = () => {
                       <span className="text-[#ff79c6] text-[10px] font-bold tracking-widest uppercase mt-1">PC / STEAM</span>
                     </div>
                     <div className="flex items-center shrink-0">
-                      <span className="text-[#50fa7b] font-bold text-sm">${(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="text-[#50fa7b] font-bold text-sm">${item.price.toFixed(2)}</span>
                     </div>
                   </div>
                 ))}
@@ -156,10 +170,11 @@ export const Checkout = () => {
               <button 
                 type="submit" 
                 form="checkout-form"
-                className="w-full py-4 bg-[#bd93f9] text-black font-bold tracking-widest uppercase text-base rounded hover:-translate-y-1 hover:bg-[#ff79c6] transition-all flex items-center justify-center gap-3"
+                disabled={isProcessing}
+                className="w-full py-4 bg-[#bd93f9] text-black font-bold tracking-widest uppercase text-base rounded hover:-translate-y-1 hover:bg-[#ff79c6] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:bg-[#bd93f9] cursor-pointer"
                 style={{ boxShadow: '0 5px 15px rgba(189,147,249,0.3)' }}
               >
-                INSERT COIN TO BUY
+                {isProcessing ? 'PROCESSING...' : 'INSERT COIN TO BUY'}
                 <ShieldCheck className="w-5 h-5" />
               </button>
               
@@ -174,10 +189,10 @@ export const Checkout = () => {
       </div>
       
       <OrderSuccessModal 
-        isOpen={isModalOpen} 
+        isOpen={isSuccessModalOpen} 
         onClose={() => {
-          setIsModalOpen(false);
-          if (clearCart) clearCart();
+          setIsSuccessModalOpen(false);
+          navigate('/');
         }} 
         orderTotal={orderTotal} 
       />
