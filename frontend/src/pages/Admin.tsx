@@ -60,11 +60,92 @@ const GRADIENTS = [
   { label: 'Vortex Cyan', value: 'from-[#8be9fd] to-[#bd93f9]' },
 ];
 
+interface Order {
+  id: string;
+  customer: string;
+  date: string;
+  total: number;
+  status: 'COMPLETED' | 'PENDING' | 'REFUNDED';
+  gamesList: { title: string; price: number; code: string; coverGradient: string }[];
+}
+
+const INITIAL_ORDERS: Order[] = [
+  {
+    id: 'GH-990412',
+    customer: 'player1@gmail.com',
+    date: 'Oct 24, 2026',
+    total: 34.98,
+    status: 'COMPLETED',
+    gamesList: [
+      { title: 'Chrono Trigger Reborn', price: 14.99, code: 'CHRO-TRIG-NEO9-9381', coverGradient: 'from-[#bd93f9] to-[#ff79c6]' },
+      { title: 'Super Mario World 8-Bit', price: 19.99, code: 'MARI-WORL-EMU9-8802', coverGradient: 'from-[#50fa7b] to-[#8be9fd]' }
+    ]
+  },
+  {
+    id: 'GH-829401',
+    customer: 'cyber_samurai@yahoo.com',
+    date: 'Oct 23, 2026',
+    total: 9.99,
+    status: 'COMPLETED',
+    gamesList: [
+      { title: 'Street Fighter II: Turbo', price: 9.99, code: 'STRF-TURB-CODE-7761', coverGradient: 'from-[#ff5555] to-[#ffb86c]' }
+    ]
+  },
+  {
+    id: 'GH-773019',
+    customer: 'doom_fanatic@proton.me',
+    date: 'Oct 22, 2026',
+    total: 29.99,
+    status: 'PENDING',
+    gamesList: [
+      { title: 'Metroid Prime: Retro Edition', price: 29.99, code: 'PENDING-GENERATION-KEY', coverGradient: 'from-[#ffb86c] to-[#ff5555]' }
+    ]
+  },
+  {
+    id: 'GH-661023',
+    customer: 'retro_girl@gmail.com',
+    date: 'Oct 20, 2026',
+    total: 31.98,
+    status: 'REFUNDED',
+    gamesList: [
+      { title: 'Castlevania: Symphony', price: 15.99, code: 'VOID-REFUNDED-KEY-0091', coverGradient: 'from-[#8be9fd] to-[#bd93f9]' },
+      { title: 'Castlevania: Symphony', price: 15.99, code: 'VOID-REFUNDED-KEY-0092', coverGradient: 'from-[#8be9fd] to-[#bd93f9]' }
+    ]
+  },
+  {
+    id: 'GH-554092',
+    customer: 'cloud_strife@shinra.co',
+    date: 'Oct 18, 2026',
+    total: 14.99,
+    status: 'COMPLETED',
+    gamesList: [
+      { title: 'Chrono Trigger Reborn', price: 14.99, code: 'CHRO-TRIG-NEO9-9382', coverGradient: 'from-[#bd93f9] to-[#ff79c6]' }
+    ]
+  },
+  {
+    id: 'GH-441093',
+    customer: 'tifa_lockhart@seventhheaven.bar',
+    date: 'Oct 15, 2026',
+    total: 9.99,
+    status: 'PENDING',
+    gamesList: [
+      { title: 'Street Fighter II: Turbo', price: 9.99, code: 'PENDING-GENERATION-KEY', coverGradient: 'from-[#ff5555] to-[#ffb86c]' }
+    ]
+  }
+];
+
 export const Admin = () => {
-  const [activeMenu, setActiveMenu] = useState('Catalog');
+  const [activeMenu, setActiveMenu] = useState('Orders');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [games, setGames] = useState<Game[]>(INITIAL_GAMES);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Orders page state
+  const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
+  const [orderSearchQuery, setOrderSearchQuery] = useState('');
+  const [orderStatusFilter, setOrderStatusFilter] = useState('All');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
 
   // Modals state
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -143,6 +224,60 @@ export const Admin = () => {
     setGames(games.filter(g => g.id !== selectedGame.id));
     setIsDeleteOpen(false);
     setSelectedGame(null);
+  };
+
+  const handleGenerateKeys = (orderId: string) => {
+    setOrders(orders.map(o => {
+      if (o.id === orderId) {
+        return {
+          ...o,
+          status: 'COMPLETED' as const,
+          gamesList: o.gamesList.map(g => ({
+            ...g,
+            code: `${g.title.substring(0, 4).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
+          }))
+        };
+      }
+      return o;
+    }));
+    setSelectedOrder(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        status: 'COMPLETED',
+        gamesList: prev.gamesList.map(g => ({
+          ...g,
+          code: `${g.title.substring(0, 4).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
+        }))
+      };
+    });
+  };
+
+  const handleRefundOrder = (orderId: string) => {
+    setOrders(orders.map(o => {
+      if (o.id === orderId) {
+        return {
+          ...o,
+          status: 'REFUNDED' as const,
+          gamesList: o.gamesList.map(g => ({
+            ...g,
+            code: `VOID-REFUNDED-KEY-${Math.floor(1000 + Math.random() * 9000)}`
+          }))
+        };
+      }
+      return o;
+    }));
+    setSelectedOrder(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        status: 'REFUNDED',
+        gamesList: prev.gamesList.map(g => ({
+          ...g,
+          code: `VOID-REFUNDED-KEY-${Math.floor(1000 + Math.random() * 9000)}`
+        }))
+      };
+    });
   };
 
   const filteredGames = games.filter(game => 
@@ -560,56 +695,135 @@ export const Admin = () => {
               {/* Header */}
               <div>
                 <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-[#bd93f9] tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                  GAME ORDERS
+                  ORDER MANAGEMENT
                 </h2>
                 <p className="text-xs text-[#6272a4] mt-1 tracking-wide font-medium">
-                  Review game keys purchases log and digital codes status.
+                  Monitor gamer purchases, transaction totals, activation keys, and processing status.
                 </p>
               </div>
 
-              {/* Mock Orders List */}
-              <div className="border border-[#6272a4]/30 rounded-lg overflow-hidden bg-[#282a36] shadow-lg">
+              {/* Control Bar (Search & Filter) */}
+              <div className="bg-[#44475a]/30 border border-[#6272a4]/25 p-4 rounded-lg flex flex-col md:flex-row gap-4 items-center justify-between">
+                {/* Search field */}
+                <div className="relative w-full md:max-w-md">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#6272a4]" />
+                  <input 
+                    type="text"
+                    value={orderSearchQuery}
+                    onChange={(e) => setOrderSearchQuery(e.target.value)}
+                    placeholder="Search Order ID or Email..."
+                    className="w-full bg-[#191a21] border border-[#6272a4]/30 rounded-md py-2.5 pl-10 pr-4 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] placeholder-[#6272a4]/60 transition-colors"
+                  />
+                </div>
+
+                {/* Status Dropdown Filter */}
+                <div className="flex items-center gap-3 w-full md:w-auto justify-end">
+                  <span className="text-xs text-[#6272a4] font-mono font-bold uppercase whitespace-nowrap">STATUS:</span>
+                  <select
+                    value={orderStatusFilter}
+                    onChange={(e) => setOrderStatusFilter(e.target.value)}
+                    className="bg-[#191a21] border border-[#6272a4]/30 text-xs font-bold text-[#f8f8f2] rounded px-3 py-2.5 focus:outline-none focus:border-[#bd93f9] cursor-pointer"
+                  >
+                    <option value="All">ALL ORDERS</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="PENDING">PENDING</option>
+                    <option value="REFUNDED">REFUNDED</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Order Data Table */}
+              <div className="border border-[#6272a4]/40 rounded-lg overflow-hidden bg-[#44475a]/20 shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b border-[#6272a4]/40 bg-[#191a21]/90 text-[#6272a4] text-xs font-bold uppercase tracking-wider">
                         <th className="py-4 px-6">ORDER ID</th>
                         <th className="py-4 px-6">CUSTOMER</th>
-                        <th className="py-4 px-6">GAME PURCHASED</th>
-                        <th className="py-4 px-6">TOTAL PRICE</th>
-                        <th className="py-4 px-6">ACTIVATION CODE</th>
-                        <th className="py-4 px-6">DELIVERY</th>
+                        <th className="py-4 px-6">DATE</th>
+                        <th className="py-4 px-6">TOTAL</th>
+                        <th className="py-4 px-6">STATUS</th>
+                        <th className="py-4 px-6 text-center">ACTION</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#6272a4]/15 font-sans text-xs md:text-sm">
-                      {[
-                        { id: 'GH-8902', customer: 'Sophia Chen', game: 'Chrono Trigger Reborn', price: 14.99, code: 'CHRO-TRIG-NEO9-9381', delivered: true },
-                        { id: 'GH-8903', customer: 'Marcus Wright', game: 'Street Fighter II: Turbo', price: 9.99, code: 'STRF-TURB-CODE-7761', delivered: true },
-                        { id: 'GH-8904', customer: 'Elena Rodriguez', game: 'Super Mario World 8-Bit', price: 19.99, code: 'MARI-WORL-EMU9-8802', delivered: true },
-                        { id: 'GH-8905', customer: 'David Kim', game: 'Castlevania: Symphony', price: 15.99, code: 'CAST-SOTN-PIXL-4481', delivered: true },
-                        { id: 'GH-8906', customer: 'Olivia Martinez', game: 'Metroid Prime: Retro Edition', price: 29.99, code: 'METR-PRIM-GCUB-1120', delivered: false }
-                      ].map((order, i) => (
-                        <tr key={i} className="hover:bg-[#44475a]/30 transition-colors">
-                          <td className="py-4 px-6 font-mono font-bold text-[#bd93f9]">#{order.id}</td>
-                          <td className="py-4 px-6 font-semibold text-[#f8f8f2]">{order.customer}</td>
-                          <td className="py-4 px-6 text-[#ff79c6] font-medium">{order.game}</td>
-                          <td className="py-4 px-6 font-mono text-[#50fa7b] font-bold">${order.price.toFixed(2)}</td>
-                          <td className="py-4 px-6 font-mono text-xs tracking-wider bg-[#191a21]/50 py-1.5 px-3 rounded inline-block my-2 text-[#bfc5d6]">
-                            {order.code}
-                          </td>
-                          <td className="py-4 px-6">
-                            {order.delivered ? (
-                              <span className="text-[#50fa7b] font-bold flex items-center gap-1">
-                                <Check className="w-4 h-4" /> DISPATCHED
-                              </span>
-                            ) : (
-                              <span className="text-[#ffb86c] font-bold flex items-center gap-1 animate-pulse">
-                                <RefreshCw className="w-3.5 h-3.5 animate-spin" /> PENDING
-                              </span>
-                            )}
+                    <tbody className="divide-y divide-[#6272a4]/15 font-sans text-xs md:text-sm text-[#f8f8f2]">
+                      {orders.filter(order => {
+                        const matchesSearch = order.id.toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
+                                              order.customer.toLowerCase().includes(orderSearchQuery.toLowerCase());
+                        const matchesStatus = orderStatusFilter === 'All' || order.status === orderStatusFilter;
+                        return matchesSearch && matchesStatus;
+                      }).length > 0 ? (
+                        orders.filter(order => {
+                          const matchesSearch = order.id.toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
+                                                order.customer.toLowerCase().includes(orderSearchQuery.toLowerCase());
+                          const matchesStatus = orderStatusFilter === 'All' || order.status === orderStatusFilter;
+                          return matchesSearch && matchesStatus;
+                        }).map((order) => (
+                          <tr key={order.id} className="hover:bg-[#44475a]/40 transition-colors group">
+                            {/* ORDER ID */}
+                            <td className="py-4 px-6 font-mono font-bold text-[#bd93f9]">
+                              #{order.id}
+                            </td>
+
+                            {/* CUSTOMER */}
+                            <td className="py-4 px-6 font-semibold truncate max-w-[180px]" title={order.customer}>
+                              {order.customer}
+                            </td>
+
+                            {/* DATE */}
+                            <td className="py-4 px-6 text-[#bfc5d6] whitespace-nowrap">
+                              {order.date}
+                            </td>
+
+                            {/* TOTAL */}
+                            <td className="py-4 px-6 font-mono font-bold text-[#50fa7b]">
+                              ${order.total.toFixed(2)}
+                            </td>
+
+                            {/* STATUS */}
+                            <td className="py-4 px-6">
+                              {order.status === 'COMPLETED' && (
+                                <span className="inline-block px-3 py-1 rounded bg-[#50fa7b]/15 text-[#50fa7b] border border-[#50fa7b]/30 font-bold text-[10px] uppercase shadow-[0_0_8px_rgba(80,250,123,0.15)]">
+                                  COMPLETED
+                                </span>
+                              )}
+                              {order.status === 'PENDING' && (
+                                <span className="inline-block px-3 py-1 rounded bg-transparent text-[#ffb86c] border border-[#ffb86c] font-bold text-[10px] uppercase animate-pulse">
+                                  PENDING
+                                </span>
+                              )}
+                              {order.status === 'REFUNDED' && (
+                                <span className="inline-block px-3 py-1 rounded bg-[#ff5555]/20 text-[#ff5555] border border-[#ff5555]/40 font-bold text-[10px] uppercase">
+                                  REFUNDED
+                                </span>
+                              )}
+                            </td>
+
+                            {/* ACTION */}
+                            <td className="py-4 px-6 text-center">
+                              <button 
+                                onClick={() => {
+                                  setSelectedOrder(order);
+                                  setIsOrderDetailsOpen(true);
+                                }}
+                                className="px-3.5 py-1.5 bg-[#44475a]/60 border border-[#6272a4]/40 rounded text-xs font-bold text-[#bd93f9] hover:text-[#ff79c6] hover:border-[#ff79c6] hover:shadow-[0_0_10px_rgba(255,121,198,0.25)] transition-all active:scale-95 uppercase tracking-wider"
+                              >
+                                VIEW
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={6} className="py-12 text-center text-[#6272a4]">
+                            <div className="flex flex-col items-center justify-center gap-2">
+                              <Gamepad2 className="w-12 h-12 text-[#6272a4]/30 animate-bounce" />
+                              <span className="text-sm font-semibold">NO MATCHING ORDERS DISCOVERED.</span>
+                              <span className="text-xs font-mono text-[#6272a4]/60">Try refining search metrics.</span>
+                            </div>
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -1130,6 +1344,168 @@ export const Admin = () => {
                     YES, ERASE GAME
                   </button>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* =================================================== */}
+      {/* ORDER DETAILS MODAL */}
+      {/* =================================================== */}
+      <AnimatePresence>
+        {isOrderDetailsOpen && selectedOrder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setIsOrderDetailsOpen(false);
+                setSelectedOrder(null);
+              }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 30 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              className="relative w-full max-w-lg bg-[#282a36] border-4 border-[#bd93f9] rounded-lg shadow-[0_0_30px_rgba(189,147,249,0.4)] z-10 overflow-hidden"
+            >
+              {/* Header */}
+              <div className="bg-[#191a21] px-6 py-4 border-b-2 border-[#bd93f9] flex items-center justify-between">
+                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-[#bd93f9]">
+                  🔍 ORDER DETAILS: #{selectedOrder.id}
+                </h3>
+                <button 
+                  onClick={() => {
+                    setIsOrderDetailsOpen(false);
+                    setSelectedOrder(null);
+                  }}
+                  className="p-1 text-[#6272a4] hover:text-[#ff79c6] transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 flex flex-col gap-5">
+                
+                {/* Meta details */}
+                <div className="grid grid-cols-2 gap-4 bg-[#191a21]/50 border border-[#6272a4]/20 p-4 rounded text-xs font-mono">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[#6272a4]">CUSTOMER EMAIL</span>
+                    <span className="text-[#f8f8f2] font-semibold truncate">{selectedOrder.customer}</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[#6272a4]">ORDER DATE</span>
+                    <span className="text-[#f8f8f2] font-semibold">{selectedOrder.date}</span>
+                  </div>
+                  <div className="flex flex-col gap-1 mt-2">
+                    <span className="text-[#6272a4]">TRANSACTION STATUS</span>
+                    <div>
+                      {selectedOrder.status === 'COMPLETED' && (
+                        <span className="inline-block px-2 py-0.5 rounded bg-[#50fa7b]/10 text-[#50fa7b] font-bold text-[9px]">COMPLETED</span>
+                      )}
+                      {selectedOrder.status === 'PENDING' && (
+                        <span className="inline-block px-2 py-0.5 rounded bg-[#ffb86c]/10 text-[#ffb86c] font-bold text-[9px] animate-pulse">PENDING</span>
+                      )}
+                      {selectedOrder.status === 'REFUNDED' && (
+                        <span className="inline-block px-2 py-0.5 rounded bg-[#ff5555]/10 text-[#ff5555] font-bold text-[9px]">REFUNDED</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1 mt-2">
+                    <span className="text-[#6272a4]">TOTAL AMOUNT</span>
+                    <span className="text-[#50fa7b] font-bold">${selectedOrder.total.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                {/* Purchased Games list */}
+                <div className="flex flex-col gap-3">
+                  <span className="text-xs font-bold text-[#ff79c6] tracking-wider font-mono">
+                    GAMES &amp; ACTIVATION CODES
+                  </span>
+                  <div className="flex flex-col gap-3 max-h-[220px] overflow-y-auto custom-scrollbar">
+                    {selectedOrder.gamesList.map((g, idx) => (
+                      <div key={idx} className="flex gap-4 p-3 bg-[#44475a]/30 border border-[#6272a4]/20 rounded group font-sans">
+                        <div className={`w-10 h-12 bg-gradient-to-br ${g.coverGradient} rounded border border-[#6272a4]/20 flex items-center justify-center shrink-0`}>
+                          <Gamepad2 className="w-5 h-5 text-[#282a36] opacity-75" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs font-bold text-[#f8f8f2] block truncate group-hover:text-[#ff79c6] transition-colors">
+                            {g.title}
+                          </span>
+                          <span className="text-[10px] text-[#6272a4] font-mono mt-0.5 block">
+                            Price: ${g.price.toFixed(2)}
+                          </span>
+                          
+                          {/* Key container */}
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <span className={`text-[10px] font-mono tracking-wider px-2 py-1 rounded select-all flex-1 text-center truncate
+                              ${selectedOrder.status === 'REFUNDED' 
+                                ? 'bg-[#ff5555]/15 text-[#ff5555] line-through border border-[#ff5555]/30' 
+                                : selectedOrder.status === 'PENDING'
+                                ? 'bg-[#ffb86c]/10 text-[#ffb86c]/70 border border-[#ffb86c]/20'
+                                : 'bg-[#191a21] text-[#50fa7b] border border-[#50fa7b]/20 shadow-[0_0_8px_rgba(80,250,123,0.15)]'
+                              }`}>
+                              {g.code}
+                            </span>
+                            {selectedOrder.status === 'COMPLETED' && (
+                              <button
+                                type="button"
+                                onClick={() => navigator.clipboard.writeText(g.code)}
+                                className="px-2 py-1 bg-[#44475a] border border-[#6272a4]/40 hover:border-[#50fa7b] hover:text-[#50fa7b] rounded text-[9px] font-bold text-[#bfc5d6] transition-colors active:scale-90"
+                              >
+                                COPY
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Modal Buttons */}
+                <div className="flex gap-3 border-t border-[#6272a4]/20 pt-4 mt-1">
+                  
+                  {/* Cancel/Close */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOrderDetailsOpen(false);
+                      setSelectedOrder(null);
+                    }}
+                    className="flex-1 py-2.5 bg-[#44475a] hover:bg-[#bfc5d6] hover:text-[#282a36] text-[#f8f8f2] text-xs font-bold rounded tracking-wider transition-colors uppercase"
+                  >
+                    CLOSE WINDOW
+                  </button>
+
+                  {/* Actions depending on state */}
+                  {selectedOrder.status === 'PENDING' && (
+                    <button
+                      type="button"
+                      onClick={() => handleGenerateKeys(selectedOrder.id)}
+                      className="flex-1 py-2.5 bg-[#50fa7b] hover:bg-[#8be9fd] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(80,250,123,0.25)] transition-colors uppercase"
+                    >
+                      GENERATE KEYS
+                    </button>
+                  )}
+
+                  {selectedOrder.status === 'COMPLETED' && (
+                    <button
+                      type="button"
+                      onClick={() => handleRefundOrder(selectedOrder.id)}
+                      className="flex-1 py-2.5 bg-[#ff5555] hover:bg-[#ff79c6] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,85,85,0.25)] transition-colors uppercase"
+                    >
+                      REFUND ORDER
+                    </button>
+                  )}
+                </div>
+
               </div>
             </motion.div>
           </div>
