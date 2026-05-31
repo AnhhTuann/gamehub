@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { SlidersHorizontal, X, Swords, Crosshair, Joystick, Gamepad2 } from 'lucide-react';
+import { SlidersHorizontal, X, Swords, Crosshair, Joystick, Gamepad2, Search } from 'lucide-react';
 import { Game } from '../types';
 import { getAllGames } from '../services/api';
 import { ProductCard } from '../components/common/ProductCard';
@@ -52,9 +52,19 @@ export const Shop = () => {
   };
 
   const [games, setGames] = useState<Game[]>([]);
+  const [totalGames, setTotalGames] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   // Helper to fetch CheapShark price or fall back to a stable price based on game title length
   const getCheapSharkPrice = async (title: string): Promise<number> => {
@@ -74,8 +84,15 @@ export const Shop = () => {
     setIsLoading(true);
     try {
       const key = (import.meta as any).env.VITE_RAWG_API_KEY || 'b01eca51fc9c49b7be3a217fc76f779f';
-      const response = await fetch(`https://api.rawg.io/api/games?key=${key}&page_size=40&page=${page}&ordering=-metacritic`);
+      let url = `https://api.rawg.io/api/games?key=${key}&page_size=40&page=${page}&ordering=-metacritic`;
+      if (debouncedSearch) {
+        url += `&search=${encodeURIComponent(debouncedSearch)}`;
+      }
+      const response = await fetch(url);
       const data = await response.json();
+      if (data.count) {
+        setTotalGames(data.count);
+      }
       const results = data.results || [];
 
       // Fetch prices for the newly loaded games
@@ -104,7 +121,15 @@ export const Shop = () => {
   };
 
   useEffect(() => {
-    fetchGames(currentPage);
+    setCurrentPage(1);
+    setGames([]);
+    fetchGames(1);
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      fetchGames(currentPage);
+    }
   }, [currentPage]);
 
   const displayProducts = games.filter(g => {
@@ -215,10 +240,10 @@ export const Shop = () => {
       </div>
 
       {/* Horizontal Filter Navbar */}
-      <div className="flex items-center justify-between border-b border-[var(--border-primary)] pb-4 mb-8 gap-4 sticky top-16 z-30 bg-theme-primary/90 backdrop-blur pt-4">
+      <div className="flex flex-col md:flex-row items-center justify-between border-b border-[var(--border-primary)] pb-4 mb-8 gap-4 sticky top-16 z-30 bg-theme-primary/90 backdrop-blur pt-4">
         
         {/* Desktop Filter Dropdowns */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4 flex-1">
           <span className="font-pixel text-[10px] text-[var(--text-muted)] tracking-widest mr-2">FILTERS:</span>
           
           <FilterDropdown 
@@ -250,14 +275,26 @@ export const Shop = () => {
         {/* Mobile Filter Button */}
         <button
           onClick={() => setIsMobileFiltersOpen(true)}
-          className="lg:hidden flex items-center gap-2 text-sm font-medium text-[var(--text-primary)] border border-[var(--border-primary)] px-4 py-2 rounded-md hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
+          className="lg:hidden flex items-center justify-center gap-2 text-sm font-medium text-[var(--text-primary)] border border-[var(--border-primary)] px-4 py-2 rounded-md hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all w-full md:w-auto"
         >
           <SlidersHorizontal className="w-4 h-4" />
           Filters {(selectedCategories.length > 0 || selectedPlatforms.length > 0) && `(${selectedCategories.length + selectedPlatforms.length})`}
         </button>
 
-        <span className="text-sm font-medium text-[var(--accent)] hidden sm:block">
-          {displayProducts.length} GAMES FOUND
+        {/* Search Input */}
+        <div className="relative w-full md:w-64">
+          <input 
+            type="text" 
+            placeholder="Search games..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="text-sm bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] px-4 py-2 w-full rounded-md focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent-glow)] transition-all"
+          />
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+        </div>
+
+        <span className="text-[#bd93f9] text-sm font-pixel uppercase tracking-wider hidden xl:block whitespace-nowrap">
+          {totalGames.toLocaleString()} GAMES FOUND
         </span>
       </div>
 
