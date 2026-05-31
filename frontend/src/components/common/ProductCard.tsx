@@ -48,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} className="relative aspect-video overflow-hidden block bg-black">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-video overflow-hidden block bg-black">
         {product.image ? (
           <img
             src={product.image}
@@ -91,7 +91,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
         </span>
 
         {/* Title - Sans-serif */}
-        <Link to={`/product/${product.id}`}>
+        <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }}>
           <h3 className="text-sm font-bold leading-snug text-[var(--neon-pink)] hover:text-[var(--accent)] transition-colors line-clamp-2">
             {product.title}
           </h3>
@@ -106,9 +106,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
 
         {/* Price + Cart */}
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-[var(--border-primary)]">
-          <span className="text-lg font-bold text-[var(--neon-green)]">
-            ${product.price.toFixed(2)}
-          </span>
+          <div className="flex flex-col">
+            {product.originalPrice && (
+              <span className="text-xs text-[var(--text-muted)] line-through font-medium">
+                ${product.originalPrice.toFixed(2)}
+              </span>
+            )}
+            <span className="text-lg font-bold text-[var(--neon-green)]">
+              ${product.price.toFixed(2)}
+            </span>
+          </div>
           <button
             onClick={() => addToCart({
               id: product.id,

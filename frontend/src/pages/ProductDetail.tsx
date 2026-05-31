@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ChevronRight, ShoppingCart, Heart, Star, Monitor, Calendar, Building2, Gamepad2 } from 'lucide-react';
 import { Game } from '../types';
-import { getGameDetails } from '../services/api';
+import { getGameDetails, getGameDetailsByTitle } from '../services/api';
 import { useCartStore } from '../store/useCartStore';
 
 /* ===== Pixel Star Rating ===== */
@@ -117,6 +117,8 @@ const TabContent = ({ tab, game }: { tab: TabType; game: Game }) => {
 /* ===== Main ProductDetail Page ===== */
 export const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const searchTitle = location.state?.productTitle;
   const addToCart = useCartStore((state) => state.addToCart);
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
@@ -128,13 +130,25 @@ export const ProductDetail = () => {
     window.scrollTo(0, 0);
     if (id) {
       setLoading(true);
-      getGameDetails(parseInt(id)).then(data => {
+      const numericId = parseInt(id);
+      
+      const fetchPromise = isNaN(numericId) && searchTitle 
+        ? getGameDetailsByTitle(searchTitle)
+        : getGameDetails(numericId);
+
+      fetchPromise.then(data => {
+        if (data && location.state?.productData) {
+          const stateData = location.state.productData as Game;
+          data.price = stateData.price;
+          data.originalPrice = stateData.originalPrice;
+          if (!data.image && stateData.image) data.image = stateData.image;
+        }
         setGame(data);
         if (data?.image) setSelectedImage(data.image);
         setLoading(false);
       });
     }
-  }, [id]);
+  }, [id, searchTitle, location.state]);
 
   if (loading) {
     return (
@@ -288,9 +302,11 @@ export const ProductDetail = () => {
                   <span className="text-4xl font-bold text-[var(--neon-green)]">
                     ${game.price.toFixed(2)}
                   </span>
-                  <span className="text-sm text-[var(--text-muted)] line-through mb-1">
-                    MSRP: ${(game.price * 1.15).toFixed(2)}
-                  </span>
+                  {(game.originalPrice || game.price > 0) && (
+                    <span className="text-sm text-[var(--text-muted)] line-through mb-1">
+                      MSRP: ${(game.originalPrice || game.price * 1.15).toFixed(2)}
+                    </span>
+                  )}
                 </div>
 
                 {/* ADD TO CART */}

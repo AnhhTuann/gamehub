@@ -50,7 +50,7 @@ export const Navbar = () => {
 
   const navLinks = [
     { label: 'Catalog', path: '/shop' },
-    { label: 'Specials', path: '/shop' },
+    { label: 'Specials', path: '/specials' },
     { label: 'News', path: '/shop' },
   ];
 

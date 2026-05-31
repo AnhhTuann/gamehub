@@ -15,6 +15,7 @@ import { Auth } from './pages/Auth';
 import { Admin } from './pages/Admin';
 import { CustomerPortal } from './pages/CustomerPortal';
 import { NotFound } from './pages/NotFound';
+import { Specials } from './pages/Specials';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
                   <Route path="product/:id" element={<ProductDetail />} />
                   <Route path="checkout" element={<Checkout />} />
                   <Route path="portal" element={<CustomerPortal />} />
+                  <Route path="specials" element={<Specials />} />
                 </Route>
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />

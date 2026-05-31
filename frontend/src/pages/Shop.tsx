@@ -29,17 +29,8 @@ export const Shop = () => {
   // Deriving debouncedSearch from the URL search query parameter (debounced at Navbar level)
   const debouncedSearch = searchParams.get('search') || '';
 
-  // Helper to fetch CheapShark price or fall back to a stable price based on game title length
+  // Helper to generate a stable price based on game title length to avoid rate-limiting CheapShark
   const getCheapSharkPrice = async (title: string): Promise<number> => {
-    try {
-      const res = await fetch(`https://www.cheapshark.com/api/1.0/games?title=${encodeURIComponent(title)}&limit=1`);
-      const data = await res.json();
-      if (data && data.length > 0 && data[0].cheapest) {
-        return parseFloat(data[0].cheapest);
-      }
-    } catch (error) {
-      console.error('CheapShark fetch error:', error);
-    }
     return 19.99 + (title.length % 5) * 10;
   };
 

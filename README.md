@@ -1,73 +1,93 @@
-# 🎮 GameHub - Modern Retro Dracula Gaming E-commerce Ecosystem
+<div align="center">
 
-GameHub (trước đây là OmniWear) là một hệ sinh thái thương mại điện tử chuyên biệt dành cho game thủ, được thiết kế theo ngôn ngữ giao diện **"Modern Retro Dracula"** cực kỳ bắt mắt (nền tối deep slate `#282a36`, viền tím neon `#bd93f9`, hồng neon `#ff79c6`, xanh lá neon `#50fa7b` và phông chữ pixel 8-bit hoài cổ).
+# 👾 GameHub
 
-Dự án này là một hệ thống Fullstack tích hợp 3 lớp, đồng bộ dữ liệu thời gian thực:
-1. **Backend (Node.js + GraphQL + Prisma):** Quản lý cơ sở dữ liệu PostgreSQL qua Docker, cung cấp GraphQL API để thực hiện giao dịch và cấp khóa kích hoạt (CD-Key) game tự động.
-2. **Frontend (Vite + React + Apollo Client + Tailwind CSS):** Giao diện Web bao gồm cả **Storefront** (Cửa hàng bán game, Giỏ hàng trượt Cart Drawer, Thanh toán bảo mật Checkout, Success Modal) và **Admin Dashboard** (Quản lý kho game Catalog, Quản lý đơn hàng Orders, Thống kê doanh thu live Telemetry,...).
-3. **Desktop Applications (C# WPF & C# WinForms):** Ứng dụng Desktop dành cho nhân viên vận hành kho và ban quản lý kiểm soát kho game, đơn hàng ngoại tuyến.
+**A Premium Video Game E-Commerce Platform with Modern Retro Dracula Aesthetics**
 
----
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](#)
+[![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)](#)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](#)
+[![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)](#)
 
-## 🚀 Hướng dẫn Cài đặt & Khởi chạy Nhanh
+![GameHub Preview](./docs/preview.png)
 
-### Yêu cầu hệ thống:
-- **Node.js** (Phiên bản >= 18.x)
-- **Docker Desktop** (Để chạy PostgreSQL cục bộ)
-- **.NET 8.0 SDK** (Để chạy các ứng dụng C# Desktop)
-
-### 📂 Khởi động Database (PostgreSQL)
-Mở Terminal tại thư mục `backend` và chạy Docker Compose để dựng cơ sở dữ liệu:
-```bash
-cd backend
-docker-compose up -d
-```
-*Lưu ý: PostgreSQL chạy trên cổng `5433` tránh xung đột hệ thống.*
-
-### 🖥️ Khởi chạy Backend (Node.js GraphQL API)
-Cài đặt dependencies, đẩy schema và seed dữ liệu mẫu:
-```bash
-cd backend
-npm install
-npx prisma db push
-npm run seed     # Tải 10 game hot mẫu vào database
-npm run dev      # Khởi động server tại http://localhost:4000/graphql
-```
-
-### 🌐 Khởi chạy Storefront & Admin Portal (React Frontend)
-Mở một Terminal mới, truy cập vào thư mục `frontend` và chạy server dev:
-```bash
-cd frontend
-npm install
-npm run dev      # Khởi chạy Website tại http://localhost:3000
-```
-- **Storefront / User Portal:** `http://localhost:3000/`
-- **Admin Dashboard:** `http://localhost:3000/admin` *(Mặc định tự kích hoạt tab Orders)*
-
-### 💾 Khởi chạy Ứng dụng Desktop (C# Warehouse)
-Truy cập vào thư mục ứng dụng C# WPF:
-```bash
-cd desktop-app/OmniWear.Warehouse
-dotnet run
-```
+</div>
 
 ---
 
-## 🧪 Kịch bản Kiểm thử Đồng bộ (End-to-End Key Delivery)
+## 🚀 Key Features
 
-1. **Mua Game & Cấp Khóa Tự Động:**
-   - Truy cập `http://localhost:3000`, thêm **Chrono Trigger** vào giỏ hàng và tiến hành **Checkout**.
-   - Sau khi thanh toán thành công, **Success Modal** màu xanh lá neon hiện lên kèm hiệu ứng pixel art chúc mừng nhiệm vụ hoàn thành.
-   - Truy cập vào **Player Portal (`/portal`)**, bạn sẽ thấy mã khóa kích hoạt CD-Key định dạng `CHRO-TRIG-XXXX` đã được hiển thị sẵn sàng để kích hoạt.
-
-2. **Quản lý Admin thời gian thực:**
-   - Vào trang Admin Dashboard tại `http://localhost:3000/admin`.
-   - Trong tab **Catalog**, bạn có thể tạo game mới, tùy chỉnh màu sắc gradient hộp đĩa game, chỉnh sửa giá hoặc xóa game với hộp thoại bảo mật màu đỏ neon.
-   - Trong tab **Orders**, Admin có thể theo dõi đơn hàng ở trạng thái `PENDING` (đèn led cam nhấp nháy), nhấn **Generate Keys** để sinh key tự động hoặc nhấn **Refund Order** để thu hồi/vô hiệu hóa key đã cấp ngay lập tức.
+- **🎮 Dynamic Storefront:** Immerse yourself in a catalog of over 800,000+ games, powered by the RAWG API with real-time search, robust filtering, and stunning responsive grid layouts.
+- **🛒 Global Shopping Cart:** Flawless global state management powered by Zustand. Instantly add games, manage your inventory, and calculate subtotals from anywhere in the app—zero prop drilling required.
+- **💳 Secure Checkout Flow:** A seamless and secure mock transaction process featuring smart form validation, loading state telemetry, and a beautiful success modal.
+- **⚡ Daily Deals:** Real-time discounted specials fetching via the CheapShark API. Features built-in offline fallback caching and graceful degradation to protect against strict API rate limits.
+- **🔐 Admin Dashboard:** Comprehensive system telemetry, revenue charts, and Role-Based Access Control (RBAC) for staff and inventory management.
 
 ---
 
-## 🛠 Công nghệ sử dụng
-- **Backend:** Node.js, Express, Apollo Server, Prisma ORM, PostgreSQL (Docker).
-- **Frontend:** Vite, React, Apollo Client, Tailwind CSS, Framer Motion (`motion/react`), Lucide React.
-- **Desktop Apps:** C# WPF (.NET 8), C# WinForms, GraphQL.Client.
+## 🛠 Tech Stack Breakdown
+
+**Frontend**
+- **Core:** React (Vite)
+- **Styling:** Tailwind CSS (Modern Retro Dracula Theme)
+- **State Management:** Zustand
+- **Data Fetching:** Apollo Client
+- **Routing:** React Router
+
+**Backend**
+- **Runtime:** Node.js
+- **API Engine:** GraphQL via Apollo Server
+- **Database & ORM:** PostgreSQL with Prisma ORM
+
+**DevOps & Infrastructure**
+- **Containerization:** Docker & Docker Compose
+- **Reverse Proxy:** Nginx (Multi-stage build)
+
+---
+
+## 🕹 Getting Started (Local Deployment)
+
+Ready to insert coin? Follow these instructions to get your local environment up and running in minutes.
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/GameHub.git
+cd GameHub
+```
+
+### 2. Environment Variables
+Create a `.env` file in the root directory and configure the following required variables:
+```env
+# Frontend
+VITE_RAWG_API_KEY=your_rawg_api_key_here
+
+# Backend
+DATABASE_URL=postgresql://user:password@db:5432/gamehub
+JWT_SECRET=your_super_secret_jwt_key
+PORT=4000
+```
+
+### 3. One-Click Deployment
+Spin up the entire full-stack environment (Frontend, Backend, and PostgreSQL Database) with a single Docker command:
+```bash
+docker-compose up -d --build
+```
+
+### 4. Access the Application
+Once the containers are successfully running, you can access the services at:
+- **Frontend App:** [http://localhost:3000](http://localhost:3000)
+- **Backend / GraphQL Playground:** [http://localhost:4000](http://localhost:4000)
+
+---
+
+## 👾 Author
+
+**Tuấn**  
+*Frontend Engineer / Kỹ sư Công nghệ thông tin*
+
+---
+<div align="center">
+  <sub>Built with 💜 and 16-bit magic.</sub>
+</div>
