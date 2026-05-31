@@ -1,24 +1,28 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Trash2, ArrowRight } from 'lucide-react';
-import { useCart } from '../../context/CartContext';
+import { useCartStore } from '../../store/useCartStore';
 import { Link } from 'react-router-dom';
 
 export const CartDrawer = () => {
-  const { cart, isCartOpen, closeCart, removeFromCart, cartTotal } = useCart();
+  const cart = useCartStore((state) => state.cart);
+  const isDrawerOpen = useCartStore((state) => state.isDrawerOpen);
+  const closeCart = useCartStore((state) => state.closeCart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const cartTotal = useCartStore((state) => state.cartTotal)();
 
   useEffect(() => {
-    if (isCartOpen) {
+    if (isDrawerOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isCartOpen]);
+  }, [isDrawerOpen]);
 
   return (
     <AnimatePresence>
-      {isCartOpen && (
+      {isDrawerOpen && (
         <>
           {/* Dark blurred overlay */}
           <motion.div
@@ -79,7 +83,7 @@ export const CartDrawer = () => {
                     {/* Cover image */}
                     <div className="w-16 h-20 shrink-0 bg-black/40 overflow-hidden rounded border border-[#6272a4]/40">
                       <img
-                        src={item.image || (item as any).coverImage || 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&q=80'}
+                        src={item.coverImage || item.image || 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&q=80'}
                         alt={item.title}
                         className="w-full h-full object-cover"
                       />

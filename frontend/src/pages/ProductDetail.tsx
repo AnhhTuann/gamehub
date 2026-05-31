@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { ChevronRight, ShoppingCart, Heart, Star, Monitor, Calendar, Building2, Gamepad2 } from 'lucide-react';
 import { Game } from '../types';
 import { getGameDetails } from '../services/api';
-import { useCart } from '../context/CartContext';
+import { useCartStore } from '../store/useCartStore';
 
 /* ===== Pixel Star Rating ===== */
 const PixelRating = ({ rating }: { rating: number }) => {
@@ -117,7 +117,7 @@ const TabContent = ({ tab, game }: { tab: TabType; game: Game }) => {
 /* ===== Main ProductDetail Page ===== */
 export const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string>('');
@@ -295,8 +295,13 @@ export const ProductDetail = () => {
 
                 {/* ADD TO CART */}
                 <button
-                  onClick={() => addToCart(game)}
-                  className="w-full py-3.5 flex items-center justify-center text-sm font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] rounded-md border-2 border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200"
+                  onClick={() => addToCart({
+                    id: game.id,
+                    title: game.title,
+                    price: game.price,
+                    coverImage: game.image
+                  })}
+                  className="w-full py-3.5 flex items-center justify-center text-sm font-bold uppercase tracking-wider bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] rounded-md border-2 border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 cursor-pointer"
                   style={{ boxShadow: '0 0 15px var(--accent-glow)' }}
                 >
                   ADD TO CART
@@ -346,3 +351,5 @@ export const ProductDetail = () => {
     </div>
   );
 };
+
+

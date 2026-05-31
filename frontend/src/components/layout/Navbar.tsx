@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Menu, X, User, Search, Sun, Moon, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
+import { useCartStore } from '../../store/useCartStore';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 import { BrandLogo } from '../common/BrandLogo';
 
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { cartCount, openCart } = useCart();
+  const cart = useCartStore((state) => state.cart);
+  const openCart = useCartStore((state) => state.openCart);
+  const cartCount = cart.length;
   const { toggleTheme, isDark } = useTheme();
   const { isLoggedIn, user, logout } = useAuth();
   const location = useLocation();

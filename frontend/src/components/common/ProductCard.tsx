@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Star, ShoppingCart, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Game } from '../../types';
-import { useCart } from '../../context/CartContext';
+import { useCartStore } from '../../store/useCartStore';
 
 interface ProductCardProps {
   product: Game;
@@ -33,7 +33,7 @@ const PixelRating = ({ rating }: { rating: number }) => {
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) => {
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
 
   return (
     <motion.div
@@ -110,8 +110,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
             ${product.price.toFixed(2)}
           </span>
           <button
-            onClick={() => addToCart(product)}
-            className="flex items-center gap-1.5 text-xs font-bold bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] px-4 py-2.5 rounded-md border border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 uppercase tracking-wide"
+            onClick={() => addToCart({
+              id: product.id,
+              title: product.title,
+              price: product.price,
+              coverImage: product.image
+            })}
+            className="flex items-center gap-1.5 text-xs font-bold bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] px-4 py-2.5 rounded-md border border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 uppercase tracking-wide cursor-pointer"
             style={{ boxShadow: '3px 3px 0 0 var(--card-shadow)' }}
           >
             <ShoppingCart className="w-3.5 h-3.5" />
