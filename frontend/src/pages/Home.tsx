@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Game } from '../types';
 import { getTrendingGames, getNewReleases, getAllGames, getSpecialDeals } from '../services/api';
 import { HeroBanner } from '../components/home/HeroBanner';
 import { ProductCard } from '../components/common/ProductCard';
 import { Link } from 'react-router-dom';
-import { Flame, Tag, Grid, LayoutTemplate } from 'lucide-react';
+import { Flame, Tag, Grid, LayoutTemplate, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const BROWSE_CATEGORIES = [
@@ -20,6 +20,19 @@ export const Home = () => {
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'New Releases' | 'Specials' | 'Free Games' | 'By User Tags'>('New Releases');
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollAmount = clientWidth * 0.75;
+      scrollRef.current.scrollTo({
+        left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   useEffect(() => {
     Promise.all([
@@ -61,9 +74,27 @@ export const Home = () => {
 
       {/* 2. Discounts & Events */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 border-t border-[var(--border-primary)] mt-12">
-        <div className="flex items-center gap-3 mb-8">
-          <Tag className="w-6 h-6 text-[var(--neon-green)]" />
-          <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">DISCOUNTS & EVENTS</h2>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <Tag className="w-6 h-6 text-[var(--neon-green)]" />
+            <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">DISCOUNTS & EVENTS</h2>
+          </div>
+          <div className="flex gap-2.5">
+            <button 
+              onClick={() => scroll('left')}
+              className="p-1.5 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#bd93f9] text-[#6272a4] hover:text-[#bd93f9] transition-all cursor-pointer active:scale-95 flex items-center justify-center"
+              title="Scroll Left"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => scroll('right')}
+              className="p-1.5 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#bd93f9] text-[#6272a4] hover:text-[#bd93f9] transition-all cursor-pointer active:scale-95 flex items-center justify-center"
+              title="Scroll Right"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
         
         {loading ? (
@@ -73,7 +104,7 @@ export const Home = () => {
              ))}
           </div>
         ) : (
-          <div className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
+          <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
             {specialDeals.map((game, idx) => (
               <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 snap-start relative group">
                 <ProductCard product={game} />
