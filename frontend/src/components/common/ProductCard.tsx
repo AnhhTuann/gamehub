@@ -42,13 +42,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
-      className="group flex flex-col w-full bg-[var(--bg-card)] border-2 border-[var(--border-primary)] rounded-lg overflow-hidden transition-all duration-300 hover:border-[var(--accent)] hover:-translate-y-1"
+      className="group flex flex-col w-full h-full bg-[var(--bg-card)] border-2 border-[var(--border-primary)] rounded-lg overflow-hidden transition-all duration-300 hover:border-[var(--accent)] hover:-translate-y-1"
       style={{ boxShadow: 'none' }}
       onMouseEnter={e => (e.currentTarget.style.boxShadow = `4px 4px 0 0 var(--shadow-hover-color)`)}
       onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-video overflow-hidden block bg-black">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] overflow-hidden block bg-black">
         {product.image ? (
           <img
             src={product.image}

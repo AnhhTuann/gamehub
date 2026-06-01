@@ -43,15 +43,16 @@ interface Game {
   coverGradient: string;
   addedBy?: string;
   addedDate?: string;
+  stockQuantity: number;
 }
 
 // Initial Mock Games Data
 const INITIAL_GAMES: Game[] = [
-  { id: '1', title: 'Chrono Trigger Reborn', category: 'RPG', price: 14.99, status: 'Active', coverGradient: 'from-[#bd93f9] to-[#ff79c6]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31' },
-  { id: '2', title: 'Street Fighter II: Turbo', category: 'Fighting', price: 9.99, status: 'Active', coverGradient: 'from-[#ff5555] to-[#ffb86c]', addedBy: 'Tifa Lockhart (Admin)', addedDate: '2026-05-30' },
-  { id: '3', title: 'Super Mario World 8-Bit', category: 'Platformer', price: 19.99, status: 'Active', coverGradient: 'from-[#50fa7b] to-[#8be9fd]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31' },
-  { id: '4', title: 'Metroid Prime: Retro Edition', category: 'Adventure', price: 29.99, status: 'Draft', coverGradient: 'from-[#ffb86c] to-[#ff5555]', addedBy: 'Barret Wallace (Staff)', addedDate: '2026-05-29' },
-  { id: '5', title: 'Castlevania: Symphony', category: 'Metroidvania', price: 15.99, status: 'Active', coverGradient: 'from-[#8be9fd] to-[#bd93f9]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31' },
+  { id: '1', title: 'Chrono Trigger Reborn', category: 'RPG', price: 14.99, status: 'Active', coverGradient: 'from-[#bd93f9] to-[#ff79c6]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31', stockQuantity: 42 },
+  { id: '2', title: 'Street Fighter II: Turbo', category: 'Fighting', price: 9.99, status: 'Active', coverGradient: 'from-[#ff5555] to-[#ffb86c]', addedBy: 'Tifa Lockhart (Admin)', addedDate: '2026-05-30', stockQuantity: 15 },
+  { id: '3', title: 'Super Mario World 8-Bit', category: 'Platformer', price: 19.99, status: 'Active', coverGradient: 'from-[#50fa7b] to-[#8be9fd]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31', stockQuantity: 8 },
+  { id: '4', title: 'Metroid Prime: Retro Edition', category: 'Adventure', price: 29.99, status: 'Draft', coverGradient: 'from-[#ffb86c] to-[#ff5555]', addedBy: 'Barret Wallace (Staff)', addedDate: '2026-05-29', stockQuantity: 0 },
+  { id: '5', title: 'Castlevania: Symphony', category: 'Metroidvania', price: 15.99, status: 'Active', coverGradient: 'from-[#8be9fd] to-[#bd93f9]', addedBy: 'Cloud Strife (Staff)', addedDate: '2026-05-31', stockQuantity: 104 },
 ];
 
 // Available gradients for covers in form
@@ -153,6 +154,7 @@ export const Admin = () => {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isRestockOpen, setIsRestockOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
   // Form states (Add/Edit)
@@ -161,12 +163,24 @@ export const Admin = () => {
   const [formPrice, setFormPrice] = useState('');
   const [formStatus, setFormStatus] = useState<'Active' | 'Draft'>('Active');
   const [formGradient, setFormGradient] = useState('from-[#bd93f9] to-[#ff79c6]');
+  const [formStock, setFormStock] = useState<number>(0);
+  const [restockAmount, setRestockAmount] = useState<number>(0);
+
+  // Utility for Generating CD-Keys
+  const generateCDKeys = (quantity: number) => {
+    const keys = [];
+    for (let i = 0; i < quantity; i++) {
+      keys.push(`GHUB-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`);
+    }
+    return keys;
+  };
 
   // Handlers
   const handleOpenAdd = () => {
     setFormTitle('');
     setFormCategory('');
     setFormPrice('');
+    setFormStock(0);
     setFormStatus('Active');
     setFormGradient('from-[#bd93f9] to-[#ff79c6]');
     setIsAddOpen(true);
@@ -176,17 +190,46 @@ export const Admin = () => {
     e.preventDefault();
     if (!formTitle || !formCategory || !formPrice) return;
     
+    if (formStock > 0) {
+      console.log(`Generating ${formStock} random CD-Keys for ${formTitle}...`, generateCDKeys(formStock));
+    }
+
     const newGame: Game = {
       id: Date.now().toString(),
       title: formTitle,
       category: formCategory,
       price: parseFloat(formPrice) || 0,
-      status: formStatus,
-      coverGradient: formGradient
+      status: formStock > 0 ? 'Active' : 'Draft',
+      coverGradient: formGradient,
+      addedBy: 'Admin (You)',
+      addedDate: new Date().toISOString().split('T')[0],
+      stockQuantity: formStock
     };
 
     setGames([newGame, ...games]);
     setIsAddOpen(false);
+  };
+
+  const handleOpenRestock = (game: Game) => {
+    setSelectedGame(game);
+    setRestockAmount(10);
+    setIsRestockOpen(true);
+  };
+
+  const handleRestockSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedGame || restockAmount <= 0) return;
+    
+    console.log(`Generating ${restockAmount} random CD-Keys for ${selectedGame.title}...`, generateCDKeys(restockAmount));
+
+    setGames(games.map(g => g.id === selectedGame.id ? {
+      ...g,
+      stockQuantity: g.stockQuantity + restockAmount,
+      status: (g.stockQuantity + restockAmount) > 0 ? 'Active' : 'Draft'
+    } : g));
+    
+    setIsRestockOpen(false);
+    setSelectedGame(null);
   };
 
   const handleOpenEdit = (game: Game) => {
@@ -456,10 +499,11 @@ export const Admin = () => {
                     <thead>
                       <tr className="border-b border-[#6272a4]/40 bg-[#191a21]/80 text-[#6272a4] text-xs font-bold uppercase tracking-wider">
                         <th className="py-4 px-6 font-semibold">COVER</th>
-                        <th className="py-4 px-6 font-semibold">TITLE</th>
-                        <th className="py-4 px-6 font-semibold">CATEGORY</th>
+                        <th className="py-4 px-6 font-semibold">GAME TITLE</th>
                         <th className="py-4 px-6 font-semibold">PRICE</th>
-                        <th className="py-4 px-6 font-semibold">STATUS</th>
+                        <th className="py-4 px-6 font-semibold text-center">IN STOCK</th>
+                        <th className="py-4 px-6 font-semibold">ADDED BY</th>
+                        <th className="py-4 px-6 font-semibold text-center">STATUS</th>
                         <th className="py-4 px-6 font-semibold text-center">ACTIONS</th>
                       </tr>
                     </thead>
@@ -480,14 +524,7 @@ export const Admin = () => {
                                 {game.title}
                               </span>
                               <span className="text-[10px] text-[#6272a4] font-mono tracking-wider block mt-0.5 uppercase">
-                                ID: #{game.id}
-                              </span>
-                            </td>
-
-                            {/* CATEGORY COLUMN */}
-                            <td className="py-4 px-6">
-                              <span className="px-2.5 py-1 rounded bg-[#44475a] text-[#f8f8f2] text-xs font-semibold tracking-wide">
-                                {game.category}
+                                ID: #{game.id} | {game.category}
                               </span>
                             </td>
 
@@ -496,8 +533,18 @@ export const Admin = () => {
                               ${game.price.toFixed(2)}
                             </td>
 
+                            {/* IN STOCK COLUMN */}
+                            <td className="py-4 px-6 text-center font-mono font-bold text-[#f8f8f2]">
+                              {game.stockQuantity}
+                            </td>
+
+                            {/* ADDED BY COLUMN */}
+                            <td className="py-4 px-6 text-xs text-[#bd93f9] font-semibold">
+                              {game.addedBy}
+                            </td>
+
                             {/* STATUS COLUMN */}
-                            <td className="py-4 px-6">
+                            <td className="py-4 px-6 text-center">
                               {game.status === 'Active' ? (
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#50fa7b] text-[#282a36] shadow-[0_0_8px_rgba(80,250,123,0.3)]">
                                   <span className="w-1.5 h-1.5 rounded-full bg-[#282a36] animate-pulse"></span>
@@ -514,6 +561,13 @@ export const Admin = () => {
                             {/* ACTIONS COLUMN */}
                             <td className="py-4 px-6">
                               <div className="flex items-center justify-center gap-3">
+                                <button 
+                                  onClick={() => handleOpenRestock(game)}
+                                  title="Add Stock"
+                                  className="p-2 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#50fa7b] text-[#6272a4] hover:text-[#50fa7b] hover:shadow-[0_0_10px_rgba(80,250,123,0.3)] transition-all active:scale-95"
+                                >
+                                  <Plus className="w-4.5 h-4.5" />
+                                </button>
                                 <button 
                                   onClick={() => handleOpenEdit(game)}
                                   title="Edit Game"
@@ -1010,7 +1064,7 @@ export const Admin = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   {/* Category Input */}
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-bold text-[#ff79c6] tracking-wider font-mono">
@@ -1038,6 +1092,22 @@ export const Admin = () => {
                       value={formPrice}
                       onChange={(e) => setFormPrice(e.target.value)}
                       placeholder="14.99"
+                      className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
+                    />
+                  </div>
+
+                  {/* Initial Stock Input */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-bold text-[#ff79c6] tracking-wider font-mono">
+                      INITIAL STOCK
+                    </label>
+                    <input 
+                      type="number" 
+                      min="0"
+                      required
+                      value={formStock}
+                      onChange={(e) => setFormStock(parseInt(e.target.value) || 0)}
+                      placeholder="0"
                       className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
                     />
                   </div>
@@ -1519,6 +1589,80 @@ export const Admin = () => {
                 </div>
 
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* =================================================== */}
+      {/* RESTOCK MODAL */}
+      {/* =================================================== */}
+      <AnimatePresence>
+        {isRestockOpen && selectedGame && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setIsRestockOpen(false);
+                setSelectedGame(null);
+              }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 30 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              className="relative w-full max-w-sm bg-[#282a36] border-4 border-[#50fa7b] rounded-lg shadow-[0_0_30px_rgba(80,250,123,0.3)] z-10 overflow-hidden"
+            >
+              {/* Header */}
+              <div className="bg-[#191a21] px-6 py-4 border-b-2 border-[#50fa7b] flex items-center justify-between">
+                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-[#50fa7b]">
+                  ADD STOCK
+                </h3>
+                <button 
+                  onClick={() => {
+                    setIsRestockOpen(false);
+                    setSelectedGame(null);
+                  }}
+                  className="p-1 text-[#6272a4] hover:text-[#50fa7b] transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Form Body */}
+              <form onSubmit={handleRestockSubmit} className="p-6 flex flex-col gap-6">
+                
+                <div className="text-center">
+                  <h4 className="text-[#f8f8f2] font-bold tracking-wide">{selectedGame.title}</h4>
+                  <p className="text-xs text-[#6272a4] font-mono mt-1">Current Stock: <span className="text-[#50fa7b]">{selectedGame.stockQuantity}</span></p>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-[#50fa7b] tracking-wider font-mono text-center">
+                    QUANTITY TO ADD
+                  </label>
+                  <input 
+                    type="number" 
+                    min="1"
+                    required
+                    value={restockAmount}
+                    onChange={(e) => setRestockAmount(parseInt(e.target.value) || 0)}
+                    className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-3 text-center text-xl font-bold text-[#f8f8f2] focus:outline-none focus:border-[#50fa7b] transition-colors font-mono"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-[#50fa7b] hover:bg-[#8be9fd] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(80,250,123,0.2)] transition-colors uppercase"
+                >
+                  GENERATE & ADD TO WAREHOUSE
+                </button>
+              </form>
             </motion.div>
           </div>
         )}

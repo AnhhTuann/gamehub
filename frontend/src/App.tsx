@@ -16,6 +16,7 @@ import { Admin } from './pages/Admin';
 import { CustomerPortal } from './pages/CustomerPortal';
 import { NotFound } from './pages/NotFound';
 import { Specials } from './pages/Specials';
+import { News } from './pages/News';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
                   <Route path="checkout" element={<Checkout />} />
                   <Route path="portal" element={<CustomerPortal />} />
                   <Route path="specials" element={<Specials />} />
+                  <Route path="news" element={<News />} />
                 </Route>
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />

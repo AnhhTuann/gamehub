@@ -37,6 +37,7 @@ const fetchGames = async (endpoint: string, params = ''): Promise<Game[]> => {
 
 export const getTrendingGames = () => fetchGames('/games', '&ordering=-rating&dates=2023-01-01,2024-12-31&page_size=12');
 export const getNewReleases = () => fetchGames('/games', '&ordering=-released&dates=2024-01-01,2024-12-31&page_size=8');
+export const getNewReleasesNews = () => fetchGames('/games', '&ordering=-released&dates=2024-01-01,2024-12-31&page_size=20');
 export const getFeaturedGames = () => fetchGames('/games', '&ordering=-added&page_size=4');
 export const getAllGames = (page = 1) => fetchGames('/games', `&ordering=-metacritic&page_size=40&page=${page}`);
 

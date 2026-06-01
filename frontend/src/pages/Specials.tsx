@@ -11,12 +11,13 @@ interface Deal {
   savings: string;
   thumb: string;
   storeID: string;
+  steamAppID?: string;
 }
 
 // Helper to upgrade small Steam thumbnails to high-res headers
 const getHighResImage = (url: string) => {
-  if (url.includes('capsule_sm_120')) {
-    return url.replace('capsule_sm_120', 'header');
+  if (url.includes('capsule')) {
+    return url.replace(/capsule_[a-zA-Z0-9_]+\.jpg/i, 'header.jpg');
   }
   return url;
 };
@@ -96,7 +97,7 @@ export const Specials = () => {
                 id: deal.dealID,
                 rawgId: 0,
                 title: deal.title,
-                image: getHighResImage(deal.thumb),
+                image: deal.steamAppID ? `https://cdn.akamai.steamstatic.com/steam/apps/${deal.steamAppID}/header.jpg` : getHighResImage(deal.thumb),
                 price: parseFloat(deal.salePrice),
                 originalPrice: parseFloat(deal.normalPrice),
                 rating: 0,
