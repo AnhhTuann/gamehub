@@ -24,7 +24,10 @@ const fetchGames = async (endpoint: string, params = ''): Promise<Game[]> => {
         rating: g.rating,
         released: g.released,
         price,
-        genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined
+        genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined,
+        tags: g.tags ? g.tags.map((t: any) => ({ name: t.name, slug: t.slug })) : [],
+        platforms: g.parent_platforms ? g.parent_platforms.map((p: any) => p.platform.name) : [],
+        screenshots: g.short_screenshots ? g.short_screenshots.map((s: any) => s.image) : []
       };
     }));
     
@@ -38,7 +41,7 @@ const fetchGames = async (endpoint: string, params = ''): Promise<Game[]> => {
 export const getTrendingGames = () => fetchGames('/games', '&ordering=-rating&dates=2023-01-01,2024-12-31&page_size=12');
 export const getNewReleases = () => fetchGames('/games', '&ordering=-released&dates=2024-01-01,2024-12-31&page_size=8');
 export const getNewReleasesNews = () => fetchGames('/games', '&ordering=-released&dates=2024-01-01,2024-12-31&page_size=20');
-export const getFeaturedGames = () => fetchGames('/games', '&ordering=-added&page_size=4');
+export const getFeaturedGames = () => fetchGames('/games', '&ordering=-rating&page_size=7');
 export const getAllGames = (page = 1) => fetchGames('/games', `&ordering=-metacritic&page_size=40&page=${page}`);
 
 export const getGameDetails = async (rawgId: number): Promise<Game | null> => {

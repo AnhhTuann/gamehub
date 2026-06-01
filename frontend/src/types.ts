@@ -19,6 +19,7 @@ export interface Game {
   developers?: string[];
   publishers?: string[];
   platforms?: string[];
+  tags?: { name: string; slug: string }[];
 }
 
 export interface CartItem {

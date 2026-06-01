@@ -1,68 +1,209 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Gamepad2, Zap, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Tags, Monitor, Package, Gift } from 'lucide-react';
+import { getFeaturedGames } from '../../services/api';
+import { Game } from '../../types';
 
 export const HeroBanner = () => {
+  const [games, setGames] = useState<Game[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    getFeaturedGames().then((data) => {
+      setGames(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (games.length === 0 || isHovered) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % games.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [games.length, isHovered, currentIndex]);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % games.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? games.length - 1 : prev - 1));
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  if (games.length === 0) {
+    return (
+      <section className="relative w-full bg-theme-primary pt-6 pb-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="w-full h-[450px] bg-[#191A21] animate-pulse rounded-lg" />
+        </div>
+      </section>
+    );
+  }
+
+  const activeGame = games[currentIndex];
+  // Extract up to 4 screenshots, excluding the main image if possible
+  const screenshots = activeGame.screenshots?.slice(1, 5) || [];
+  const tags = activeGame.tags?.slice(0, 3) || [];
+
   return (
-    <section className="relative w-full overflow-hidden bg-theme-primary">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-12">
-        {/* Main Hero Banner */}
-        <div className="relative border-2 border-[var(--accent)] overflow-hidden min-h-[350px] md:min-h-[420px] flex items-center rounded-lg" style={{ boxShadow: '0 0 30px var(--accent-glow), inset 0 0 30px rgba(0,0,0,0.05)' }}>
-          {/* Background image */}
-          <img
-            src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1800&auto=format&fit=crop"
-            alt="Gaming Setup"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {/* Theme-aware dark overlay */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, var(--hero-overlay-from), var(--hero-overlay-via), var(--hero-overlay-to))' }} />
-          {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(var(--accent-glow) 1px, transparent 1px), linear-gradient(90deg, var(--accent-glow) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-          
-          {/* Content */}
-          <div className="relative z-10 p-6 md:p-12 max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+    <section className="relative w-full overflow-hidden bg-theme-primary pt-6 pb-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="mb-6">
+          <h2 className="font-pixel text-xl text-[var(--text-primary)] tracking-wider">FEATURED & RECOMMENDED</h2>
+        </div>
+
+        <div 
+          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-[#191A21] min-h-[450px]"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Main Image (Left side on Desktop, Top on Mobile) */}
+          <div className="w-full md:w-[62%] h-[250px] md:h-auto relative bg-[#121318]">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={`main-img-${activeGame.id}`}
+                src={activeGame.image}
+                alt={activeGame.title}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              />
+            </AnimatePresence>
+            
+            {/* Left/Right Arrows overlaying the image edges */}
+            <button 
+              onClick={handlePrev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/70 text-white/50 hover:text-[#bd93f9] rounded opacity-0 group-hover:opacity-100 transition-all z-10"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-4 h-4 text-[var(--neon-pink)]" />
-                <span className="text-sm font-medium text-[var(--neon-pink)] tracking-wide uppercase">New Release 2025</span>
-              </div>
-              <h1 className="font-pixel text-xl md:text-2xl lg:text-3xl leading-relaxed mb-5">
-                <span className="text-[var(--accent)] drop-shadow-[0_0_20px_rgba(189,147,249,0.4)]">EXPLORE 1000+</span>
-                <br />
-                <span className="text-[var(--neon-pink)] drop-shadow-[0_0_20px_rgba(255,121,198,0.4)]">CLASSIC & INDIE</span>
-                <br />
-                <span className="text-[var(--text-primary)]">GAMES</span>
-              </h1>
-              <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-md mb-8 leading-relaxed">
-                From nostalgic pixel adventures to modern masterpieces. Find your next favorite game at unbeatable prices.
-              </p>
-              <Link 
-                to="/shop"
-                className="inline-flex items-center gap-3 text-sm font-semibold bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] px-7 py-3.5 border-2 border-[var(--accent-hover)] rounded-md hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200"
-                style={{ boxShadow: '4px 4px 0 0 var(--card-shadow), 0 0 20px var(--accent-glow)' }}
-              >
-                <Gamepad2 className="w-4 h-4" />
-                BROWSE ALL GAMES
-              </Link>
-            </motion.div>
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+            <button 
+              onClick={handleNext}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/70 text-white/50 hover:text-[#bd93f9] rounded opacity-0 group-hover:opacity-100 transition-all z-10 md:hidden"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
           </div>
 
-          {/* Right side floating emoji */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="hidden lg:flex absolute right-12 bottom-8 items-end"
-          >
-            <div className="text-7xl" style={{ animation: 'float 3s ease-in-out infinite', filter: 'drop-shadow(0 0 20px rgba(189,147,249,0.3))' }}>
-              🕹️
+          {/* Info Panel (Right side on Desktop, Bottom on Mobile) */}
+          <div className="w-full md:w-[38%] p-6 flex flex-col justify-between relative bg-gradient-to-r from-[#191A21] to-[#282a36]">
+            {/* Right Arrow for Desktop (positioned on the right edge of the whole container) */}
+            <button 
+              onClick={handleNext}
+              className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/70 text-white/50 hover:text-[#bd93f9] rounded opacity-0 group-hover:opacity-100 transition-all z-20"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+
+            <div>
+              <AnimatePresence mode="wait">
+                <motion.h2 
+                  key={`title-${activeGame.id}`}
+                  className="font-pixel text-2xl md:text-3xl text-white mb-6 leading-tight drop-shadow-lg pr-8"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {activeGame.title}
+                </motion.h2>
+              </AnimatePresence>
+
+              {/* Screenshots Grid */}
+              <div className="grid grid-cols-2 gap-2 mb-6">
+                <AnimatePresence mode="wait">
+                  {screenshots.map((src, i) => (
+                    <motion.div
+                      key={`screenshot-${activeGame.id}-${i}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.1 }}
+                      className="aspect-video bg-[#282a36] rounded overflow-hidden"
+                    >
+                      <img src={src} alt="Screenshot" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              {/* Tags Section */}
+              {tags.length > 0 && (
+                <div className="mb-6">
+                  <div className="text-xs text-[#6272a4] font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <Tags className="w-3 h-3" /> User Tags
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <AnimatePresence mode="wait">
+                      {tags.map((tag) => (
+                        <motion.span 
+                          key={`tag-${activeGame.id}-${tag.slug}`}
+                          className="px-2.5 py-1 bg-[#44475a] text-white text-xs rounded hover:bg-[#6272a4] transition-colors cursor-pointer"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {tag.name}
+                        </motion.span>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              )}
             </div>
-          </motion.div>
+
+            {/* Footer: Fake Price & Platforms */}
+            <div className="flex items-end justify-between mt-4">
+              <div className="flex items-center gap-2 text-[#6272a4]">
+                {activeGame.platforms?.some(p => p.toLowerCase().includes('pc') || p.toLowerCase().includes('windows')) && <Monitor className="w-4 h-4" />}
+                {activeGame.platforms?.some(p => p.toLowerCase().includes('playstation')) && <Package className="w-4 h-4" />}
+                {activeGame.platforms?.some(p => p.toLowerCase().includes('xbox')) && <Gift className="w-4 h-4" />}
+              </div>
+              
+              <div className="flex flex-col items-end">
+                {activeGame.price > 0 ? (
+                  <div className="text-xl font-bold text-[var(--neon-green)] drop-shadow-[0_0_8px_rgba(80,250,123,0.3)]">
+                    ${activeGame.price.toFixed(2)}
+                  </div>
+                ) : (
+                  <div className="text-xl font-bold text-[#ffb86c]">
+                    Free To Play
+                  </div>
+                )}
+                <Link 
+                  to="/shop" 
+                  className="text-xs text-[#bd93f9] hover:text-white underline decoration-[#bd93f9]/50 hover:decoration-white underline-offset-4 transition-colors mt-1"
+                >
+                  View Details
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Pagination Dots */}
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+            {games.map((_, idx) => (
+              <button
+                key={`dot-${idx}`}
+                onClick={() => goToSlide(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  idx === currentIndex 
+                    ? 'w-8 bg-[#bd93f9] shadow-[0_0_10px_rgba(189,147,249,0.5)]' 
+                    : 'w-4 bg-[#44475a] hover:bg-[#6272a4]'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
