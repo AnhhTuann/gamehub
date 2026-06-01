@@ -38,9 +38,9 @@ export const HeroBanner = () => {
 
   if (games.length === 0) {
     return (
-      <section className="relative w-full bg-theme-primary pt-0 pb-12">
+      <section className="relative w-full bg-gamehub-bg pt-0 pb-12">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="w-full h-[650px] sm:h-[550px] md:h-[460px] bg-[#191A21] animate-pulse rounded-lg" />
+          <div className="w-full h-[650px] sm:h-[550px] md:h-[460px] bg-gamehub-surface animate-pulse rounded-lg" />
         </div>
       </section>
     );
@@ -55,10 +55,10 @@ export const HeroBanner = () => {
   const tagsToRender = displayTags.slice(0, 3);
 
   return (
-    <section className="relative w-full overflow-hidden bg-theme-primary pt-0 pb-12">
+    <section className="relative w-full overflow-hidden bg-gamehub-bg pt-0 pb-12">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div 
-          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-[#191A21] min-h-[650px] sm:min-h-[550px] md:min-h-[460px]"
+          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-gamehub-surface min-h-[650px] sm:min-h-[550px] md:min-h-[460px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -77,7 +77,7 @@ export const HeroBanner = () => {
           </button>
 
           {/* Main Image (Left side on Desktop, Top on Mobile) */}
-          <div className="w-full md:w-[62%] h-[250px] md:h-auto relative bg-[#121318]">
+          <div className="w-full md:w-[62%] h-[250px] md:h-auto relative bg-gamehub-bg">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`main-img-${activeGame.id}`}
@@ -99,18 +99,18 @@ export const HeroBanner = () => {
           </div>
 
           {/* Info Panel (Right side on Desktop, Bottom on Mobile) */}
-          <div className="w-full md:w-[38%] p-6 flex flex-col h-full justify-between relative bg-gradient-to-r from-[#191A21] to-[#282a36]">
+          <div className="w-full md:w-[38%] p-6 flex flex-col h-full justify-between relative bg-gamehub-surface">
             <div>
               <AnimatePresence mode="wait">
                 <motion.h2 
                   key={`title-${activeGame.id}`}
-                  className="font-sans font-bold text-xl md:text-2xl text-white mb-4 leading-tight drop-shadow-lg pr-8 line-clamp-2 min-h-[56px] md:min-h-[64px]"
+                  className="font-sans font-bold text-xl md:text-2xl text-gamehub-text mb-4 leading-tight drop-shadow-lg pr-8 line-clamp-2 min-h-[56px] md:min-h-[64px]"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Link to={`/product/${activeGame.id}`} state={{ productTitle: activeGame.title, productData: activeGame }} className="hover:text-[var(--neon-pink)] transition-colors">
+                  <Link to={`/product/${activeGame.id}`} state={{ productTitle: activeGame.title, productData: activeGame }} className="hover:text-gamehub-purple transition-colors">
                     {activeGame.title}
                   </Link>
                 </motion.h2>
@@ -126,7 +126,7 @@ export const HeroBanner = () => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.3, delay: i * 0.1 }}
-                      className="aspect-video bg-[#282a36] rounded overflow-hidden"
+                      className="aspect-video bg-gamehub-bg rounded overflow-hidden"
                     >
                       <img src={src} alt="Screenshot" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
                     </motion.div>
@@ -136,7 +136,7 @@ export const HeroBanner = () => {
 
               {/* Tags / Genres Section */}
               <div className="mb-6 min-h-[70px]">
-                <div className="text-xs text-[#6272a4] font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <div className="text-xs text-gamehub-muted font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <Tags className="w-3 h-3" /> {englishTags.length > 0 ? 'User Tags' : 'Genres'}
                 </div>
                 {tagsToRender.length > 0 ? (
@@ -145,7 +145,7 @@ export const HeroBanner = () => {
                       {tagsToRender.map((tag) => (
                         <motion.span 
                           key={`tag-${activeGame.id}-${tag.slug}`}
-                          className="px-2 py-1 bg-[#282a36] text-[#6272a4] text-xs rounded hover:bg-[#44475a] hover:text-white transition-colors cursor-pointer capitalize"
+                          className="px-2 py-1 bg-gamehub-bg text-gamehub-muted text-xs rounded hover:opacity-80 hover:text-gamehub-purple transition-all cursor-pointer capitalize"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
@@ -157,14 +157,14 @@ export const HeroBanner = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <span className="text-[#6272a4] text-xs italic">Data missing</span>
+                  <span className="text-gamehub-muted text-xs italic">Data missing</span>
                 )}
               </div>
             </div>
 
             {/* Footer: Fake Price & Platforms */}
             <div className="flex items-end justify-between mt-auto">
-              <div className="flex items-center gap-2 text-[#6272a4]">
+              <div className="flex items-center gap-2 text-gamehub-muted">
                 {activeGame.platforms?.some(p => p.toLowerCase().includes('pc') || p.toLowerCase().includes('windows')) && <Monitor className="w-4 h-4" />}
                 {activeGame.platforms?.some(p => p.toLowerCase().includes('playstation')) && <Package className="w-4 h-4" />}
                 {activeGame.platforms?.some(p => p.toLowerCase().includes('xbox')) && <Gift className="w-4 h-4" />}
@@ -172,18 +172,18 @@ export const HeroBanner = () => {
               
               <div className="flex items-center gap-3">
                 {activeGame.price > 0 ? (
-                  <div className="text-lg font-bold text-[#50fa7b] drop-shadow-[0_0_8px_rgba(80,250,123,0.3)]">
+                  <div className="text-lg font-bold text-gamehub-green drop-shadow-sm">
                     ${activeGame.price.toFixed(2)}
                   </div>
                 ) : (
-                  <div className="text-lg font-bold text-[#ffb86c]">
+                  <div className="text-lg font-bold text-orange-400">
                     Free To Play
                   </div>
                 )}
                 <Link 
                   to={`/product/${activeGame.id}`} 
                   state={{ productTitle: activeGame.title, productData: activeGame }}
-                  className="px-3 py-1.5 bg-[#bd93f9] text-[#282a36] text-xs font-bold rounded hover:bg-white transition-colors"
+                  className="px-3 py-1.5 bg-gamehub-purple text-white text-xs font-bold rounded hover:opacity-80 transition-opacity"
                 >
                   VIEW DETAILS
                 </Link>
@@ -199,8 +199,8 @@ export const HeroBanner = () => {
                 onClick={() => goToSlide(idx)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   idx === currentIndex 
-                    ? 'w-8 bg-[#bd93f9] shadow-[0_0_10px_rgba(189,147,249,0.5)]' 
-                    : 'w-4 bg-[#44475a] hover:bg-[#6272a4]'
+                    ? 'w-8 bg-gamehub-purple shadow-sm' 
+                    : 'w-4 bg-gamehub-border hover:bg-gamehub-muted'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />

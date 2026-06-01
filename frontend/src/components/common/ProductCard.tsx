@@ -20,14 +20,14 @@ const PixelRating = ({ rating }: { rating: number }) => {
           key={i}
           className={`w-3.5 h-3.5 ${
             i < fullStars
-              ? 'text-[var(--neon-yellow)] fill-[var(--neon-yellow)]'
+              ? 'text-yellow-400 fill-yellow-400'
               : i === fullStars && hasHalf
-              ? 'text-[var(--neon-yellow)] fill-[var(--neon-yellow)] opacity-50'
-              : 'text-[var(--text-muted)] opacity-40'
+              ? 'text-yellow-400 fill-yellow-400 opacity-50'
+              : 'text-gamehub-muted opacity-40'
           }`}
         />
       ))}
-      <span className="text-xs text-[var(--text-muted)] ml-1.5">{rating.toFixed(1)}</span>
+      <span className="text-xs text-gamehub-muted ml-1.5">{rating.toFixed(1)}</span>
     </div>
   );
 };
@@ -42,13 +42,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
-      className="group flex flex-col w-full h-full bg-[var(--bg-card)] border-2 border-[var(--border-primary)] rounded-lg overflow-hidden transition-all duration-300 hover:border-[var(--accent)] hover:-translate-y-1"
-      style={{ boxShadow: 'none' }}
-      onMouseEnter={e => (e.currentTarget.style.boxShadow = `4px 4px 0 0 var(--shadow-hover-color)`)}
-      onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
+      className="group flex flex-col w-full h-full bg-gamehub-surface border-2 border-gamehub-border rounded-lg overflow-hidden transition-all duration-300 hover:border-gamehub-purple hover:-translate-y-1 shadow-sm hover:shadow-lg"
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] w-full overflow-hidden block bg-black">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] w-full overflow-hidden block bg-gamehub-bg">
         {product.image ? (
           <img
             src={product.image}
@@ -56,9 +53,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-[#44475a]/50 border-b border-[var(--border-primary)]">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gamehub-surface border-b border-gamehub-border">
             <span className="text-4xl opacity-60 mb-2">👾</span>
-            <span className="font-pixel text-[10px] text-[#6272a4] tracking-widest font-bold">DATA MISSING</span>
+            <span className="font-pixel text-[10px] text-gamehub-muted tracking-widest font-bold">DATA MISSING</span>
           </div>
         )}
         {/* Subtle scanline overlay */}
@@ -66,8 +63,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
         
         {/* Rating badge */}
         {product.rating > 0 && (
-          <div className="absolute top-2 left-2 z-10 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-[var(--accent)] px-2.5 py-1 rounded-md">
-            <span className="text-xs font-bold text-[var(--accent)]">★ {product.rating.toFixed(1)}</span>
+          <div className="absolute top-2 left-2 z-10 bg-gamehub-surface/90 backdrop-blur-sm border border-gamehub-purple px-2.5 py-1 rounded-md">
+            <span className="text-xs font-bold text-gamehub-purple">★ {product.rating.toFixed(1)}</span>
           </div>
         )}
 
@@ -75,7 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
         {onRemove && (
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(product.id); }}
-            className="absolute top-2 right-2 z-20 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-[#6272a4] text-[#6272a4] p-1.5 rounded-md hover:text-[var(--neon-pink)] hover:border-[var(--neon-pink)] transition-all"
+            className="absolute top-2 right-2 z-20 bg-gamehub-surface/90 backdrop-blur-sm border border-gamehub-border text-gamehub-muted p-1.5 rounded-md hover:text-gamehub-purple hover:border-gamehub-purple transition-all"
             title="Remove from Wishlist"
           >
             <X className="w-4 h-4" />
@@ -87,13 +84,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       <div className="flex flex-col flex-grow justify-between p-4">
         <div className="flex flex-col gap-2.5">
           {/* Genre tag */}
-          <span className="text-[11px] font-semibold text-[var(--accent)] tracking-wider uppercase">
+          <span className="text-[11px] font-semibold text-gamehub-purple tracking-wider uppercase">
             {product.genre?.name || 'UNRATED'}
           </span>
 
           {/* Title - Sans-serif */}
           <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }}>
-            <h3 className="text-sm font-bold leading-snug text-[var(--neon-pink)] hover:text-[var(--accent)] transition-colors line-clamp-2 min-h-[3rem]">
+            <h3 className="text-sm font-bold leading-snug text-gamehub-text group-hover:text-gamehub-purple transition-colors line-clamp-2 min-h-[3rem]">
               {product.title || 'Unknown Title'}
             </h3>
           </Link>
@@ -102,30 +99,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
           {product.rating > 0 ? (
             <PixelRating rating={product.rating} />
           ) : (
-            <span className="text-xs font-medium text-[var(--text-muted)]">Unrated</span>
+            <span className="text-xs font-medium text-gamehub-muted">Unrated</span>
           )}
         </div>
 
         {/* Price + Cart */}
-        <div className="flex items-center justify-between mt-auto pt-4 border-t border-[var(--border-primary)]">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gamehub-border">
           <div className="flex flex-col">
             {product.originalPrice && (
-              <span className="text-xs text-[var(--text-muted)] line-through font-medium">
+              <span className="text-xs text-gamehub-muted line-through font-medium">
                 ${product.originalPrice.toFixed(2)}
               </span>
             )}
             {product.price !== undefined && product.price !== null ? (
-              <span className="text-lg font-bold text-[var(--neon-green)]">
+              <span className="text-lg font-bold text-gamehub-green">
                 ${product.price.toFixed(2)}
               </span>
             ) : (
-              <span className="text-[#6272a4] text-sm">N/A</span>
+              <span className="text-gamehub-muted text-sm">N/A</span>
             )}
           </div>
           {product.stockQuantity === 0 ? (
             <button
               disabled
-              className="flex items-center gap-1.5 text-xs font-bold bg-[#ff5555]/20 text-[#ff5555] px-4 py-2.5 rounded-md border border-[#ff5555]/50 uppercase tracking-wide cursor-not-allowed"
+              className="flex items-center gap-1.5 text-xs font-bold bg-red-500/10 text-red-500 px-4 py-2.5 rounded-md border border-red-500/30 uppercase tracking-wide cursor-not-allowed"
             >
               OUT OF STOCK
             </button>
@@ -137,8 +134,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
                 price: product.price,
                 coverImage: product.image
               })}
-              className="flex items-center gap-1.5 text-xs font-bold bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] px-4 py-2.5 rounded-md border border-[var(--accent-hover)] hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 uppercase tracking-wide cursor-pointer"
-              style={{ boxShadow: '3px 3px 0 0 var(--card-shadow)' }}
+              className="flex items-center gap-1.5 text-xs font-bold bg-gamehub-purple text-white px-4 py-2.5 rounded-md border border-gamehub-purple hover:opacity-80 hover:-translate-y-0.5 active:translate-y-0.5 transition-all duration-200 uppercase tracking-wide cursor-pointer"
             >
               <ShoppingCart className="w-3.5 h-3.5" />
               ADD TO CART
