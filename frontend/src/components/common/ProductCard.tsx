@@ -42,7 +42,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
-      className="group flex flex-col w-full h-full bg-gamehub-surface border-2 border-gamehub-border rounded-lg overflow-hidden transition-all duration-300 hover:border-gamehub-purple hover:-translate-y-1 shadow-sm hover:shadow-lg"
+      className="group flex flex-col w-full h-full bg-gamehub-surface border border-gamehub-border/50 rounded-lg overflow-hidden transition-all duration-300 ease-in-out shadow-md hover:-translate-y-1 hover:shadow-2xl hover:border-gamehub-purple/50"
     >
       {/* Image */}
       <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-video w-full overflow-hidden block bg-gamehub-bg">
@@ -81,8 +81,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       </Link>
 
       {/* Content */}
-      <div className="flex flex-col flex-grow justify-between p-4">
-        <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col flex-grow justify-between p-5">
+        <div className="flex flex-col gap-3">
           {/* Genre tag */}
           <span className="text-[11px] font-semibold text-gamehub-purple tracking-wider uppercase">
             {product.genre?.name || 'UNRATED'}
@@ -104,7 +104,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
         </div>
 
         {/* Price + Cart */}
-        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gamehub-border">
+        <div className="flex items-center justify-between mt-auto pt-5 border-t border-gamehub-border/50">
           <div className="flex flex-col">
             {product.originalPrice && (
               <span className="text-xs text-gamehub-muted line-through font-medium">
