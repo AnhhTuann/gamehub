@@ -106,7 +106,7 @@ export const Specials = () => {
               
               return (
                 <div key={deal.dealID} className="relative group">
-                  <ProductCard product={mappedGame} />
+                  <ProductCard product={mappedGame} imageAspect="steam" />
                   {/* Discount Badge on top of ProductCard */}
                   <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
                     <Tag className="w-3 h-3" />

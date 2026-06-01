@@ -121,8 +121,8 @@ export const Home = () => {
             style={{ scrollbarWidth: 'none' }}
           >
             {specialDeals.map((game, idx) => (
-              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 relative group">
-                <ProductCard product={game} />
+              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 relative group h-full">
+                <ProductCard product={game} imageAspect="steam" />
                 {game.badge && (
                   <div className="absolute top-2 left-2 z-30 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
                     <Tag className="w-3.5 h-3.5" />

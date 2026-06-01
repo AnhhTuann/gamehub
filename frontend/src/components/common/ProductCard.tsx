@@ -8,6 +8,7 @@ import { useCartStore } from '../../store/useCartStore';
 interface ProductCardProps {
   product: Game;
   onRemove?: (id: string) => void;
+  imageAspect?: 'video' | 'steam';
 }
 
 const PixelRating = ({ rating }: { rating: number }) => {
@@ -32,8 +33,10 @@ const PixelRating = ({ rating }: { rating: number }) => {
   );
 };
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove, imageAspect = 'video' }) => {
   const addToCart = useCartStore((state) => state.addToCart);
+
+  const aspectClass = imageAspect === 'steam' ? 'aspect-[460/215]' : 'aspect-video';
 
   return (
     <motion.div
@@ -45,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       className="group flex flex-col w-full h-full bg-gamehub-surface border border-gamehub-border/50 rounded-lg overflow-hidden transition-all duration-300 ease-in-out shadow-md hover:-translate-y-1 hover:shadow-2xl hover:border-gamehub-purple/50"
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] w-full overflow-hidden block bg-gamehub-bg">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className={`relative ${aspectClass} w-full overflow-hidden block bg-gamehub-bg`}>
         {product.image ? (
           <img
             src={product.image}
