@@ -124,13 +124,13 @@ export const Home = () => {
         ) : (
           <div 
             ref={scrollRef} 
-            className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" 
+            className="flex gap-6 overflow-x-auto pb-6 hide-scrollbar" 
             style={{ scrollbarWidth: 'none' }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             {specialDeals.map((game, idx) => (
-              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 snap-start relative group">
+              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 relative group">
                 <ProductCard product={game} />
                 {game.badge && (
                   <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
