@@ -134,17 +134,17 @@ export interface CheapSharkDeal {
 
 const getHighResImage = (url: string) => {
   if (url.includes('capsule')) {
-    return url.replace(/capsule_[a-zA-Z0-9_]+\.jpg/i, 'header.jpg');
+    return url.replace(/capsule_[a-zA-Z0-9_]+\.jpg/i, 'capsule_616x353.jpg');
   }
   return url;
 };
 
 const MOCK_DEALS = [
-  { dealID: 'mock-1', title: 'Cyberpunk 2077', salePrice: '29.99', normalPrice: '59.99', savings: '50.00', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg', storeID: '1' },
-  { dealID: 'mock-2', title: 'The Witcher 3: Wild Hunt', salePrice: '9.99', normalPrice: '39.99', savings: '75.02', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg', storeID: '1' },
-  { dealID: 'mock-3', title: 'Red Dead Redemption 2', salePrice: '19.79', normalPrice: '59.99', savings: '67.01', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/header.jpg', storeID: '1' },
-  { dealID: 'mock-4', title: 'Hades', salePrice: '12.49', normalPrice: '24.99', savings: '50.02', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg', storeID: '1' },
-  { dealID: 'mock-5', title: 'Hollow Knight', salePrice: '7.49', normalPrice: '14.99', savings: '50.03', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg', storeID: '1' }
+  { dealID: 'mock-1', title: 'Cyberpunk 2077', salePrice: '29.99', normalPrice: '59.99', savings: '50.00', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/capsule_616x353.jpg', storeID: '1' },
+  { dealID: 'mock-2', title: 'The Witcher 3: Wild Hunt', salePrice: '9.99', normalPrice: '39.99', savings: '75.02', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/292030/capsule_616x353.jpg', storeID: '1' },
+  { dealID: 'mock-3', title: 'Red Dead Redemption 2', salePrice: '19.79', normalPrice: '59.99', savings: '67.01', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/capsule_616x353.jpg', storeID: '1' },
+  { dealID: 'mock-4', title: 'Hades', salePrice: '12.49', normalPrice: '24.99', savings: '50.02', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1145360/capsule_616x353.jpg', storeID: '1' },
+  { dealID: 'mock-5', title: 'Hollow Knight', salePrice: '7.49', normalPrice: '14.99', savings: '50.03', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/367520/capsule_616x353.jpg', storeID: '1' }
 ];
 
 export const getSpecialDeals = async (): Promise<Game[]> => {
@@ -158,7 +158,7 @@ export const getSpecialDeals = async (): Promise<Game[]> => {
       id: deal.dealID,
       rawgId: 0,
       title: deal.title,
-      image: deal.steamAppID ? `https://cdn.akamai.steamstatic.com/steam/apps/${deal.steamAppID}/header.jpg` : getHighResImage(deal.thumb),
+      image: deal.steamAppID ? `https://cdn.akamai.steamstatic.com/steam/apps/${deal.steamAppID}/capsule_616x353.jpg` : getHighResImage(deal.thumb),
       price: parseFloat(deal.salePrice),
       originalPrice: parseFloat(deal.normalPrice),
       rating: 0,
