@@ -30,7 +30,7 @@ export const Checkout = () => {
     try {
       // Map cart to expected OrderItemInput
       const orderItems = cart.map(item => ({
-        rawgId: item.rawgId || parseInt(item.id),
+        rawgId: (item as any).rawgId || parseInt(item.id) || 0,
         title: item.title,
         price: item.price,
         image: item.coverImage || item.image,

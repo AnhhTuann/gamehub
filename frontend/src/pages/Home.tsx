@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Game } from '../types';
-import { getTrendingGames, getNewReleases, getAllGames } from '../services/api';
+import { getTrendingGames, getNewReleases, getAllGames, getSpecialDeals } from '../services/api';
 import { HeroBanner } from '../components/home/HeroBanner';
 import { ProductCard } from '../components/common/ProductCard';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,7 @@ const BROWSE_CATEGORIES = [
 ];
 
 export const Home = () => {
-  const [trending, setTrending] = useState<Game[]>([]);
+  const [specialDeals, setSpecialDeals] = useState<Game[]>([]);
   const [newReleases, setNewReleases] = useState<Game[]>([]);
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,11 +23,11 @@ export const Home = () => {
 
   useEffect(() => {
     Promise.all([
-      getTrendingGames(),
+      getSpecialDeals(),
       getNewReleases(),
       getAllGames()
-    ]).then(([trendData, newData, allData]) => {
-      setTrending(trendData);
+    ]).then(([specialsData, newData, allData]) => {
+      setSpecialDeals(specialsData);
       setNewReleases(newData);
       setAllGames(allData);
       setLoading(false);
@@ -74,9 +74,15 @@ export const Home = () => {
           </div>
         ) : (
           <div className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
-            {trending.map((game, idx) => (
-              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 snap-start">
+            {specialDeals.map((game, idx) => (
+              <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 snap-start relative group">
                 <ProductCard product={game} />
+                {game.badge && (
+                  <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
+                    <Tag className="w-3.5 h-3.5" />
+                    {game.badge}
+                  </div>
+                )}
               </div>
             ))}
           </div>

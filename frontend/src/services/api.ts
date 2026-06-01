@@ -83,3 +83,64 @@ export const getGameDetailsByTitle = async (title: string): Promise<Game | null>
     return null;
   }
 };
+
+export interface CheapSharkDeal {
+  dealID: string;
+  title: string;
+  salePrice: string;
+  normalPrice: string;
+  savings: string;
+  thumb: string;
+  storeID: string;
+  steamAppID?: string;
+}
+
+const getHighResImage = (url: string) => {
+  if (url.includes('capsule')) {
+    return url.replace(/capsule_[a-zA-Z0-9_]+\.jpg/i, 'header.jpg');
+  }
+  return url;
+};
+
+const MOCK_DEALS = [
+  { dealID: 'mock-1', title: 'Cyberpunk 2077', salePrice: '29.99', normalPrice: '59.99', savings: '50.00', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg', storeID: '1' },
+  { dealID: 'mock-2', title: 'The Witcher 3: Wild Hunt', salePrice: '9.99', normalPrice: '39.99', savings: '75.02', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg', storeID: '1' },
+  { dealID: 'mock-3', title: 'Red Dead Redemption 2', salePrice: '19.79', normalPrice: '59.99', savings: '67.01', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1174180/header.jpg', storeID: '1' },
+  { dealID: 'mock-4', title: 'Hades', salePrice: '12.49', normalPrice: '24.99', savings: '50.02', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg', storeID: '1' },
+  { dealID: 'mock-5', title: 'Hollow Knight', salePrice: '7.49', normalPrice: '14.99', savings: '50.03', thumb: 'https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg', storeID: '1' }
+];
+
+export const getSpecialDeals = async (): Promise<Game[]> => {
+  try {
+    const response = await fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&sortBy=Deal%20Rating&pageSize=20');
+    if (!response.ok) {
+      throw new Error('CheapShark fetch failed');
+    }
+    const data: CheapSharkDeal[] = await response.json();
+    return data.map(deal => ({
+      id: deal.dealID,
+      rawgId: 0,
+      title: deal.title,
+      image: deal.steamAppID ? `https://cdn.akamai.steamstatic.com/steam/apps/${deal.steamAppID}/header.jpg` : getHighResImage(deal.thumb),
+      price: parseFloat(deal.salePrice),
+      originalPrice: parseFloat(deal.normalPrice),
+      rating: 0,
+      genre: { name: 'DEAL', slug: 'deal' },
+      badge: `${Math.round(parseFloat(deal.savings))}% OFF`
+    }));
+  } catch (err) {
+    console.warn('CheapShark API failed, falling back to mock deals:', err);
+    return MOCK_DEALS.map(deal => ({
+      id: deal.dealID,
+      rawgId: 0,
+      title: deal.title,
+      image: deal.thumb,
+      price: parseFloat(deal.salePrice),
+      originalPrice: parseFloat(deal.normalPrice),
+      rating: 0,
+      genre: { name: 'DEAL', slug: 'deal' },
+      badge: `${Math.round(parseFloat(deal.savings))}% OFF`
+    }));
+  }
+};
+
