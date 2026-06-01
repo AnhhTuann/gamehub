@@ -62,16 +62,22 @@ export const HeroBanner = () => {
           {/* Main Image (Left side on Desktop, Top on Mobile) */}
           <div className="w-full md:w-[62%] h-[250px] md:h-auto relative bg-[#121318]">
             <AnimatePresence mode="wait">
-              <motion.img
+              <motion.div
                 key={`main-img-${activeGame.id}`}
-                src={activeGame.image}
-                alt={activeGame.title}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-              />
+              >
+                <Link to={`/product/${activeGame.id}`} state={{ productTitle: activeGame.title, productData: activeGame }} className="block w-full h-full">
+                  <img
+                    src={activeGame.image}
+                    alt={activeGame.title}
+                    className="w-full h-full object-cover"
+                  />
+                </Link>
+              </motion.div>
             </AnimatePresence>
             
             {/* Left/Right Arrows overlaying the image edges */}
@@ -109,7 +115,9 @@ export const HeroBanner = () => {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {activeGame.title}
+                  <Link to={`/product/${activeGame.id}`} state={{ productTitle: activeGame.title, productData: activeGame }} className="hover:text-[var(--neon-pink)] transition-colors">
+                    {activeGame.title}
+                  </Link>
                 </motion.h2>
               </AnimatePresence>
 
@@ -176,7 +184,8 @@ export const HeroBanner = () => {
                   </div>
                 )}
                 <Link 
-                  to="/shop" 
+                  to={`/product/${activeGame.id}`} 
+                  state={{ productTitle: activeGame.title, productData: activeGame }}
                   className="text-xs text-[#bd93f9] hover:text-white underline decoration-[#bd93f9]/50 hover:decoration-white underline-offset-4 transition-colors mt-1"
                 >
                   View Details
