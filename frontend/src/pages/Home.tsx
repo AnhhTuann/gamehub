@@ -20,8 +20,26 @@ export const Home = () => {
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'New Releases' | 'Specials' | 'Free Games' | 'By User Tags'>('New Releases');
+  const [isHovered, setIsHovered] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (loading || specialDeals.length === 0 || isHovered) return;
+
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 1) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollRef.current.scrollLeft += 1;
+        }
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [loading, specialDeals, isHovered]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -104,7 +122,13 @@ export const Home = () => {
              ))}
           </div>
         ) : (
-          <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
+          <div 
+            ref={scrollRef} 
+            className="flex gap-6 overflow-x-auto pb-6 snap-x hide-scrollbar" 
+            style={{ scrollbarWidth: 'none' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             {specialDeals.map((game, idx) => (
               <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 snap-start relative group">
                 <ProductCard product={game} />
