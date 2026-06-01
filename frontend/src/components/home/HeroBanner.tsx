@@ -104,7 +104,7 @@ export const HeroBanner = () => {
               <AnimatePresence mode="wait">
                 <motion.h2 
                   key={`title-${activeGame.id}`}
-                  className="font-sans font-bold text-xl md:text-2xl text-white mb-4 leading-tight drop-shadow-lg pr-8 line-clamp-2"
+                  className="font-sans font-bold text-xl md:text-2xl text-white mb-4 leading-tight drop-shadow-lg pr-8 line-clamp-2 min-h-[56px] md:min-h-[64px]"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
