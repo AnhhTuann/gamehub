@@ -21,27 +21,29 @@ export const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'New Releases' | 'Specials' | 'Free Games' | 'By User Tags'>('New Releases');
   const [isHovered, setIsHovered] = useState(false);
+  const [isManualScrolling, setIsManualScrolling] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (loading || specialDeals.length === 0 || isHovered) return;
+    if (loading || specialDeals.length === 0 || isHovered || isManualScrolling) return;
 
     const interval = setInterval(() => {
       if (scrollRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        if (scrollLeft + clientWidth >= scrollWidth - 1) {
-          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        if (Math.ceil(scrollLeft + clientWidth) >= scrollWidth - 1) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'auto' });
         } else {
-          scrollRef.current.scrollLeft += 1;
+          scrollRef.current.scrollBy({ left: 1, behavior: 'auto' });
         }
       }
-    }, 30);
+    }, 25);
 
     return () => clearInterval(interval);
-  }, [loading, specialDeals, isHovered]);
+  }, [loading, specialDeals, isHovered, isManualScrolling]);
 
   const scroll = (direction: 'left' | 'right') => {
+    setIsManualScrolling(true);
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
       const scrollAmount = clientWidth * 0.75;
@@ -50,6 +52,7 @@ export const Home = () => {
         behavior: 'smooth'
       });
     }
+    setTimeout(() => setIsManualScrolling(false), 800);
   };
 
   useEffect(() => {
@@ -91,7 +94,11 @@ export const Home = () => {
       <HeroBanner />
 
       {/* 2. Discounts & Events */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 border-t border-[var(--border-primary)] mt-12">
+      <div 
+        className="max-w-7xl mx-auto px-4 md:px-6 py-16 border-t border-[var(--border-primary)] mt-12"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <Tag className="w-6 h-6 text-[var(--neon-green)]" />
@@ -126,8 +133,6 @@ export const Home = () => {
             ref={scrollRef} 
             className="flex gap-6 overflow-x-auto pb-6 hide-scrollbar" 
             style={{ scrollbarWidth: 'none' }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
             {specialDeals.map((game, idx) => (
               <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 relative group">
