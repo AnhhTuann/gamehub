@@ -59,6 +59,20 @@ export const HeroBanner = () => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
+          {/* Left/Right Navigation Arrows (Global) */}
+          <button 
+            onClick={handlePrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 h-20 w-8 md:w-10 flex items-center justify-center bg-black/50 hover:bg-black/80 text-white rounded-r-md opacity-0 group-hover:opacity-100 transition-all z-30"
+          >
+            <ChevronLeft className="w-8 h-8" />
+          </button>
+          <button 
+            onClick={handleNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 h-20 w-8 md:w-10 flex items-center justify-center bg-black/50 hover:bg-black/80 text-white rounded-l-md opacity-0 group-hover:opacity-100 transition-all z-30"
+          >
+            <ChevronRight className="w-8 h-8" />
+          </button>
+
           {/* Main Image (Left side on Desktop, Top on Mobile) */}
           <div className="w-full md:w-[62%] h-[250px] md:h-auto relative bg-[#121318]">
             <AnimatePresence mode="wait">
@@ -79,37 +93,15 @@ export const HeroBanner = () => {
                 </Link>
               </motion.div>
             </AnimatePresence>
-            
-            {/* Left/Right Arrows overlaying the image edges */}
-            <button 
-              onClick={handlePrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/70 text-white/50 hover:text-[#bd93f9] rounded opacity-0 group-hover:opacity-100 transition-all z-10"
-            >
-              <ChevronLeft className="w-8 h-8" />
-            </button>
-            <button 
-              onClick={handleNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/70 text-white/50 hover:text-[#bd93f9] rounded opacity-0 group-hover:opacity-100 transition-all z-10 md:hidden"
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
           </div>
 
           {/* Info Panel (Right side on Desktop, Bottom on Mobile) */}
           <div className="w-full md:w-[38%] p-6 flex flex-col justify-between relative bg-gradient-to-r from-[#191A21] to-[#282a36]">
-            {/* Right Arrow for Desktop (positioned on the right edge of the whole container) */}
-            <button 
-              onClick={handleNext}
-              className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/70 text-white/50 hover:text-[#bd93f9] rounded opacity-0 group-hover:opacity-100 transition-all z-20"
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
-
             <div>
               <AnimatePresence mode="wait">
                 <motion.h2 
                   key={`title-${activeGame.id}`}
-                  className="font-pixel text-2xl md:text-3xl text-white mb-6 leading-tight drop-shadow-lg pr-8"
+                  className="font-sans font-bold text-xl md:text-2xl text-white mb-4 leading-tight drop-shadow-lg pr-8 line-clamp-2"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -150,7 +142,7 @@ export const HeroBanner = () => {
                       {tags.map((tag) => (
                         <motion.span 
                           key={`tag-${activeGame.id}-${tag.slug}`}
-                          className="px-2.5 py-1 bg-[#44475a] text-white text-xs rounded hover:bg-[#6272a4] transition-colors cursor-pointer"
+                          className="px-2 py-1 bg-[#282a36] text-[#6272a4] text-xs rounded hover:bg-[#44475a] hover:text-white transition-colors cursor-pointer"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
