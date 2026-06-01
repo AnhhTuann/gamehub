@@ -40,7 +40,7 @@ export const HeroBanner = () => {
     return (
       <section className="relative w-full bg-theme-primary pt-0 pb-12">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="w-full h-[600px] md:h-[420px] bg-[#191A21] animate-pulse rounded-lg" />
+          <div className="w-full h-[650px] sm:h-[550px] md:h-[460px] bg-[#191A21] animate-pulse rounded-lg" />
         </div>
       </section>
     );
@@ -55,7 +55,7 @@ export const HeroBanner = () => {
     <section className="relative w-full overflow-hidden bg-theme-primary pt-0 pb-12">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div 
-          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-[#191A21] h-[650px] sm:h-[550px] md:h-[420px]"
+          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-[#191A21] min-h-[650px] sm:min-h-[550px] md:min-h-[460px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -96,7 +96,7 @@ export const HeroBanner = () => {
           </div>
 
           {/* Info Panel (Right side on Desktop, Bottom on Mobile) */}
-          <div className="w-full md:w-[38%] p-6 flex flex-col justify-between relative bg-gradient-to-r from-[#191A21] to-[#282a36]">
+          <div className="w-full md:w-[38%] p-6 flex flex-col h-full justify-between relative bg-gradient-to-r from-[#191A21] to-[#282a36]">
             <div>
               <AnimatePresence mode="wait">
                 <motion.h2 

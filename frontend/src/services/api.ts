@@ -30,7 +30,7 @@ const fetchGames = async (endpoint: string, params = ''): Promise<Game[]> => {
         released: g.released,
         price,
         genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined,
-        tags: g.tags ? g.tags.map((t: any) => ({ name: t.name, slug: t.slug })) : [],
+        tags: g.tags ? g.tags.map((t: any) => ({ name: t.slug.replace(/-/g, ' '), slug: t.slug })) : [],
         platforms: g.parent_platforms ? g.parent_platforms.map((p: any) => p.platform.name) : [],
         screenshots: g.short_screenshots ? g.short_screenshots.map((s: any) => getHighResRawg(s.image)) : []
       };
