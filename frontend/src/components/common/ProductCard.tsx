@@ -48,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] overflow-hidden block bg-black">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-video w-full overflow-hidden block bg-black">
         {product.image ? (
           <img
             src={product.image}
@@ -84,37 +84,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       </Link>
 
       {/* Content */}
-      <div className="flex flex-col p-4 gap-2.5 flex-1">
-        {/* Genre tag */}
-        <span className="text-[11px] font-semibold text-[var(--accent)] tracking-wider uppercase">
-          {product.genre?.name || 'INDIE'}
-        </span>
+      <div className="flex flex-col flex-grow justify-between p-4">
+        <div className="flex flex-col gap-2.5">
+          {/* Genre tag */}
+          <span className="text-[11px] font-semibold text-[var(--accent)] tracking-wider uppercase">
+            {product.genre?.name || 'UNRATED'}
+          </span>
 
-        {/* Title - Sans-serif */}
-        <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }}>
-          <h3 className="text-sm font-bold leading-snug text-[var(--neon-pink)] hover:text-[var(--accent)] transition-colors line-clamp-2">
-            {product.title}
-          </h3>
-        </Link>
+          {/* Title - Sans-serif */}
+          <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }}>
+            <h3 className="text-sm font-bold leading-snug text-[var(--neon-pink)] hover:text-[var(--accent)] transition-colors line-clamp-2 min-h-[3rem]">
+              {product.title || 'Unknown Title'}
+            </h3>
+          </Link>
 
-        {/* Rating */}
-        {product.rating > 0 ? (
-          <PixelRating rating={product.rating} />
-        ) : (
-          <span className="text-xs font-medium text-[var(--text-muted)]">Unrated</span>
-        )}
+          {/* Rating */}
+          {product.rating > 0 ? (
+            <PixelRating rating={product.rating} />
+          ) : (
+            <span className="text-xs font-medium text-[var(--text-muted)]">Unrated</span>
+          )}
+        </div>
 
         {/* Price + Cart */}
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-[var(--border-primary)]">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-[var(--border-primary)]">
           <div className="flex flex-col">
             {product.originalPrice && (
               <span className="text-xs text-[var(--text-muted)] line-through font-medium">
                 ${product.originalPrice.toFixed(2)}
               </span>
             )}
-            <span className="text-lg font-bold text-[var(--neon-green)]">
-              ${product.price.toFixed(2)}
-            </span>
+            {product.price !== undefined && product.price !== null ? (
+              <span className="text-lg font-bold text-[var(--neon-green)]">
+                ${product.price.toFixed(2)}
+              </span>
+            ) : (
+              <span className="text-[#6272a4] text-sm">N/A</span>
+            )}
           </div>
           {product.stockQuantity === 0 ? (
             <button
