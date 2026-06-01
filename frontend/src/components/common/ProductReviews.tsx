@@ -33,7 +33,7 @@ export const ProductReviews = () => {
             <span className="text-theme-muted text-sm font-medium">4.8 out of 5 stars</span>
           </div>
         </div>
-        <button className="flex items-center gap-2 px-5 py-2.5 border border-theme-primary text-theme-secondary font-semibold text-sm rounded-xl hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
+        <button className="flex items-center gap-2 px-5 py-2.5 border border-theme-primary text-theme-secondary font-semibold text-sm rounded-xl hover:bg-accent hover:text-gamehub-text hover:border-accent transition-all duration-300">
           <MessageSquare className="w-4 h-4" />
           Write a Review
         </button>

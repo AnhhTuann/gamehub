@@ -36,10 +36,10 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({ options, value, 
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full flex items-center justify-between bg-[#282a36] border text-[#f8f8f2] px-4 py-2.5 rounded-md focus:outline-none transition-all font-sans text-sm cursor-pointer min-w-[150px] ${isOpen ? 'border-[#bd93f9] ring-1 ring-[#bd93f9]' : 'border-[#6272a4]'}`}
+        className={`w-full flex items-center justify-between bg-gamehub-bg border text-gamehub-text px-4 py-2.5 rounded-md focus:outline-none transition-all font-sans text-sm cursor-pointer min-w-[150px] ${isOpen ? 'border-gamehub-purple ring-1 ring-gamehub-purple' : 'border-gamehub-muted'}`}
       >
         <span className="truncate mr-3">{selectedOption ? selectedOption.label : placeholder}</span>
-        <ChevronDown className={`w-4 h-4 text-[#6272a4] transition-transform duration-200 ${isOpen ? 'transform rotate-180 text-[#bd93f9]' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-gamehub-muted transition-transform duration-200 ${isOpen ? 'transform rotate-180 text-gamehub-purple' : ''}`} />
       </button>
 
       <AnimatePresence>
@@ -49,7 +49,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({ options, value, 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 mt-1.5 w-full bg-[#282a36] border border-[#6272a4] rounded-md shadow-xl z-50 overflow-hidden"
+            className="absolute top-full left-0 mt-1.5 w-full bg-gamehub-bg border border-gamehub-muted rounded-md shadow-xl z-50 overflow-hidden"
           >
             <ul className="max-h-60 overflow-y-auto py-1" style={{ scrollbarWidth: 'thin' }}>
               {options.map((option) => (
@@ -61,8 +61,8 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({ options, value, 
                   }}
                   className={`px-4 py-2 text-sm cursor-pointer transition-colors flex items-center justify-between ${
                     value === option.value
-                      ? 'text-[#50fa7b] font-bold'
-                      : 'text-[#f8f8f2] hover:bg-[#44475a] hover:text-[#bd93f9]'
+                      ? 'text-gamehub-cyan font-bold'
+                      : 'text-gamehub-text hover:bg-gamehub-surface hover:text-gamehub-purple'
                   }`}
                 >
                   {option.label}

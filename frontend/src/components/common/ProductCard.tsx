@@ -56,9 +56,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-[#44475a]/50 border-b border-[var(--border-primary)]">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gamehub-surface/50 border-b border-[var(--border-primary)]">
             <span className="text-4xl opacity-60 mb-2">👾</span>
-            <span className="font-pixel text-[10px] text-[#6272a4] tracking-widest font-bold">DATA MISSING</span>
+            <span className="font-pixel text-[10px] text-gamehub-muted tracking-widest font-bold">DATA MISSING</span>
           </div>
         )}
         {/* Subtle scanline overlay */}
@@ -75,7 +75,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
         {onRemove && (
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(product.id); }}
-            className="absolute top-2 right-2 z-20 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-[#6272a4] text-[#6272a4] p-1.5 rounded-md hover:text-[var(--neon-pink)] hover:border-[var(--neon-pink)] transition-all"
+            className="absolute top-2 right-2 z-20 bg-[var(--bg-primary)]/90 backdrop-blur-sm border border-gamehub-muted text-gamehub-muted p-1.5 rounded-md hover:text-[var(--neon-pink)] hover:border-[var(--neon-pink)] transition-all"
             title="Remove from Wishlist"
           >
             <X className="w-4 h-4" />
@@ -119,7 +119,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
                 ${product.price.toFixed(2)}
               </span>
             ) : (
-              <span className="text-[#6272a4] text-sm">N/A</span>
+              <span className="text-gamehub-muted text-sm">N/A</span>
             )}
           </div>
           {product.stockQuantity === 0 ? (

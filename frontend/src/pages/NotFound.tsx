@@ -31,7 +31,7 @@ export const NotFound = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative z-10 flex flex-col items-center mt-12 md:mt-0"
         >
-          <h2 className="font-serif text-5xl md:text-7xl font-bold text-white mb-6 tracking-wide drop-shadow-xl">
+          <h2 className="font-serif text-5xl md:text-7xl font-bold text-gamehub-text mb-6 tracking-wide drop-shadow-xl">
             Lost in Style.
           </h2>
           <p className="text-zinc-400 font-sans text-sm md:text-base max-w-md mx-auto mb-12 tracking-widest leading-relaxed uppercase px-4 text-center">

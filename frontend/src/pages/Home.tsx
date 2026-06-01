@@ -93,14 +93,14 @@ export const Home = () => {
           <div className="flex gap-2.5">
             <button 
               onClick={() => scroll('left')}
-              className="p-1.5 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#bd93f9] text-[#6272a4] hover:text-[#bd93f9] transition-all cursor-pointer active:scale-95 flex items-center justify-center"
+              className="p-1.5 bg-gamehub-surface border border-gamehub-muted/40 rounded hover:border-gamehub-purple text-gamehub-muted hover:text-gamehub-purple transition-all cursor-pointer active:scale-95 flex items-center justify-center"
               title="Scroll Left"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button 
               onClick={() => scroll('right')}
-              className="p-1.5 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#bd93f9] text-[#6272a4] hover:text-[#bd93f9] transition-all cursor-pointer active:scale-95 flex items-center justify-center"
+              className="p-1.5 bg-gamehub-surface border border-gamehub-muted/40 rounded hover:border-gamehub-purple text-gamehub-muted hover:text-gamehub-purple transition-all cursor-pointer active:scale-95 flex items-center justify-center"
               title="Scroll Right"
             >
               <ChevronRight className="w-5 h-5" />
@@ -124,7 +124,7 @@ export const Home = () => {
               <div key={`discount-${idx}`} className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] shrink-0 relative group">
                 <ProductCard product={game} />
                 {game.badge && (
-                  <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
+                  <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-gamehub-text text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
                     <Tag className="w-3.5 h-3.5" />
                     {game.badge}
                   </div>
@@ -152,7 +152,7 @@ export const Home = () => {
             >
               <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60 group-hover:opacity-100" />
               <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/80 to-transparent">
-                <span className="font-pixel text-sm md:text-base text-white tracking-widest drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
+                <span className="font-pixel text-sm md:text-base text-gamehub-text tracking-widest drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
                   {cat.name.toUpperCase()}
                 </span>
               </div>

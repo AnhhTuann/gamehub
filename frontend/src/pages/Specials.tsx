@@ -61,7 +61,7 @@ export const Specials = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#282a36] text-[var(--text-primary)] p-4 md:p-8">
+    <div className="min-h-screen bg-gamehub-bg text-[var(--text-primary)] p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         
         {/* Page Header */}
@@ -70,7 +70,7 @@ export const Specials = () => {
             <Clock className="w-8 h-8 md:w-10 md:h-10 text-[#ff5555] animate-pulse" />
             Special Deals
           </h1>
-          <p className="text-[#bd93f9] text-sm md:text-base max-w-2xl font-medium tracking-wider mb-2">
+          <p className="text-gamehub-purple text-sm md:text-base max-w-2xl font-medium tracking-wider mb-2">
             Grab these top-rated titles before the countdown ends. Epic savings await!
           </p>
           {isOfflineMode && (
@@ -84,10 +84,10 @@ export const Specials = () => {
         {/* Content */}
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#bd93f9]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gamehub-purple"></div>
           </div>
         ) : error ? (
-          <div className="text-center text-[#ff5555] bg-[#44475a] p-6 rounded-lg shadow-lg border border-[#ff5555]">
+          <div className="text-center text-[#ff5555] bg-gamehub-surface p-6 rounded-lg shadow-lg border border-[#ff5555]">
             <p className="text-lg font-bold">{error}</p>
           </div>
         ) : (
@@ -108,7 +108,7 @@ export const Specials = () => {
                 <div key={deal.dealID} className="relative group">
                   <ProductCard product={mappedGame} />
                   {/* Discount Badge on top of ProductCard */}
-                  <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-white text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
+                  <div className="absolute top-2 left-2 z-30 bg-[#ff5555] text-gamehub-text text-xs font-bold px-2 py-1 rounded-md shadow-lg flex items-center gap-1 pointer-events-none">
                     <Tag className="w-3 h-3" />
                     {Math.round(parseFloat(deal.savings))}% OFF
                   </div>

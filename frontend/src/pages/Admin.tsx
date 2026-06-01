@@ -341,17 +341,17 @@ export const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#282a36] text-[#f8f8f2] flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-gamehub-bg text-gamehub-text flex flex-col md:flex-row font-sans">
       
       {/* Mobile Top Navbar */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-[#191a21] border-b border-[#6272a4]/30 z-30">
+      <div className="md:hidden flex items-center justify-between p-4 bg-[#191a21] border-b border-gamehub-muted/30 z-30">
         <div className="flex items-center gap-2">
-          <Gamepad2 className="w-6 h-6 text-[#bd93f9] animate-pulse" />
-          <h1 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-[#bd93f9]">GAMEHUB ADMIN</h1>
+          <Gamepad2 className="w-6 h-6 text-gamehub-purple animate-pulse" />
+          <h1 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-gamehub-purple">GAMEHUB ADMIN</h1>
         </div>
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 border border-[#6272a4]/40 rounded bg-[#44475a] text-[#f8f8f2] active:scale-95 transition-transform"
+          className="p-2 border border-gamehub-muted/40 rounded bg-gamehub-surface text-gamehub-text active:scale-95 transition-transform"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -372,17 +372,17 @@ export const Admin = () => {
 
       {/* Sidebar */}
       <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-64 bg-[#191a21] border-r-2 border-[#bd93f9]/20 transform transition-transform duration-300 ease-in-out flex flex-col justify-between shrink-0
+        fixed md:static inset-y-0 left-0 z-50 w-64 bg-[#191a21] border-r-2 border-gamehub-purple/20 transform transition-transform duration-300 ease-in-out flex flex-col justify-between shrink-0
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         <div>
           {/* Logo */}
-          <div className="p-6 border-b border-[#6272a4]/20 flex items-center gap-3">
+          <div className="p-6 border-b border-gamehub-muted/20 flex items-center gap-3">
             <div className="w-8 h-8 rounded bg-gradient-to-br from-[#bd93f9] to-[#ff79c6] flex items-center justify-center shadow-[0_0_15px_rgba(189,147,249,0.4)]">
               <Gamepad2 className="w-5 h-5 text-[#191a21]" />
             </div>
             <div>
-              <h1 className="font-['Press_Start_2P'] text-[9px] leading-tight text-[#bd93f9] tracking-wider">GAMEHUB</h1>
+              <h1 className="font-['Press_Start_2P'] text-[9px] leading-tight text-gamehub-purple tracking-wider">GAMEHUB</h1>
               <span className="text-[10px] text-[#ff79c6] font-bold tracking-widest uppercase">ADMIN PANEL</span>
             </div>
           </div>
@@ -407,14 +407,14 @@ export const Admin = () => {
                   }}
                   className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 relative group overflow-hidden
                     ${isActive 
-                      ? 'text-[#bd93f9] bg-[#44475a]/45 border-l-4 border-[#bd93f9] shadow-[inset_4px_0_0_rgba(189,147,249,0.2)]' 
-                      : 'text-[#6272a4] hover:text-[#ff79c6] hover:bg-[#44475a]/25 border-l-4 border-transparent'}
+                      ? 'text-gamehub-purple bg-gamehub-surface/45 border-l-4 border-gamehub-purple shadow-[inset_4px_0_0_rgba(189,147,249,0.2)]' 
+                      : 'text-gamehub-muted hover:text-[#ff79c6] hover:bg-gamehub-surface/25 border-l-4 border-transparent'}
                   `}
                 >
-                  <Icon className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${isActive ? 'text-[#bd93f9]' : 'text-[#6272a4] group-hover:text-[#ff79c6]'}`} />
+                  <Icon className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 ${isActive ? 'text-gamehub-purple' : 'text-gamehub-muted group-hover:text-[#ff79c6]'}`} />
                   <span>{item.id}</span>
                   {isActive && (
-                    <span className="absolute right-3 w-1.5 h-1.5 rounded-full bg-[#bd93f9] shadow-[0_0_8px_#bd93f9]"></span>
+                    <span className="absolute right-3 w-1.5 h-1.5 rounded-full bg-gamehub-purple shadow-[0_0_8px_#bd93f9]"></span>
                   )}
                 </button>
               );
@@ -423,8 +423,8 @@ export const Admin = () => {
         </div>
 
         {/* User Info footer in Sidebar */}
-        <div className="p-4 border-t border-[#6272a4]/20 bg-[#14151a] flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full border border-[#bd93f9]/40 bg-[#282a36] overflow-hidden">
+        <div className="p-4 border-t border-gamehub-muted/20 bg-[#14151a] flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full border border-gamehub-purple/40 bg-gamehub-bg overflow-hidden">
             <img 
               src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=80&h=80&q=80" 
               alt="Admin Avatar" 
@@ -432,8 +432,8 @@ export const Admin = () => {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-[#f8f8f2] truncate">RetroAdmin_01</p>
-            <p className="text-[10px] text-[#50fa7b] font-mono tracking-wider">ONLINE</p>
+            <p className="text-xs font-bold text-gamehub-text truncate">RetroAdmin_01</p>
+            <p className="text-[10px] text-gamehub-cyan font-mono tracking-wider">ONLINE</p>
           </div>
         </div>
       </aside>
@@ -455,49 +455,49 @@ export const Admin = () => {
               {/* Header section */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-[#bd93f9] tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                  <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-gamehub-purple tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                     INVENTORY MANAGEMENT
                   </h2>
-                  <p className="text-xs text-[#6272a4] mt-1 tracking-wide font-medium">
+                  <p className="text-xs text-gamehub-muted mt-1 tracking-wide font-medium">
                     Catalog database of current digital activation codes.
                   </p>
                 </div>
                 <div>
                   <button 
                     onClick={handleOpenAdd}
-                    className="flex items-center gap-2 px-5 py-3 bg-[#bd93f9] hover:bg-[#ff79c6] text-[#282a36] font-bold text-xs rounded border-b-4 border-[#6272a4] active:border-b-0 active:translate-y-[4px] shadow-[0_4px_15px_rgba(189,147,249,0.3)] transition-all uppercase tracking-wider shrink-0"
+                    className="flex items-center gap-2 px-5 py-3 bg-gamehub-purple hover:bg-[#ff79c6] text-gamehub-bg font-bold text-xs rounded border-b-4 border-gamehub-muted active:border-b-0 active:translate-y-[4px] shadow-[0_4px_15px_rgba(189,147,249,0.3)] transition-all uppercase tracking-wider shrink-0"
                   >
-                    <Plus className="w-4 h-4 text-[#282a36]" />
+                    <Plus className="w-4 h-4 text-gamehub-bg" />
                     ADD NEW GAME
                   </button>
                 </div>
               </div>
 
               {/* Search and Quick Filters bar */}
-              <div className="bg-[#44475a]/30 border border-[#6272a4]/25 p-4 rounded-lg flex flex-col sm:flex-row gap-4 items-center">
+              <div className="bg-gamehub-surface/30 border border-gamehub-muted/25 p-4 rounded-lg flex flex-col sm:flex-row gap-4 items-center">
                 <div className="relative w-full">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#6272a4]" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gamehub-muted" />
                   <input 
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search game by title or category..."
-                    className="w-full bg-[#191a21] border border-[#6272a4]/30 rounded-md py-2.5 pl-10 pr-4 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] placeholder-[#6272a4]/60 transition-colors"
+                    className="w-full bg-[#191a21] border border-gamehub-muted/30 rounded-md py-2.5 pl-10 pr-4 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] placeholder-[#6272a4]/60 transition-colors"
                   />
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto shrink-0 justify-end">
-                  <span className="text-xs text-[#6272a4] hidden xl:inline font-mono">
+                  <span className="text-xs text-gamehub-muted hidden xl:inline font-mono">
                     SHOWING: {filteredGames.length} GAMES
                   </span>
                 </div>
               </div>
 
               {/* Data Table */}
-              <div className="border-2 border-[#6272a4]/40 rounded-lg overflow-hidden bg-[#282a36] shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
+              <div className="border-2 border-gamehub-muted/40 rounded-lg overflow-hidden bg-gamehub-bg shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-[#6272a4]/40 bg-[#191a21]/80 text-[#6272a4] text-xs font-bold uppercase tracking-wider">
+                      <tr className="border-b border-gamehub-muted/40 bg-[#191a21]/80 text-gamehub-muted text-xs font-bold uppercase tracking-wider">
                         <th className="py-4 px-6 font-semibold">COVER</th>
                         <th className="py-4 px-6 font-semibold">GAME TITLE</th>
                         <th className="py-4 px-6 font-semibold">PRICE</th>
@@ -510,48 +510,48 @@ export const Admin = () => {
                     <tbody className="divide-y divide-[#6272a4]/20">
                       {filteredGames.length > 0 ? (
                         filteredGames.map((game) => (
-                          <tr key={game.id} className="hover:bg-[#44475a]/40 transition-colors group">
+                          <tr key={game.id} className="hover:bg-gamehub-surface/40 transition-colors group">
                             {/* COVER COLUMN */}
                             <td className="py-4 px-6">
-                              <div className={`w-12 h-14 bg-gradient-to-br ${game.coverGradient} rounded-md border border-[#6272a4]/30 flex items-center justify-center shadow-[0_0_10px_rgba(189,147,249,0.15)] group-hover:scale-105 transition-transform duration-250`}>
-                                <Gamepad2 className="w-6 h-6 text-[#282a36] opacity-80" />
+                              <div className={`w-12 h-14 bg-gradient-to-br ${game.coverGradient} rounded-md border border-gamehub-muted/30 flex items-center justify-center shadow-[0_0_10px_rgba(189,147,249,0.15)] group-hover:scale-105 transition-transform duration-250`}>
+                                <Gamepad2 className="w-6 h-6 text-gamehub-bg opacity-80" />
                               </div>
                             </td>
 
                             {/* TITLE COLUMN */}
                             <td className="py-4 px-6">
-                              <span className="font-bold text-[#f8f8f2] text-sm md:text-base tracking-wide block group-hover:text-[#ff79c6] transition-colors">
+                              <span className="font-bold text-gamehub-text text-sm md:text-base tracking-wide block group-hover:text-[#ff79c6] transition-colors">
                                 {game.title}
                               </span>
-                              <span className="text-[10px] text-[#6272a4] font-mono tracking-wider block mt-0.5 uppercase">
+                              <span className="text-[10px] text-gamehub-muted font-mono tracking-wider block mt-0.5 uppercase">
                                 ID: #{game.id} | {game.category}
                               </span>
                             </td>
 
                             {/* PRICE COLUMN */}
-                            <td className="py-4 px-6 font-mono text-sm md:text-base font-bold text-[#50fa7b]">
+                            <td className="py-4 px-6 font-mono text-sm md:text-base font-bold text-gamehub-cyan">
                               ${game.price.toFixed(2)}
                             </td>
 
                             {/* IN STOCK COLUMN */}
-                            <td className="py-4 px-6 text-center font-mono font-bold text-[#f8f8f2]">
+                            <td className="py-4 px-6 text-center font-mono font-bold text-gamehub-text">
                               {game.stockQuantity}
                             </td>
 
                             {/* ADDED BY COLUMN */}
-                            <td className="py-4 px-6 text-xs text-[#bd93f9] font-semibold">
+                            <td className="py-4 px-6 text-xs text-gamehub-purple font-semibold">
                               {game.addedBy}
                             </td>
 
                             {/* STATUS COLUMN */}
                             <td className="py-4 px-6 text-center">
                               {game.status === 'Active' ? (
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#50fa7b] text-[#282a36] shadow-[0_0_8px_rgba(80,250,123,0.3)]">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#282a36] animate-pulse"></span>
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#50fa7b] text-gamehub-bg shadow-[0_0_8px_rgba(80,250,123,0.3)]">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-gamehub-bg animate-pulse"></span>
                                   ACTIVE
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#44475a] text-[#bfc5d6] border border-[#6272a4]/30">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gamehub-surface text-[#bfc5d6] border border-gamehub-muted/30">
                                   <span className="w-1.5 h-1.5 rounded-full bg-[#bfc5d6]"></span>
                                   DRAFT
                                 </span>
@@ -564,21 +564,21 @@ export const Admin = () => {
                                 <button 
                                   onClick={() => handleOpenRestock(game)}
                                   title="Add Stock"
-                                  className="p-2 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#50fa7b] text-[#6272a4] hover:text-[#50fa7b] hover:shadow-[0_0_10px_rgba(80,250,123,0.3)] transition-all active:scale-95"
+                                  className="p-2 bg-gamehub-surface border border-gamehub-muted/40 rounded hover:border-[#50fa7b] text-gamehub-muted hover:text-gamehub-cyan hover:shadow-[0_0_10px_rgba(80,250,123,0.3)] transition-all active:scale-95"
                                 >
                                   <Plus className="w-4.5 h-4.5" />
                                 </button>
                                 <button 
                                   onClick={() => handleOpenEdit(game)}
                                   title="Edit Game"
-                                  className="p-2 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#bd93f9] text-[#6272a4] hover:text-[#bd93f9] hover:shadow-[0_0_10px_rgba(189,147,249,0.3)] transition-all active:scale-95"
+                                  className="p-2 bg-gamehub-surface border border-gamehub-muted/40 rounded hover:border-gamehub-purple text-gamehub-muted hover:text-gamehub-purple hover:shadow-[0_0_10px_rgba(189,147,249,0.3)] transition-all active:scale-95"
                                 >
                                   <Edit className="w-4.5 h-4.5" />
                                 </button>
                                 <button 
                                   onClick={() => handleOpenDelete(game)}
                                   title="Delete Game"
-                                  className="p-2 bg-[#44475a] border border-[#6272a4]/40 rounded hover:border-[#ff5555] text-[#6272a4] hover:text-[#ff5555] hover:shadow-[0_0_10px_rgba(255,85,85,0.3)] transition-all active:scale-95"
+                                  className="p-2 bg-gamehub-surface border border-gamehub-muted/40 rounded hover:border-[#ff5555] text-gamehub-muted hover:text-[#ff5555] hover:shadow-[0_0_10px_rgba(255,85,85,0.3)] transition-all active:scale-95"
                                 >
                                   <Trash2 className="w-4.5 h-4.5" />
                                 </button>
@@ -588,11 +588,11 @@ export const Admin = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={6} className="py-12 text-center text-[#6272a4]">
+                          <td colSpan={6} className="py-12 text-center text-gamehub-muted">
                             <div className="flex flex-col items-center justify-center gap-2">
-                              <Gamepad2 className="w-12 h-12 text-[#6272a4]/40 animate-bounce" />
+                              <Gamepad2 className="w-12 h-12 text-gamehub-muted/40 animate-bounce" />
                               <span className="text-sm font-semibold">NO MATCHING GAMES FOUND IN CART CATALOG.</span>
-                              <span className="text-xs font-mono text-[#6272a4]/60">Try searching for other keywords.</span>
+                              <span className="text-xs font-mono text-gamehub-muted/60">Try searching for other keywords.</span>
                             </div>
                           </td>
                         </tr>
@@ -615,10 +615,10 @@ export const Admin = () => {
             >
               {/* Header */}
               <div>
-                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-[#bd93f9] tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-gamehub-purple tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                   ADMIN OVERVIEW
                 </h2>
-                <p className="text-xs text-[#6272a4] mt-1 tracking-wide font-medium">
+                <p className="text-xs text-gamehub-muted mt-1 tracking-wide font-medium">
                   Real-time game store activity status and server statistics.
                 </p>
               </div>
@@ -626,8 +626,8 @@ export const Admin = () => {
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                  { label: 'TOTAL REVENUE', value: '$84,250.00', trend: '+18.2%', isUp: true, icon: Coins, color: 'text-[#50fa7b]', border: 'border-[#50fa7b]' },
-                  { label: 'KEYS REDEEMED', value: '1,424 Keys', trend: '+8.9%', isUp: true, icon: ShoppingCart, color: 'text-[#bd93f9]', border: 'border-[#bd93f9]' },
+                  { label: 'TOTAL REVENUE', value: '$84,250.00', trend: '+18.2%', isUp: true, icon: Coins, color: 'text-gamehub-cyan', border: 'border-[#50fa7b]' },
+                  { label: 'KEYS REDEEMED', value: '1,424 Keys', trend: '+8.9%', isUp: true, icon: ShoppingCart, color: 'text-gamehub-purple', border: 'border-gamehub-purple' },
                   { label: 'ACTIVE GAMERS', value: '4,891 Players', trend: '-2.4%', isUp: false, icon: Users, color: 'text-[#ff79c6]', border: 'border-[#ff79c6]' },
                   { label: 'SERVER HEURISTIC', value: '99.98% OK', trend: 'STABLE', isUp: true, icon: Server, color: 'text-[#8be9fd]', border: 'border-[#8be9fd]' }
                 ].map((stat, idx) => {
@@ -635,17 +635,17 @@ export const Admin = () => {
                   return (
                     <div 
                       key={idx} 
-                      className={`bg-[#44475a]/30 border-2 ${stat.border}/30 p-6 rounded-lg shadow-[0_8px_20px_rgba(0,0,0,0.3)] flex flex-col gap-4 relative group hover:border-r-4 hover:border-b-4 transition-all duration-200`}
+                      className={`bg-gamehub-surface/30 border-2 ${stat.border}/30 p-6 rounded-lg shadow-[0_8px_20px_rgba(0,0,0,0.3)] flex flex-col gap-4 relative group hover:border-r-4 hover:border-b-4 transition-all duration-200`}
                     >
                       <div className="flex justify-between items-start">
-                        <span className="text-[10px] font-['Press_Start_2P'] text-[#6272a4] leading-relaxed">
+                        <span className="text-[10px] font-['Press_Start_2P'] text-gamehub-muted leading-relaxed">
                           {stat.label}
                         </span>
                         <Icon className={`w-5 h-5 ${stat.color}`} />
                       </div>
                       <div className="flex items-end justify-between mt-2">
-                        <span className="text-2xl font-bold tracking-tight text-[#f8f8f2]">{stat.value}</span>
-                        <div className={`flex items-center gap-0.5 text-xs font-bold ${stat.isUp ? 'text-[#50fa7b]' : 'text-[#ff5555]'}`}>
+                        <span className="text-2xl font-bold tracking-tight text-gamehub-text">{stat.value}</span>
+                        <div className={`flex items-center gap-0.5 text-xs font-bold ${stat.isUp ? 'text-gamehub-cyan' : 'text-[#ff5555]'}`}>
                           {stat.isUp ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
                           {stat.trend}
                         </div>
@@ -656,13 +656,13 @@ export const Admin = () => {
               </div>
 
               {/* Chart Block */}
-              <div className="bg-[#44475a]/20 border border-[#6272a4]/25 p-6 rounded-lg shadow-lg">
+              <div className="bg-gamehub-surface/20 border border-gamehub-muted/25 p-6 rounded-lg shadow-lg">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-[#bd93f9]" />
-                    <h3 className="font-bold text-[#f8f8f2] text-base md:text-lg">WEEKLY STORE REVENUE</h3>
+                    <TrendingUp className="w-5 h-5 text-gamehub-purple" />
+                    <h3 className="font-bold text-gamehub-text text-base md:text-lg">WEEKLY STORE REVENUE</h3>
                   </div>
-                  <span className="text-xs text-[#50fa7b] font-mono font-bold tracking-widest px-2 py-0.5 rounded bg-[#50fa7b]/10 border border-[#50fa7b]/20">
+                  <span className="text-xs text-gamehub-cyan font-mono font-bold tracking-widest px-2 py-0.5 rounded bg-[#50fa7b]/10 border border-[#50fa7b]/20">
                     LIVE TELEMETRY
                   </span>
                 </div>
@@ -691,26 +691,26 @@ export const Admin = () => {
               {/* Sub grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* System Diagnostics */}
-                <div className="bg-[#44475a]/25 border border-[#6272a4]/25 p-5 rounded-lg flex flex-col gap-4">
-                  <div className="flex items-center justify-between border-b border-[#6272a4]/20 pb-3">
+                <div className="bg-gamehub-surface/25 border border-gamehub-muted/25 p-5 rounded-lg flex flex-col gap-4">
+                  <div className="flex items-center justify-between border-b border-gamehub-muted/20 pb-3">
                     <h4 className="font-bold text-sm text-[#ff79c6] tracking-wide flex items-center gap-2">
                       <Activity className="w-4 h-4" /> SYSTEM TELEMETRY
                     </h4>
-                    <span className="text-[10px] text-[#50fa7b] font-mono font-bold">ALL SERVICES OPERATIONAL</span>
+                    <span className="text-[10px] text-gamehub-cyan font-mono font-bold">ALL SERVICES OPERATIONAL</span>
                   </div>
                   <div className="flex flex-col gap-3 font-mono text-xs text-[#bfc5d6]">
                     {[
                       { item: 'API Gateway Latency', metric: '24ms', state: 'OPTIMAL', progress: 85, color: 'bg-[#50fa7b]' },
                       { item: 'Database Pool Utilization', metric: '32%', state: 'HEALTHY', progress: 32, color: 'bg-[#8be9fd]' },
                       { item: 'Activation Mail Queue', metric: '0 pending', state: 'CLEAR', progress: 100, color: 'bg-[#50fa7b]' },
-                      { item: 'Active Game Servers', metric: '16 Instances', state: 'LOAD BALANCED', progress: 64, color: 'bg-[#bd93f9]' }
+                      { item: 'Active Game Servers', metric: '16 Instances', state: 'LOAD BALANCED', progress: 64, color: 'bg-gamehub-purple' }
                     ].map((diag, i) => (
-                      <div key={i} className="flex flex-col gap-1 bg-[#191a21]/50 p-2.5 border border-[#6272a4]/10 rounded">
+                      <div key={i} className="flex flex-col gap-1 bg-[#191a21]/50 p-2.5 border border-gamehub-muted/10 rounded">
                         <div className="flex justify-between font-bold">
                           <span>{diag.item}</span>
                           <span className="text-[#ff79c6]">{diag.metric}</span>
                         </div>
-                        <div className="w-full bg-[#44475a]/40 h-1.5 rounded-full overflow-hidden mt-1.5">
+                        <div className="w-full bg-gamehub-surface/40 h-1.5 rounded-full overflow-hidden mt-1.5">
                           <div className={`h-full ${diag.color}`} style={{ width: `${diag.progress}%` }}></div>
                         </div>
                       </div>
@@ -719,20 +719,20 @@ export const Admin = () => {
                 </div>
 
                 {/* Server Console Logs */}
-                <div className="bg-[#44475a]/25 border border-[#6272a4]/25 p-5 rounded-lg flex flex-col gap-3">
-                  <div className="flex items-center justify-between border-b border-[#6272a4]/20 pb-3">
-                    <h4 className="font-bold text-sm text-[#bd93f9] tracking-wide flex items-center gap-2">
+                <div className="bg-gamehub-surface/25 border border-gamehub-muted/25 p-5 rounded-lg flex flex-col gap-3">
+                  <div className="flex items-center justify-between border-b border-gamehub-muted/20 pb-3">
+                    <h4 className="font-bold text-sm text-gamehub-purple tracking-wide flex items-center gap-2">
                       <Server className="w-4 h-4" /> SERVER LOGS (LIVE)
                     </h4>
-                    <RefreshCw className="w-3.5 h-3.5 text-[#6272a4] animate-spin" />
+                    <RefreshCw className="w-3.5 h-3.5 text-gamehub-muted animate-spin" />
                   </div>
-                  <div className="font-mono text-[11px] leading-relaxed text-[#6272a4] flex flex-col gap-2 h-[200px] overflow-y-auto bg-[#191a21]/80 p-3 rounded border border-[#6272a4]/25 custom-scrollbar">
-                    <p><span className="text-[#50fa7b]">[SYS]</span> 10:29:06 - Cron key scavenger daemon started.</p>
-                    <p><span className="text-[#bd93f9]">[AUTH]</span> 10:29:12 - Google OAuth verification successful for Player #8491.</p>
+                  <div className="font-mono text-[11px] leading-relaxed text-gamehub-muted flex flex-col gap-2 h-[200px] overflow-y-auto bg-[#191a21]/80 p-3 rounded border border-gamehub-muted/25 custom-scrollbar">
+                    <p><span className="text-gamehub-cyan">[SYS]</span> 10:29:06 - Cron key scavenger daemon started.</p>
+                    <p><span className="text-gamehub-purple">[AUTH]</span> 10:29:12 - Google OAuth verification successful for Player #8491.</p>
                     <p><span className="text-[#ff79c6]">[SHOP]</span> 10:29:15 - Order success callback: Cart ID 38294 processed.</p>
                     <p><span className="text-[#8be9fd]">[KEY]</span> 10:29:15 - Activation code CD-KEY #50921 dispatched to player email.</p>
                     <p><span className="text-[#ff5555]">[WARN]</span> 10:29:30 - Cache store connection pooled, auto-rebalancing...</p>
-                    <p><span className="text-[#50fa7b]">[SYS]</span> 10:29:45 - Health Check completed: 200 OK.</p>
+                    <p><span className="text-gamehub-cyan">[SYS]</span> 10:29:45 - Health Check completed: 200 OK.</p>
                   </div>
                 </div>
               </div>
@@ -750,35 +750,35 @@ export const Admin = () => {
             >
               {/* Header */}
               <div>
-                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-[#bd93f9] tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-gamehub-purple tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                   ORDER MANAGEMENT
                 </h2>
-                <p className="text-xs text-[#6272a4] mt-1 tracking-wide font-medium">
+                <p className="text-xs text-gamehub-muted mt-1 tracking-wide font-medium">
                   Monitor gamer purchases, transaction totals, activation keys, and processing status.
                 </p>
               </div>
 
               {/* Control Bar (Search & Filter) */}
-              <div className="bg-[#44475a]/30 border border-[#6272a4]/25 p-4 rounded-lg flex flex-col md:flex-row gap-4 items-center justify-between">
+              <div className="bg-gamehub-surface/30 border border-gamehub-muted/25 p-4 rounded-lg flex flex-col md:flex-row gap-4 items-center justify-between">
                 {/* Search field */}
                 <div className="relative w-full md:max-w-md">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#6272a4]" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gamehub-muted" />
                   <input 
                     type="text"
                     value={orderSearchQuery}
                     onChange={(e) => setOrderSearchQuery(e.target.value)}
                     placeholder="Search Order ID or Email..."
-                    className="w-full bg-[#191a21] border border-[#6272a4]/30 rounded-md py-2.5 pl-10 pr-4 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] placeholder-[#6272a4]/60 transition-colors"
+                    className="w-full bg-[#191a21] border border-gamehub-muted/30 rounded-md py-2.5 pl-10 pr-4 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] placeholder-[#6272a4]/60 transition-colors"
                   />
                 </div>
 
                 {/* Status Dropdown Filter */}
                 <div className="flex items-center gap-3 w-full md:w-auto justify-end">
-                  <span className="text-xs text-[#6272a4] font-mono font-bold uppercase whitespace-nowrap">STATUS:</span>
+                  <span className="text-xs text-gamehub-muted font-mono font-bold uppercase whitespace-nowrap">STATUS:</span>
                   <select
                     value={orderStatusFilter}
                     onChange={(e) => setOrderStatusFilter(e.target.value)}
-                    className="bg-[#191a21] border border-[#6272a4]/30 text-xs font-bold text-[#f8f8f2] rounded px-3 py-2.5 focus:outline-none focus:border-[#bd93f9] cursor-pointer"
+                    className="bg-[#191a21] border border-gamehub-muted/30 text-xs font-bold text-gamehub-text rounded px-3 py-2.5 focus:outline-none focus:border-gamehub-purple cursor-pointer"
                   >
                     <option value="All">ALL ORDERS</option>
                     <option value="COMPLETED">COMPLETED</option>
@@ -789,11 +789,11 @@ export const Admin = () => {
               </div>
 
               {/* Order Data Table */}
-              <div className="border border-[#6272a4]/40 rounded-lg overflow-hidden bg-[#44475a]/20 shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
+              <div className="border border-gamehub-muted/40 rounded-lg overflow-hidden bg-gamehub-surface/20 shadow-[0_10px_25px_rgba(0,0,0,0.4)]">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-[#6272a4]/40 bg-[#191a21]/90 text-[#6272a4] text-xs font-bold uppercase tracking-wider">
+                      <tr className="border-b border-gamehub-muted/40 bg-[#191a21]/90 text-gamehub-muted text-xs font-bold uppercase tracking-wider">
                         <th className="py-4 px-6">ORDER ID</th>
                         <th className="py-4 px-6">CUSTOMER</th>
                         <th className="py-4 px-6">DATE</th>
@@ -802,7 +802,7 @@ export const Admin = () => {
                         <th className="py-4 px-6 text-center">ACTION</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#6272a4]/15 font-sans text-xs md:text-sm text-[#f8f8f2]">
+                    <tbody className="divide-y divide-[#6272a4]/15 font-sans text-xs md:text-sm text-gamehub-text">
                       {orders.filter(order => {
                         const matchesSearch = order.id.toLowerCase().includes(orderSearchQuery.toLowerCase()) ||
                                               order.customer.toLowerCase().includes(orderSearchQuery.toLowerCase());
@@ -815,9 +815,9 @@ export const Admin = () => {
                           const matchesStatus = orderStatusFilter === 'All' || order.status === orderStatusFilter;
                           return matchesSearch && matchesStatus;
                         }).map((order) => (
-                          <tr key={order.id} className="hover:bg-[#44475a]/40 transition-colors group">
+                          <tr key={order.id} className="hover:bg-gamehub-surface/40 transition-colors group">
                             {/* ORDER ID */}
-                            <td className="py-4 px-6 font-mono font-bold text-[#bd93f9]">
+                            <td className="py-4 px-6 font-mono font-bold text-gamehub-purple">
                               #{order.id}
                             </td>
 
@@ -832,19 +832,19 @@ export const Admin = () => {
                             </td>
 
                             {/* TOTAL */}
-                            <td className="py-4 px-6 font-mono font-bold text-[#50fa7b]">
+                            <td className="py-4 px-6 font-mono font-bold text-gamehub-cyan">
                               ${order.total.toFixed(2)}
                             </td>
 
                             {/* STATUS */}
                             <td className="py-4 px-6">
                               {order.status === 'COMPLETED' && (
-                                <span className="inline-block px-3 py-1 rounded bg-[#50fa7b]/15 text-[#50fa7b] border border-[#50fa7b]/30 font-bold text-[10px] uppercase shadow-[0_0_8px_rgba(80,250,123,0.15)]">
+                                <span className="inline-block px-3 py-1 rounded bg-[#50fa7b]/15 text-gamehub-cyan border border-[#50fa7b]/30 font-bold text-[10px] uppercase shadow-[0_0_8px_rgba(80,250,123,0.15)]">
                                   COMPLETED
                                 </span>
                               )}
                               {order.status === 'PENDING' && (
-                                <span className="inline-block px-3 py-1 rounded bg-transparent text-[#ffb86c] border border-[#ffb86c] font-bold text-[10px] uppercase animate-pulse">
+                                <span className="inline-block px-3 py-1 rounded bg-transparent text-gamehub-cyan border border-[#ffb86c] font-bold text-[10px] uppercase animate-pulse">
                                   PENDING
                                 </span>
                               )}
@@ -862,7 +862,7 @@ export const Admin = () => {
                                   setSelectedOrder(order);
                                   setIsOrderDetailsOpen(true);
                                 }}
-                                className="px-3.5 py-1.5 bg-[#44475a]/60 border border-[#6272a4]/40 rounded text-xs font-bold text-[#bd93f9] hover:text-[#ff79c6] hover:border-[#ff79c6] hover:shadow-[0_0_10px_rgba(255,121,198,0.25)] transition-all active:scale-95 uppercase tracking-wider"
+                                className="px-3.5 py-1.5 bg-gamehub-surface/60 border border-gamehub-muted/40 rounded text-xs font-bold text-gamehub-purple hover:text-[#ff79c6] hover:border-[#ff79c6] hover:shadow-[0_0_10px_rgba(255,121,198,0.25)] transition-all active:scale-95 uppercase tracking-wider"
                               >
                                 VIEW
                               </button>
@@ -871,11 +871,11 @@ export const Admin = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={6} className="py-12 text-center text-[#6272a4]">
+                          <td colSpan={6} className="py-12 text-center text-gamehub-muted">
                             <div className="flex flex-col items-center justify-center gap-2">
-                              <Gamepad2 className="w-12 h-12 text-[#6272a4]/30 animate-bounce" />
+                              <Gamepad2 className="w-12 h-12 text-gamehub-muted/30 animate-bounce" />
                               <span className="text-sm font-semibold">NO MATCHING ORDERS DISCOVERED.</span>
-                              <span className="text-xs font-mono text-[#6272a4]/60">Try refining search metrics.</span>
+                              <span className="text-xs font-mono text-gamehub-muted/60">Try refining search metrics.</span>
                             </div>
                           </td>
                         </tr>
@@ -898,20 +898,20 @@ export const Admin = () => {
             >
               {/* Header */}
               <div>
-                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-[#bd93f9] tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-gamehub-purple tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                   REGISTERED PLAYERS
                 </h2>
-                <p className="text-xs text-[#6272a4] mt-1 tracking-wide font-medium">
+                <p className="text-xs text-gamehub-muted mt-1 tracking-wide font-medium">
                   Scoreboard list of customer players registered on the game platform.
                 </p>
               </div>
 
               {/* Customers Scoreboard Table */}
-              <div className="border border-[#6272a4]/30 rounded-lg overflow-hidden bg-[#282a36] shadow-lg">
+              <div className="border border-gamehub-muted/30 rounded-lg overflow-hidden bg-gamehub-bg shadow-lg">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-[#6272a4]/40 bg-[#191a21]/90 text-[#6272a4] text-xs font-bold uppercase tracking-wider">
+                      <tr className="border-b border-gamehub-muted/40 bg-[#191a21]/90 text-gamehub-muted text-xs font-bold uppercase tracking-wider">
                         <th className="py-4 px-6">PLAYER</th>
                         <th className="py-4 px-6">EMAIL ADDRESS</th>
                         <th className="py-4 px-6">PLAYER LEVEL</th>
@@ -927,19 +927,19 @@ export const Admin = () => {
                         { name: 'ChronoNerd', email: 'chrono_fanatic@retro.net', level: 'Lv. 99 TimeTraveler', hours: '1,048 Hrs', status: 'ACTIVE' },
                         { name: 'ShadowCheater', email: 'hackerboy@toxic.ru', level: 'Lv. 01 Banned', hours: '2 Hrs', status: 'BANNED' }
                       ].map((cust, i) => (
-                        <tr key={i} className="hover:bg-[#44475a]/30 transition-colors">
-                          <td className="py-4 px-6 font-bold text-[#f8f8f2] flex items-center gap-3">
-                            <div className="w-8 h-8 rounded bg-[#44475a] flex items-center justify-center font-mono border border-[#6272a4]/40 text-[#ff79c6]">
+                        <tr key={i} className="hover:bg-gamehub-surface/30 transition-colors">
+                          <td className="py-4 px-6 font-bold text-gamehub-text flex items-center gap-3">
+                            <div className="w-8 h-8 rounded bg-gamehub-surface flex items-center justify-center font-mono border border-gamehub-muted/40 text-[#ff79c6]">
                               {cust.name.substring(0, 2).toUpperCase()}
                             </div>
                             {cust.name}
                           </td>
-                          <td className="py-4 px-6 font-mono text-[#6272a4]">{cust.email}</td>
-                          <td className="py-4 px-6 font-semibold text-[#bd93f9]">{cust.level}</td>
-                          <td className="py-4 px-6 font-mono text-[#50fa7b]">{cust.hours}</td>
+                          <td className="py-4 px-6 font-mono text-gamehub-muted">{cust.email}</td>
+                          <td className="py-4 px-6 font-semibold text-gamehub-purple">{cust.level}</td>
+                          <td className="py-4 px-6 font-mono text-gamehub-cyan">{cust.hours}</td>
                           <td className="py-4 px-6 text-center">
                             {cust.status === 'ACTIVE' ? (
-                              <span className="px-3 py-1 rounded bg-[#50fa7b]/10 text-[#50fa7b] border border-[#50fa7b]/30 font-bold text-xs">
+                              <span className="px-3 py-1 rounded bg-[#50fa7b]/10 text-gamehub-cyan border border-[#50fa7b]/30 font-bold text-xs">
                                 NORMAL
                               </span>
                             ) : (
@@ -968,16 +968,16 @@ export const Admin = () => {
             >
               {/* Header */}
               <div>
-                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-[#bd93f9] tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                <h2 className="font-['Press_Start_2P'] text-lg sm:text-2xl text-gamehub-purple tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                   ARCADE CONFIGURATION
                 </h2>
-                <p className="text-xs text-[#6272a4] mt-1 tracking-wide font-medium">
+                <p className="text-xs text-gamehub-muted mt-1 tracking-wide font-medium">
                   Toggle admin flags and control the portal engine.
                 </p>
               </div>
 
               {/* Settings Card */}
-              <div className="bg-[#44475a]/25 border border-[#6272a4]/20 rounded-lg p-6 max-w-2xl flex flex-col gap-6">
+              <div className="bg-gamehub-surface/25 border border-gamehub-muted/20 rounded-lg p-6 max-w-2xl flex flex-col gap-6">
                 <div className="flex flex-col gap-4">
                   {[
                     { title: 'Server Engine Double XP Event', desc: 'Activates automatic double experience rate for platform users.', defaultChecked: true },
@@ -985,23 +985,23 @@ export const Admin = () => {
                     { title: 'Hype Multiplier Boost (5.0x)', desc: 'Accelerates visual glow animations on the clientside dashboard.', defaultChecked: true },
                     { title: 'Allow Anonymous CD-Key Claim', desc: 'Allows unregistered players to fetch active licenses using guest checkout.', defaultChecked: false }
                   ].map((setting, idx) => (
-                    <div key={idx} className="flex justify-between items-start gap-6 p-4 bg-[#191a21]/50 border border-[#6272a4]/15 rounded-lg">
+                    <div key={idx} className="flex justify-between items-start gap-6 p-4 bg-[#191a21]/50 border border-gamehub-muted/15 rounded-lg">
                       <div className="flex-1">
-                        <h4 className="font-bold text-sm md:text-base text-[#f8f8f2]">{setting.title}</h4>
-                        <p className="text-xs text-[#6272a4] mt-1">{setting.desc}</p>
+                        <h4 className="font-bold text-sm md:text-base text-gamehub-text">{setting.title}</h4>
+                        <p className="text-xs text-gamehub-muted mt-1">{setting.desc}</p>
                       </div>
                       <div className="shrink-0 flex items-center">
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input type="checkbox" defaultChecked={setting.defaultChecked} className="sr-only peer" />
-                          <div className="w-11 h-6 bg-[#44475a] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#f8f8f2] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#50fa7b]"></div>
+                          <div className="w-11 h-6 bg-gamehub-surface peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#f8f8f2] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#50fa7b]"></div>
                         </label>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="border-t border-[#6272a4]/20 pt-6 flex justify-end">
-                  <button className="px-6 py-2.5 bg-[#bd93f9] hover:bg-[#ff79c6] text-[#282a36] font-bold text-xs tracking-wider uppercase rounded shadow-lg active:scale-95 transition-all">
+                <div className="border-t border-gamehub-muted/20 pt-6 flex justify-end">
+                  <button className="px-6 py-2.5 bg-gamehub-purple hover:bg-[#ff79c6] text-gamehub-bg font-bold text-xs tracking-wider uppercase rounded shadow-lg active:scale-95 transition-all">
                     SAVE SYSTEM CONFIG
                   </button>
                 </div>
@@ -1031,16 +1031,16 @@ export const Admin = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-lg bg-[#282a36] border-4 border-[#bd93f9] rounded-lg shadow-[0_0_30px_rgba(189,147,249,0.4)] z-10 overflow-hidden"
+              className="relative w-full max-w-lg bg-gamehub-bg border-4 border-gamehub-purple rounded-lg shadow-[0_0_30px_rgba(189,147,249,0.4)] z-10 overflow-hidden"
             >
               {/* Header */}
-              <div className="bg-[#191a21] px-6 py-4 border-b-2 border-[#bd93f9] flex items-center justify-between">
-                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-[#bd93f9]">
+              <div className="bg-[#191a21] px-6 py-4 border-b-2 border-gamehub-purple flex items-center justify-between">
+                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-gamehub-purple">
                   ✚ ADD NEW GAME
                 </h3>
                 <button 
                   onClick={() => setIsAddOpen(false)}
-                  className="p-1 text-[#6272a4] hover:text-[#ff79c6] transition-colors"
+                  className="p-1 text-gamehub-muted hover:text-[#ff79c6] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1060,7 +1060,7 @@ export const Admin = () => {
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
                     placeholder="e.g. Chrono Trigger 2"
-                    className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors"
+                    className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors"
                   />
                 </div>
 
@@ -1076,7 +1076,7 @@ export const Admin = () => {
                       value={formCategory}
                       onChange={(e) => setFormCategory(e.target.value)}
                       placeholder="e.g. RPG / Fighting"
-                      className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors"
+                      className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors"
                     />
                   </div>
 
@@ -1092,7 +1092,7 @@ export const Admin = () => {
                       value={formPrice}
                       onChange={(e) => setFormPrice(e.target.value)}
                       placeholder="14.99"
-                      className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
+                      className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
                     />
                   </div>
 
@@ -1108,7 +1108,7 @@ export const Admin = () => {
                       value={formStock}
                       onChange={(e) => setFormStock(parseInt(e.target.value) || 0)}
                       placeholder="0"
-                      className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
+                      className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
                     />
                   </div>
                 </div>
@@ -1124,8 +1124,8 @@ export const Admin = () => {
                       onClick={() => setFormStatus('Active')}
                       className={`flex-1 py-2 rounded text-xs font-bold transition-all border
                         ${formStatus === 'Active' 
-                          ? 'bg-[#50fa7b] text-[#282a36] border-[#50fa7b] shadow-[0_0_10px_rgba(80,250,123,0.3)]' 
-                          : 'bg-[#191a21] text-[#6272a4] border-[#6272a4]/30'}`}
+                          ? 'bg-[#50fa7b] text-gamehub-bg border-[#50fa7b] shadow-[0_0_10px_rgba(80,250,123,0.3)]' 
+                          : 'bg-[#191a21] text-gamehub-muted border-gamehub-muted/30'}`}
                     >
                       ACTIVE
                     </button>
@@ -1134,8 +1134,8 @@ export const Admin = () => {
                       onClick={() => setFormStatus('Draft')}
                       className={`flex-1 py-2 rounded text-xs font-bold transition-all border
                         ${formStatus === 'Draft' 
-                          ? 'bg-[#44475a] text-[#f8f8f2] border-[#bd93f9]' 
-                          : 'bg-[#191a21] text-[#6272a4] border-[#6272a4]/30'}`}
+                          ? 'bg-gamehub-surface text-gamehub-text border-gamehub-purple' 
+                          : 'bg-[#191a21] text-gamehub-muted border-gamehub-muted/30'}`}
                     >
                       DRAFT (INACTIVE)
                     </button>
@@ -1158,7 +1158,7 @@ export const Admin = () => {
                         title={grad.label}
                       >
                         {formGradient === grad.value && (
-                          <Check className="w-4 h-4 text-[#282a36] stroke-[3]" />
+                          <Check className="w-4 h-4 text-gamehub-bg stroke-[3]" />
                         )}
                       </button>
                     ))}
@@ -1166,17 +1166,17 @@ export const Admin = () => {
                 </div>
 
                 {/* Form Buttons */}
-                <div className="flex gap-3 border-t border-[#6272a4]/20 pt-4 mt-2">
+                <div className="flex gap-3 border-t border-gamehub-muted/20 pt-4 mt-2">
                   <button
                     type="button"
                     onClick={() => setIsAddOpen(false)}
-                    className="flex-1 py-2.5 bg-[#44475a] hover:bg-[#ff5555] text-[#f8f8f2] text-xs font-bold rounded tracking-wider transition-colors"
+                    className="flex-1 py-2.5 bg-gamehub-surface hover:bg-[#ff5555] text-gamehub-text text-xs font-bold rounded tracking-wider transition-colors"
                   >
                     CANCEL
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-[#bd93f9] hover:bg-[#50fa7b] hover:text-[#282a36] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(189,147,249,0.2)] transition-colors"
+                    className="flex-1 py-2.5 bg-gamehub-purple hover:bg-[#50fa7b] hover:text-gamehub-bg text-gamehub-bg text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(189,147,249,0.2)] transition-colors"
                   >
                     ADD TO CATALOGUE
                   </button>
@@ -1210,7 +1210,7 @@ export const Admin = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-lg bg-[#282a36] border-4 border-[#ff79c6] rounded-lg shadow-[0_0_30px_rgba(255,121,198,0.4)] z-10 overflow-hidden"
+              className="relative w-full max-w-lg bg-gamehub-bg border-4 border-[#ff79c6] rounded-lg shadow-[0_0_30px_rgba(255,121,198,0.4)] z-10 overflow-hidden"
             >
               {/* Header */}
               <div className="bg-[#191a21] px-6 py-4 border-b-2 border-[#ff79c6] flex items-center justify-between">
@@ -1222,7 +1222,7 @@ export const Admin = () => {
                     setIsEditOpen(false);
                     setSelectedGame(null);
                   }}
-                  className="p-1 text-[#6272a4] hover:text-[#ff79c6] transition-colors"
+                  className="p-1 text-gamehub-muted hover:text-[#ff79c6] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1233,10 +1233,10 @@ export const Admin = () => {
                 
                 {/* Audit Trail */}
                 {selectedGame?.addedBy && (
-                  <div className="bg-[#44475a]/30 border border-[#6272a4]/40 rounded-lg p-3 mb-1 flex items-center gap-2">
-                    <ShieldAlert className="w-4 h-4 text-[#bd93f9]" />
-                    <p className="text-xs font-mono text-[#f8f8f2] tracking-tight">
-                      <span className="text-[#6272a4]">Added by:</span> <span className="text-[#50fa7b] font-bold">{selectedGame.addedBy}</span> <span className="text-[#6272a4]">on {selectedGame.addedDate}</span>
+                  <div className="bg-gamehub-surface/30 border border-gamehub-muted/40 rounded-lg p-3 mb-1 flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4 text-gamehub-purple" />
+                    <p className="text-xs font-mono text-gamehub-text tracking-tight">
+                      <span className="text-gamehub-muted">Added by:</span> <span className="text-gamehub-cyan font-bold">{selectedGame.addedBy}</span> <span className="text-gamehub-muted">on {selectedGame.addedDate}</span>
                     </p>
                   </div>
                 )}
@@ -1252,7 +1252,7 @@ export const Admin = () => {
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
                     placeholder="e.g. Chrono Trigger 2"
-                    className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors"
+                    className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors"
                   />
                 </div>
 
@@ -1268,7 +1268,7 @@ export const Admin = () => {
                       value={formCategory}
                       onChange={(e) => setFormCategory(e.target.value)}
                       placeholder="e.g. RPG / Fighting"
-                      className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors"
+                      className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors"
                     />
                   </div>
 
@@ -1284,7 +1284,7 @@ export const Admin = () => {
                       value={formPrice}
                       onChange={(e) => setFormPrice(e.target.value)}
                       placeholder="14.99"
-                      className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-2 text-sm text-[#f8f8f2] focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
+                      className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-2 text-sm text-gamehub-text focus:outline-none focus:border-[#ff79c6] transition-colors font-mono"
                     />
                   </div>
                 </div>
@@ -1300,8 +1300,8 @@ export const Admin = () => {
                       onClick={() => setFormStatus('Active')}
                       className={`flex-1 py-2 rounded text-xs font-bold transition-all border
                         ${formStatus === 'Active' 
-                          ? 'bg-[#50fa7b] text-[#282a36] border-[#50fa7b] shadow-[0_0_10px_rgba(80,250,123,0.3)]' 
-                          : 'bg-[#191a21] text-[#6272a4] border-[#6272a4]/30'}`}
+                          ? 'bg-[#50fa7b] text-gamehub-bg border-[#50fa7b] shadow-[0_0_10px_rgba(80,250,123,0.3)]' 
+                          : 'bg-[#191a21] text-gamehub-muted border-gamehub-muted/30'}`}
                     >
                       ACTIVE
                     </button>
@@ -1310,8 +1310,8 @@ export const Admin = () => {
                       onClick={() => setFormStatus('Draft')}
                       className={`flex-1 py-2 rounded text-xs font-bold transition-all border
                         ${formStatus === 'Draft' 
-                          ? 'bg-[#44475a] text-[#f8f8f2] border-[#ff79c6]' 
-                          : 'bg-[#191a21] text-[#6272a4] border-[#6272a4]/30'}`}
+                          ? 'bg-gamehub-surface text-gamehub-text border-[#ff79c6]' 
+                          : 'bg-[#191a21] text-gamehub-muted border-gamehub-muted/30'}`}
                     >
                       DRAFT (INACTIVE)
                     </button>
@@ -1334,7 +1334,7 @@ export const Admin = () => {
                         title={grad.label}
                       >
                         {formGradient === grad.value && (
-                          <Check className="w-4 h-4 text-[#282a36] stroke-[3]" />
+                          <Check className="w-4 h-4 text-gamehub-bg stroke-[3]" />
                         )}
                       </button>
                     ))}
@@ -1342,20 +1342,20 @@ export const Admin = () => {
                 </div>
 
                 {/* Form Buttons */}
-                <div className="flex gap-3 border-t border-[#6272a4]/20 pt-4 mt-2">
+                <div className="flex gap-3 border-t border-gamehub-muted/20 pt-4 mt-2">
                   <button
                     type="button"
                     onClick={() => {
                       setIsEditOpen(false);
                       setSelectedGame(null);
                     }}
-                    className="flex-1 py-2.5 bg-[#44475a] hover:bg-[#ff5555] text-[#f8f8f2] text-xs font-bold rounded tracking-wider transition-colors"
+                    className="flex-1 py-2.5 bg-gamehub-surface hover:bg-[#ff5555] text-gamehub-text text-xs font-bold rounded tracking-wider transition-colors"
                   >
                     CANCEL
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-[#ff79c6] hover:bg-[#50fa7b] hover:text-[#282a36] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,121,198,0.2)] transition-colors"
+                    className="flex-1 py-2.5 bg-[#ff79c6] hover:bg-[#50fa7b] hover:text-gamehub-bg text-gamehub-bg text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,121,198,0.2)] transition-colors"
                   >
                     SAVE CHANGES
                   </button>
@@ -1389,7 +1389,7 @@ export const Admin = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
               transition={{ type: 'spring', damping: 25, stiffness: 400 }}
-              className="relative w-full max-w-md bg-[#282a36] border-4 border-[#ff5555] rounded-lg shadow-[0_0_35px_rgba(255,85,85,0.4)] z-10 overflow-hidden"
+              className="relative w-full max-w-md bg-gamehub-bg border-4 border-[#ff5555] rounded-lg shadow-[0_0_35px_rgba(255,85,85,0.4)] z-10 overflow-hidden"
             >
               {/* Box Header */}
               <div className="bg-[#191a21] px-5 py-3.5 border-b-2 border-[#ff5555] flex items-center gap-2">
@@ -1401,10 +1401,10 @@ export const Admin = () => {
 
               {/* Warning Content */}
               <div className="p-6 flex flex-col gap-4 text-center">
-                <p className="font-['Press_Start_2P'] text-[10px] leading-relaxed text-[#f8f8f2] bg-[#191a21] p-4 border border-[#ff5555]/30 rounded">
+                <p className="font-['Press_Start_2P'] text-[10px] leading-relaxed text-gamehub-text bg-[#191a21] p-4 border border-[#ff5555]/30 rounded">
                   ERASING ITEM: &quot;{selectedGame.title.toUpperCase()}&quot;
                 </p>
-                <p className="text-xs text-[#6272a4] leading-relaxed">
+                <p className="text-xs text-gamehub-muted leading-relaxed">
                   Are you absolutely certain, Player 1? Deleting this game from the inventory database will permanently revoke activation capability for new buyers. This operation is irrevocable.
                 </p>
 
@@ -1415,13 +1415,13 @@ export const Admin = () => {
                       setIsDeleteOpen(false);
                       setSelectedGame(null);
                     }}
-                    className="flex-1 py-2.5 bg-[#44475a] hover:bg-[#bfc5d6] hover:text-[#282a36] text-[#f8f8f2] text-xs font-bold rounded tracking-wider transition-colors uppercase"
+                    className="flex-1 py-2.5 bg-gamehub-surface hover:bg-[#bfc5d6] hover:text-gamehub-bg text-gamehub-text text-xs font-bold rounded tracking-wider transition-colors uppercase"
                   >
                     ABORT MISSION
                   </button>
                   <button
                     onClick={handleConfirmDelete}
-                    className="flex-1 py-2.5 bg-[#ff5555] hover:bg-[#ff79c6] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,85,85,0.3)] transition-colors uppercase"
+                    className="flex-1 py-2.5 bg-[#ff5555] hover:bg-[#ff79c6] text-gamehub-bg text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,85,85,0.3)] transition-colors uppercase"
                   >
                     YES, ERASE GAME
                   </button>
@@ -1454,11 +1454,11 @@ export const Admin = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-lg bg-[#282a36] border-4 border-[#bd93f9] rounded-lg shadow-[0_0_30px_rgba(189,147,249,0.4)] z-10 overflow-hidden"
+              className="relative w-full max-w-lg bg-gamehub-bg border-4 border-gamehub-purple rounded-lg shadow-[0_0_30px_rgba(189,147,249,0.4)] z-10 overflow-hidden"
             >
               {/* Header */}
-              <div className="bg-[#191a21] px-6 py-4 border-b-2 border-[#bd93f9] flex items-center justify-between">
-                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-[#bd93f9]">
+              <div className="bg-[#191a21] px-6 py-4 border-b-2 border-gamehub-purple flex items-center justify-between">
+                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-gamehub-purple">
                   🔍 ORDER DETAILS: #{selectedOrder.id}
                 </h3>
                 <button 
@@ -1466,7 +1466,7 @@ export const Admin = () => {
                     setIsOrderDetailsOpen(false);
                     setSelectedOrder(null);
                   }}
-                  className="p-1 text-[#6272a4] hover:text-[#ff79c6] transition-colors"
+                  className="p-1 text-gamehub-muted hover:text-[#ff79c6] transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1476,23 +1476,23 @@ export const Admin = () => {
               <div className="p-6 flex flex-col gap-5">
                 
                 {/* Meta details */}
-                <div className="grid grid-cols-2 gap-4 bg-[#191a21]/50 border border-[#6272a4]/20 p-4 rounded text-xs font-mono">
+                <div className="grid grid-cols-2 gap-4 bg-[#191a21]/50 border border-gamehub-muted/20 p-4 rounded text-xs font-mono">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#6272a4]">CUSTOMER EMAIL</span>
-                    <span className="text-[#f8f8f2] font-semibold truncate">{selectedOrder.customer}</span>
+                    <span className="text-gamehub-muted">CUSTOMER EMAIL</span>
+                    <span className="text-gamehub-text font-semibold truncate">{selectedOrder.customer}</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#6272a4]">ORDER DATE</span>
-                    <span className="text-[#f8f8f2] font-semibold">{selectedOrder.date}</span>
+                    <span className="text-gamehub-muted">ORDER DATE</span>
+                    <span className="text-gamehub-text font-semibold">{selectedOrder.date}</span>
                   </div>
                   <div className="flex flex-col gap-1 mt-2">
-                    <span className="text-[#6272a4]">TRANSACTION STATUS</span>
+                    <span className="text-gamehub-muted">TRANSACTION STATUS</span>
                     <div>
                       {selectedOrder.status === 'COMPLETED' && (
-                        <span className="inline-block px-2 py-0.5 rounded bg-[#50fa7b]/10 text-[#50fa7b] font-bold text-[9px]">COMPLETED</span>
+                        <span className="inline-block px-2 py-0.5 rounded bg-[#50fa7b]/10 text-gamehub-cyan font-bold text-[9px]">COMPLETED</span>
                       )}
                       {selectedOrder.status === 'PENDING' && (
-                        <span className="inline-block px-2 py-0.5 rounded bg-[#ffb86c]/10 text-[#ffb86c] font-bold text-[9px] animate-pulse">PENDING</span>
+                        <span className="inline-block px-2 py-0.5 rounded bg-[#ffb86c]/10 text-gamehub-cyan font-bold text-[9px] animate-pulse">PENDING</span>
                       )}
                       {selectedOrder.status === 'REFUNDED' && (
                         <span className="inline-block px-2 py-0.5 rounded bg-[#ff5555]/10 text-[#ff5555] font-bold text-[9px]">REFUNDED</span>
@@ -1500,8 +1500,8 @@ export const Admin = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 mt-2">
-                    <span className="text-[#6272a4]">TOTAL AMOUNT</span>
-                    <span className="text-[#50fa7b] font-bold">${selectedOrder.total.toFixed(2)}</span>
+                    <span className="text-gamehub-muted">TOTAL AMOUNT</span>
+                    <span className="text-gamehub-cyan font-bold">${selectedOrder.total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -1512,15 +1512,15 @@ export const Admin = () => {
                   </span>
                   <div className="flex flex-col gap-3 max-h-[220px] overflow-y-auto custom-scrollbar">
                     {selectedOrder.gamesList.map((g, idx) => (
-                      <div key={idx} className="flex gap-4 p-3 bg-[#44475a]/30 border border-[#6272a4]/20 rounded group font-sans">
-                        <div className={`w-10 h-12 bg-gradient-to-br ${g.coverGradient} rounded border border-[#6272a4]/20 flex items-center justify-center shrink-0`}>
-                          <Gamepad2 className="w-5 h-5 text-[#282a36] opacity-75" />
+                      <div key={idx} className="flex gap-4 p-3 bg-gamehub-surface/30 border border-gamehub-muted/20 rounded group font-sans">
+                        <div className={`w-10 h-12 bg-gradient-to-br ${g.coverGradient} rounded border border-gamehub-muted/20 flex items-center justify-center shrink-0`}>
+                          <Gamepad2 className="w-5 h-5 text-gamehub-bg opacity-75" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <span className="text-xs font-bold text-[#f8f8f2] block truncate group-hover:text-[#ff79c6] transition-colors">
+                          <span className="text-xs font-bold text-gamehub-text block truncate group-hover:text-[#ff79c6] transition-colors">
                             {g.title}
                           </span>
-                          <span className="text-[10px] text-[#6272a4] font-mono mt-0.5 block">
+                          <span className="text-[10px] text-gamehub-muted font-mono mt-0.5 block">
                             Price: ${g.price.toFixed(2)}
                           </span>
                           
@@ -1530,8 +1530,8 @@ export const Admin = () => {
                               ${selectedOrder.status === 'REFUNDED' 
                                 ? 'bg-[#ff5555]/15 text-[#ff5555] line-through border border-[#ff5555]/30' 
                                 : selectedOrder.status === 'PENDING'
-                                ? 'bg-[#ffb86c]/10 text-[#ffb86c]/70 border border-[#ffb86c]/20'
-                                : 'bg-[#191a21] text-[#50fa7b] border border-[#50fa7b]/20 shadow-[0_0_8px_rgba(80,250,123,0.15)]'
+                                ? 'bg-[#ffb86c]/10 text-gamehub-cyan/70 border border-[#ffb86c]/20'
+                                : 'bg-[#191a21] text-gamehub-cyan border border-[#50fa7b]/20 shadow-[0_0_8px_rgba(80,250,123,0.15)]'
                               }`}>
                               {g.code}
                             </span>
@@ -1539,7 +1539,7 @@ export const Admin = () => {
                               <button
                                 type="button"
                                 onClick={() => navigator.clipboard.writeText(g.code)}
-                                className="px-2 py-1 bg-[#44475a] border border-[#6272a4]/40 hover:border-[#50fa7b] hover:text-[#50fa7b] rounded text-[9px] font-bold text-[#bfc5d6] transition-colors active:scale-90"
+                                className="px-2 py-1 bg-gamehub-surface border border-gamehub-muted/40 hover:border-[#50fa7b] hover:text-gamehub-cyan rounded text-[9px] font-bold text-[#bfc5d6] transition-colors active:scale-90"
                               >
                                 COPY
                               </button>
@@ -1552,7 +1552,7 @@ export const Admin = () => {
                 </div>
 
                 {/* Modal Buttons */}
-                <div className="flex gap-3 border-t border-[#6272a4]/20 pt-4 mt-1">
+                <div className="flex gap-3 border-t border-gamehub-muted/20 pt-4 mt-1">
                   
                   {/* Cancel/Close */}
                   <button
@@ -1561,7 +1561,7 @@ export const Admin = () => {
                       setIsOrderDetailsOpen(false);
                       setSelectedOrder(null);
                     }}
-                    className="flex-1 py-2.5 bg-[#44475a] hover:bg-[#bfc5d6] hover:text-[#282a36] text-[#f8f8f2] text-xs font-bold rounded tracking-wider transition-colors uppercase"
+                    className="flex-1 py-2.5 bg-gamehub-surface hover:bg-[#bfc5d6] hover:text-gamehub-bg text-gamehub-text text-xs font-bold rounded tracking-wider transition-colors uppercase"
                   >
                     CLOSE WINDOW
                   </button>
@@ -1571,7 +1571,7 @@ export const Admin = () => {
                     <button
                       type="button"
                       onClick={() => handleGenerateKeys(selectedOrder.id)}
-                      className="flex-1 py-2.5 bg-[#50fa7b] hover:bg-[#8be9fd] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(80,250,123,0.25)] transition-colors uppercase"
+                      className="flex-1 py-2.5 bg-[#50fa7b] hover:bg-[#8be9fd] text-gamehub-bg text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(80,250,123,0.25)] transition-colors uppercase"
                     >
                       GENERATE KEYS
                     </button>
@@ -1581,7 +1581,7 @@ export const Admin = () => {
                     <button
                       type="button"
                       onClick={() => handleRefundOrder(selectedOrder.id)}
-                      className="flex-1 py-2.5 bg-[#ff5555] hover:bg-[#ff79c6] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,85,85,0.25)] transition-colors uppercase"
+                      className="flex-1 py-2.5 bg-[#ff5555] hover:bg-[#ff79c6] text-gamehub-bg text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(255,85,85,0.25)] transition-colors uppercase"
                     >
                       REFUND ORDER
                     </button>
@@ -1616,11 +1616,11 @@ export const Admin = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 30 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-sm bg-[#282a36] border-4 border-[#50fa7b] rounded-lg shadow-[0_0_30px_rgba(80,250,123,0.3)] z-10 overflow-hidden"
+              className="relative w-full max-w-sm bg-gamehub-bg border-4 border-[#50fa7b] rounded-lg shadow-[0_0_30px_rgba(80,250,123,0.3)] z-10 overflow-hidden"
             >
               {/* Header */}
               <div className="bg-[#191a21] px-6 py-4 border-b-2 border-[#50fa7b] flex items-center justify-between">
-                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-[#50fa7b]">
+                <h3 className="font-['Press_Start_2P'] text-[10px] tracking-wider text-gamehub-cyan">
                   ADD STOCK
                 </h3>
                 <button 
@@ -1628,7 +1628,7 @@ export const Admin = () => {
                     setIsRestockOpen(false);
                     setSelectedGame(null);
                   }}
-                  className="p-1 text-[#6272a4] hover:text-[#50fa7b] transition-colors"
+                  className="p-1 text-gamehub-muted hover:text-gamehub-cyan transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1638,12 +1638,12 @@ export const Admin = () => {
               <form onSubmit={handleRestockSubmit} className="p-6 flex flex-col gap-6">
                 
                 <div className="text-center">
-                  <h4 className="text-[#f8f8f2] font-bold tracking-wide">{selectedGame.title}</h4>
-                  <p className="text-xs text-[#6272a4] font-mono mt-1">Current Stock: <span className="text-[#50fa7b]">{selectedGame.stockQuantity}</span></p>
+                  <h4 className="text-gamehub-text font-bold tracking-wide">{selectedGame.title}</h4>
+                  <p className="text-xs text-gamehub-muted font-mono mt-1">Current Stock: <span className="text-gamehub-cyan">{selectedGame.stockQuantity}</span></p>
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-[#50fa7b] tracking-wider font-mono text-center">
+                  <label className="text-xs font-bold text-gamehub-cyan tracking-wider font-mono text-center">
                     QUANTITY TO ADD
                   </label>
                   <input 
@@ -1652,13 +1652,13 @@ export const Admin = () => {
                     required
                     value={restockAmount}
                     onChange={(e) => setRestockAmount(parseInt(e.target.value) || 0)}
-                    className="w-full bg-[#191a21] border border-[#6272a4] rounded px-3 py-3 text-center text-xl font-bold text-[#f8f8f2] focus:outline-none focus:border-[#50fa7b] transition-colors font-mono"
+                    className="w-full bg-[#191a21] border border-gamehub-muted rounded px-3 py-3 text-center text-xl font-bold text-gamehub-text focus:outline-none focus:border-[#50fa7b] transition-colors font-mono"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-[#50fa7b] hover:bg-[#8be9fd] text-[#282a36] text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(80,250,123,0.2)] transition-colors uppercase"
+                  className="w-full py-3 bg-[#50fa7b] hover:bg-[#8be9fd] text-gamehub-bg text-xs font-bold rounded tracking-wider shadow-[0_4px_12px_rgba(80,250,123,0.2)] transition-colors uppercase"
                 >
                   GENERATE & ADD TO WAREHOUSE
                 </button>

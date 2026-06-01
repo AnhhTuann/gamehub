@@ -64,7 +64,7 @@ export const Cart = () => {
                   <div className="flex items-center border border-zinc-700 bg-zinc-950">
                     <button 
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="p-2 text-zinc-400 hover:text-white transition-colors"
+                      className="p-2 text-zinc-400 hover:text-gamehub-text transition-colors"
                     >
                       <Minus className="w-4 h-4" />
                     </button>
@@ -73,7 +73,7 @@ export const Cart = () => {
                     </span>
                     <button 
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="p-2 text-zinc-400 hover:text-white transition-colors"
+                      className="p-2 text-zinc-400 hover:text-gamehub-text transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </button>

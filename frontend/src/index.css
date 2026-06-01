@@ -4,6 +4,14 @@
 @theme {
   --font-pixel: "Press Start 2P", monospace;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-gamehub-bg: #110e1b;
+  --color-gamehub-surface: #1f1b32;
+  --color-gamehub-hover: #2d264a;
+  --color-gamehub-purple: #7a3be0;
+  --color-gamehub-purpleGlow: #a275f5;
+  --color-gamehub-cyan: #00d8ff;
+  --color-gamehub-muted: #6f749e;
+  --color-gamehub-text: #f0f2f5;
 }
 
 /* ===== DRACULA DARK THEME (default) ===== */

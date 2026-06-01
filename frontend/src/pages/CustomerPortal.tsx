@@ -78,8 +78,8 @@ export const CustomerPortal = () => {
   const orders = data?.myOrders || [];
 
   const renderOrders = () => {
-    if (loading) return <div className="text-white text-center py-20 font-pixel">LOADING ORDERS...</div>;
-    if (orders.length === 0) return <div className="text-white text-center py-20 font-pixel text-[#6272a4]">NO ORDERS FOUND</div>;
+    if (loading) return <div className="text-gamehub-text text-center py-20 font-pixel">LOADING ORDERS...</div>;
+    if (orders.length === 0) return <div className="text-gamehub-text text-center py-20 font-pixel text-gamehub-muted">NO ORDERS FOUND</div>;
 
     return (
     <div className="flex flex-col gap-8 animate-in fade-in duration-500">
@@ -96,7 +96,7 @@ export const CustomerPortal = () => {
           <div className="flex flex-col sm:flex-row sm:items-center gap-6 md:gap-12 text-sm">
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Order ID</span>
-              <span className="text-white font-mono text-base font-bold tracking-widest">#{order.id.slice(-6).toUpperCase()}</span>
+              <span className="text-gamehub-text font-mono text-base font-bold tracking-widest">#{order.id.slice(-6).toUpperCase()}</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Date Placed</span>
@@ -104,7 +104,7 @@ export const CustomerPortal = () => {
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-zinc-500 font-medium uppercase tracking-wider text-xs">Total Amount</span>
-              <span className="text-white font-bold tracking-wider">${order.totalAmount.toFixed(2)}</span>
+              <span className="text-gamehub-text font-bold tracking-wider">${order.totalAmount.toFixed(2)}</span>
             </div>
           </div>
           <button className="bg-[var(--accent)] text-black font-bold uppercase tracking-wider text-xs px-8 py-3 hover:bg-[var(--accent-hover)] transition-colors duration-300">
@@ -200,7 +200,7 @@ export const CustomerPortal = () => {
       {/* Mobile Sidebar Toggle Header */}
       <div className="md:hidden flex items-center justify-between p-6 border-b border-[var(--border-primary)] bg-[var(--bg-primary)] sticky top-0 z-30">
         <h2 className="font-pixel text-sm font-bold text-[var(--accent)] tracking-wider">PLAYER DASHBOARD</h2>
-        <button className="text-zinc-400 hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <button className="text-zinc-400 hover:text-gamehub-text transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>

@@ -16,9 +16,9 @@ export const Button: React.FC<ButtonProps> = ({
   
   const variants = {
     primary: 'bg-white text-black border border-white hover:bg-zinc-200 hover:border-zinc-200',
-    secondary: 'bg-zinc-900 border border-zinc-800 text-white hover:bg-zinc-800',
-    outline: 'bg-transparent border border-white text-white hover:bg-white/10',
-    ghost: 'bg-transparent text-zinc-400 hover:text-white',
+    secondary: 'bg-zinc-900 border border-zinc-800 text-gamehub-text hover:bg-zinc-800',
+    outline: 'bg-transparent border border-white text-gamehub-text hover:bg-white/10',
+    ghost: 'bg-transparent text-zinc-400 hover:text-gamehub-text',
   };
 
   const sizes = {

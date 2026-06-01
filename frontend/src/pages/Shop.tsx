@@ -174,7 +174,7 @@ export const Shop = () => {
           )}
         </div>
 
-        <span className="text-[#bd93f9] text-sm font-pixel uppercase tracking-wider hidden md:block whitespace-nowrap">
+        <span className="text-gamehub-purple text-sm font-pixel uppercase tracking-wider hidden md:block whitespace-nowrap">
           {totalGames.toLocaleString()} GAMES FOUND
         </span>
       </div>
@@ -215,7 +215,7 @@ export const Shop = () => {
               <button
                 onClick={() => setCurrentPage(p => p + 1)}
                 disabled={isLoading}
-                className="px-8 py-3 bg-[#bd93f9] text-[#282a36] font-bold text-sm tracking-widest rounded hover:-translate-y-1 hover:shadow-[0_4px_15px_rgba(189,147,249,0.3)] transition-all duration-200 disabled:opacity-60 flex items-center gap-2 uppercase select-none cursor-pointer"
+                className="px-8 py-3 bg-gamehub-purple text-gamehub-bg font-bold text-sm tracking-widest rounded hover:-translate-y-1 hover:shadow-[0_4px_15px_rgba(189,147,249,0.3)] transition-all duration-200 disabled:opacity-60 flex items-center gap-2 uppercase select-none cursor-pointer"
               >
                 {isLoading ? (
                   <>

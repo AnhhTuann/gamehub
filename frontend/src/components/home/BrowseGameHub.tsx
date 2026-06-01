@@ -40,7 +40,7 @@ export const BrowseGameHub = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
       <div className="flex items-center gap-3 mb-8">
-        <LayoutTemplate className="w-6 h-6 text-[#bd93f9]" />
+        <LayoutTemplate className="w-6 h-6 text-gamehub-purple" />
         <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">BROWSE GAMEHUB</h2>
       </div>
 
@@ -54,8 +54,8 @@ export const BrowseGameHub = () => {
             }}
             className={`pb-3 text-xs md:text-sm font-semibold tracking-wide transition-all duration-200 border-b-2 uppercase ${
               activeTab === tab
-                ? 'text-[#bd93f9] border-[#bd93f9]'
-                : 'text-[#6272a4] border-transparent hover:text-[#f8f8f2] hover:border-[#bd93f9]/50'
+                ? 'text-gamehub-purple border-gamehub-purple'
+                : 'text-gamehub-muted border-transparent hover:text-gamehub-text hover:border-gamehub-purple/50'
             }`}
           >
             {tab}
@@ -75,7 +75,7 @@ export const BrowseGameHub = () => {
           >
             <ProductCard product={game} />
             {game.badge && (
-              <div className="absolute top-2 left-2 z-10 bg-[#ff5555] text-white text-xs font-bold px-2 py-1 rounded shadow flex items-center pointer-events-none">
+              <div className="absolute top-2 left-2 z-10 bg-[#ff5555] text-gamehub-text text-xs font-bold px-2 py-1 rounded shadow flex items-center pointer-events-none">
                 {game.badge}
               </div>
             )}
@@ -93,7 +93,7 @@ export const BrowseGameHub = () => {
         <button 
           onClick={() => setPage(prev => prev + 1)}
           disabled={isLoading}
-          className="px-8 py-3 bg-[#44475a] hover:bg-[#6272a4] text-white font-bold text-sm tracking-widest rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed border-2 border-transparent hover:border-[#bd93f9]"
+          className="px-8 py-3 bg-gamehub-surface hover:bg-gamehub-hover text-gamehub-text font-bold text-sm tracking-widest rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed border-2 border-transparent hover:border-gamehub-purple"
         >
           {isLoading ? 'LOADING...' : 'LOAD MORE'}
         </button>

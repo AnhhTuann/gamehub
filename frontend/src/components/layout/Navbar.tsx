@@ -154,7 +154,7 @@ export const Navbar = () => {
                     animate={{ scale: 1 }}
                     exit={{ scale: 0 }}
                     key={cartCount}
-                    className="absolute -top-0.5 -right-0.5 bg-[var(--danger)] text-white text-[10px] font-bold w-4.5 h-4.5 flex items-center justify-center rounded-full border-2 border-[var(--bg-primary)]"
+                    className="absolute -top-0.5 -right-0.5 bg-[var(--danger)] text-gamehub-text text-[10px] font-bold w-4.5 h-4.5 flex items-center justify-center rounded-full border-2 border-[var(--bg-primary)]"
                   >
                     {cartCount}
                   </motion.span>

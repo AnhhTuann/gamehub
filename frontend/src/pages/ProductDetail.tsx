@@ -274,19 +274,19 @@ export const ProductDetail = () => {
               <div className="flex flex-col gap-2">
                 <div className="text-sm">
                   <span className="text-[var(--text-muted)] w-24 inline-block">Category:</span>
-                  <span className="font-semibold text-[#f8f8f2]">{game.genre?.name?.toUpperCase() || 'GAME'}</span>
+                  <span className="font-semibold text-gamehub-text">{game.genre?.name?.toUpperCase() || 'GAME'}</span>
                 </div>
                 <div className="text-sm">
                   <span className="text-[var(--text-muted)] w-24 inline-block">Platform:</span>
-                  <span className="font-semibold text-[#f8f8f2]">{game.platforms?.join(', ') || 'PC (STEAM)'}</span>
+                  <span className="font-semibold text-gamehub-text">{game.platforms?.join(', ') || 'PC (STEAM)'}</span>
                 </div>
                 <div className="text-sm">
                   <span className="text-[var(--text-muted)] w-24 inline-block">Developer:</span>
-                  <span className="font-semibold text-[#f8f8f2]">{game.developers?.join(', ') || 'Unknown'}</span>
+                  <span className="font-semibold text-gamehub-text">{game.developers?.join(', ') || 'Unknown'}</span>
                 </div>
                 <div className="text-sm">
                   <span className="text-[var(--text-muted)] w-24 inline-block">Release Date:</span>
-                  <span className="font-semibold text-[#f8f8f2]">{game.released ? new Date(game.released).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase() : 'TBA'}</span>
+                  <span className="font-semibold text-gamehub-text">{game.released ? new Date(game.released).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase() : 'TBA'}</span>
                 </div>
                 
                 {/* Rating */}

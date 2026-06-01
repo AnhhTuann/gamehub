@@ -39,31 +39,31 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
           style={{ backgroundColor: 'var(--overlay)' }}
         >
           <div className="flex justify-end p-6 shrink-0">
-            <button onClick={onClose} className="p-2 text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/10">
+            <button onClick={onClose} className="p-2 text-gamehub-text/60 hover:text-gamehub-text transition-colors rounded-lg hover:bg-white/10">
               <X className="w-6 h-6" />
             </button>
           </div>
 
           <div className="flex-1 w-full max-w-3xl mx-auto px-6 flex flex-col pt-8 md:pt-16 overflow-y-auto custom-scrollbar">
             <div className="relative w-full flex items-center mb-12 shrink-0">
-              <Search className="absolute left-0 w-6 h-6 text-white/40" />
+              <Search className="absolute left-0 w-6 h-6 text-gamehub-text/40" />
               <input 
                 ref={inputRef}
                 type="text" 
                 placeholder="Search for products..."
-                className="w-full bg-transparent text-2xl md:text-4xl font-sans font-light text-white pl-10 pb-4 border-b border-white/20 focus:border-white/60 focus:outline-none transition-colors placeholder:text-white/30"
+                className="w-full bg-transparent text-2xl md:text-4xl font-sans font-light text-gamehub-text pl-10 pb-4 border-b border-white/20 focus:border-white/60 focus:outline-none transition-colors placeholder:text-gamehub-text/30"
               />
             </div>
 
             <div className="flex flex-col gap-12 pb-16">
               {/* Trending */}
               <div>
-                <h3 className="text-xs font-bold tracking-widest uppercase text-white/40 mb-4 flex items-center gap-2">
+                <h3 className="text-xs font-bold tracking-widest uppercase text-gamehub-text/40 mb-4 flex items-center gap-2">
                   <TrendingUp className="w-3 h-3" /> Trending
                 </h3>
                 <div className="flex flex-wrap gap-3">
                   {trendingSearches.map(term => (
-                    <button key={term} className="px-5 py-2.5 rounded-full border border-white/20 text-sm font-medium text-white/70 hover:bg-white hover:text-black transition-all duration-300">
+                    <button key={term} className="px-5 py-2.5 rounded-full border border-white/20 text-sm font-medium text-gamehub-text/70 hover:bg-white hover:text-black transition-all duration-300">
                       {term}
                     </button>
                   ))}
@@ -72,7 +72,7 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
 
               {/* Suggested */}
               <div>
-                <h3 className="text-xs font-bold tracking-widest uppercase text-white/40 mb-4">Suggested</h3>
+                <h3 className="text-xs font-bold tracking-widest uppercase text-gamehub-text/40 mb-4">Suggested</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {suggestedProducts.map(product => (
                     <Link key={product.id} to={`/product/${product.id}`} onClick={onClose} className="group flex flex-col gap-3 p-3 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
@@ -80,8 +80,8 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                         <img src={product.image} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       </div>
                       <div>
-                        <h4 className="text-white font-medium text-sm line-clamp-1 group-hover:text-purple-300 transition-colors">{product.title}</h4>
-                        <span className="text-white/50 text-xs font-semibold">${product.price.toFixed(2)}</span>
+                        <h4 className="text-gamehub-text font-medium text-sm line-clamp-1 group-hover:text-purple-300 transition-colors">{product.title}</h4>
+                        <span className="text-gamehub-text/50 text-xs font-semibold">${product.price.toFixed(2)}</span>
                       </div>
                     </Link>
                   ))}
