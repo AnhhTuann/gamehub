@@ -158,29 +158,29 @@ export const HeroBanner = () => {
             </div>
 
             {/* Footer: Fake Price & Platforms */}
-            <div className="flex items-end justify-between mt-4">
+            <div className="flex items-end justify-between mt-auto">
               <div className="flex items-center gap-2 text-[#6272a4]">
                 {activeGame.platforms?.some(p => p.toLowerCase().includes('pc') || p.toLowerCase().includes('windows')) && <Monitor className="w-4 h-4" />}
                 {activeGame.platforms?.some(p => p.toLowerCase().includes('playstation')) && <Package className="w-4 h-4" />}
                 {activeGame.platforms?.some(p => p.toLowerCase().includes('xbox')) && <Gift className="w-4 h-4" />}
               </div>
               
-              <div className="flex flex-col items-end">
+              <div className="flex items-center gap-3">
                 {activeGame.price > 0 ? (
-                  <div className="text-xl font-bold text-[var(--neon-green)] drop-shadow-[0_0_8px_rgba(80,250,123,0.3)]">
+                  <div className="text-lg font-bold text-[#50fa7b] drop-shadow-[0_0_8px_rgba(80,250,123,0.3)]">
                     ${activeGame.price.toFixed(2)}
                   </div>
                 ) : (
-                  <div className="text-xl font-bold text-[#ffb86c]">
+                  <div className="text-lg font-bold text-[#ffb86c]">
                     Free To Play
                   </div>
                 )}
                 <Link 
                   to={`/product/${activeGame.id}`} 
                   state={{ productTitle: activeGame.title, productData: activeGame }}
-                  className="text-xs text-[#bd93f9] hover:text-white underline decoration-[#bd93f9]/50 hover:decoration-white underline-offset-4 transition-colors mt-1"
+                  className="px-3 py-1.5 bg-[#bd93f9] text-[#282a36] text-xs font-bold rounded hover:bg-white transition-colors"
                 >
-                  View Details
+                  VIEW DETAILS
                 </Link>
               </div>
             </div>
