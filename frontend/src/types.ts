@@ -19,7 +19,8 @@ export interface Game {
   developers?: string[];
   publishers?: string[];
   platforms?: string[];
-  tags?: { name: string; slug: string }[];
+  genres?: { name: string; slug: string }[];
+  tags?: { name: string; slug: string; language?: string }[];
 }
 
 export interface CartItem {

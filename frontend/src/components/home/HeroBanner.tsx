@@ -49,7 +49,10 @@ export const HeroBanner = () => {
   const activeGame = games[currentIndex];
   // Extract up to 4 screenshots, excluding the main image if possible
   const screenshots = activeGame.screenshots?.slice(1, 5) || [];
-  const tags = activeGame.tags?.slice(0, 3) || [];
+  // Robust Tag Filtering & Fallback
+  const englishTags = activeGame.tags?.filter(tag => tag.language === 'eng') || [];
+  const displayTags = englishTags.length > 0 ? englishTags : (activeGame.genres || []);
+  const tagsToRender = displayTags.slice(0, 3);
 
   return (
     <section className="relative w-full overflow-hidden bg-theme-primary pt-0 pb-12">
@@ -131,18 +134,18 @@ export const HeroBanner = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Tags Section */}
-              {tags.length > 0 && (
-                <div className="mb-6">
-                  <div className="text-xs text-[#6272a4] font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <Tags className="w-3 h-3" /> User Tags
-                  </div>
+              {/* Tags / Genres Section */}
+              <div className="mb-6 min-h-[70px]">
+                <div className="text-xs text-[#6272a4] font-semibold uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <Tags className="w-3 h-3" /> {englishTags.length > 0 ? 'User Tags' : 'Genres'}
+                </div>
+                {tagsToRender.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
                     <AnimatePresence mode="wait">
-                      {tags.map((tag) => (
+                      {tagsToRender.map((tag) => (
                         <motion.span 
                           key={`tag-${activeGame.id}-${tag.slug}`}
-                          className="px-2 py-1 bg-[#282a36] text-[#6272a4] text-xs rounded hover:bg-[#44475a] hover:text-white transition-colors cursor-pointer"
+                          className="px-2 py-1 bg-[#282a36] text-[#6272a4] text-xs rounded hover:bg-[#44475a] hover:text-white transition-colors cursor-pointer capitalize"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
@@ -153,8 +156,10 @@ export const HeroBanner = () => {
                       ))}
                     </AnimatePresence>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <span className="text-[#6272a4] text-xs italic">Data missing</span>
+                )}
+              </div>
             </div>
 
             {/* Footer: Fake Price & Platforms */}
