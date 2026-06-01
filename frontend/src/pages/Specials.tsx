@@ -61,21 +61,21 @@ export const Specials = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#282a36] text-[var(--text-primary)] p-4 md:p-8">
+    <div className="min-h-screen bg-gamehub-bg text-gamehub-text p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         
         {/* Page Header */}
         <div className="mb-10 text-center flex flex-col items-center">
-          <h1 className="text-4xl md:text-5xl font-pixel text-[#ff79c6] mb-4 drop-shadow-[0_0_8px_rgba(255,121,198,0.5)] uppercase flex items-center gap-4">
-            <Clock className="w-8 h-8 md:w-10 md:h-10 text-[#ff5555] animate-pulse" />
+          <h1 className="text-4xl md:text-5xl font-pixel text-gamehub-purple mb-4 drop-shadow-lg uppercase flex items-center gap-4">
+            <Clock className="w-8 h-8 md:w-10 md:h-10 text-red-500 animate-pulse" />
             Special Deals
           </h1>
-          <p className="text-[#bd93f9] text-sm md:text-base max-w-2xl font-medium tracking-wider mb-2">
+          <p className="text-gamehub-purple text-sm md:text-base max-w-2xl font-medium tracking-wider mb-2">
             Grab these top-rated titles before the countdown ends. Epic savings await!
           </p>
           {isOfflineMode && (
-            <div className="bg-[#ff5555]/20 border border-[#ff5555] text-[#ff5555] px-4 py-2 rounded-md text-xs font-bold tracking-widest mt-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#ff5555] animate-pulse" />
+            <div className="bg-red-500/20 border border-red-500 text-red-500 px-4 py-2 rounded-md text-xs font-bold tracking-widest mt-2 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               API RATE LIMIT EXCEEDED. SHOWING OFFLINE CACHED DEALS.
             </div>
           )}
@@ -84,10 +84,10 @@ export const Specials = () => {
         {/* Content */}
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#bd93f9]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gamehub-purple"></div>
           </div>
         ) : error ? (
-          <div className="text-center text-[#ff5555] bg-[#44475a] p-6 rounded-lg shadow-lg border border-[#ff5555]">
+          <div className="text-center text-red-500 bg-gamehub-surface p-6 rounded-lg shadow-lg border border-red-500">
             <p className="text-lg font-bold">{error}</p>
           </div>
         ) : (
