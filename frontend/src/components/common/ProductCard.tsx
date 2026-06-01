@@ -27,7 +27,7 @@ const PixelRating = ({ rating }: { rating: number }) => {
           }`}
         />
       ))}
-      <span className="text-xs text-gamehub-muted ml-1.5">{rating.toFixed(1)}</span>
+      <span className="text-xs font-bold text-gamehub-text ml-1.5">{rating.toFixed(1)}</span>
     </div>
   );
 };
@@ -82,7 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
 
       {/* Content */}
       <div className="flex flex-col flex-grow justify-between p-5">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {/* Genre tag */}
           <span className="text-[11px] font-semibold text-gamehub-purple tracking-wider uppercase">
             {product.genre?.name || 'UNRATED'}
@@ -90,7 +90,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
 
           {/* Title - Sans-serif */}
           <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }}>
-            <h3 className="text-sm font-bold leading-snug text-gamehub-text group-hover:text-gamehub-purple transition-colors line-clamp-2 min-h-[3rem]">
+            <h3 className="text-sm font-bold leading-snug text-gamehub-text group-hover:text-gamehub-purple transition-colors line-clamp-2">
               {product.title || 'Unknown Title'}
             </h3>
           </Link>
