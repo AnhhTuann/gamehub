@@ -50,6 +50,34 @@ export const getNewReleasesNews = () => fetchGames('/games', '&ordering=-release
 export const getFeaturedGames = () => fetchGames('/games', '&dates=2025-06-01,2026-06-01&ordering=-added&page_size=6');
 export const getAllGames = (page = 1) => fetchGames('/games', `&ordering=-metacritic&page_size=40&page=${page}`);
 
+export const getBrowseGames = async (tab: string, page: number): Promise<Game[]> => {
+  let params = `&page_size=12&page=${page}`;
+  if (tab === 'NEW RELEASES') params += '&dates=2024-01-01,2024-12-31&ordering=-released';
+  else if (tab === 'SPECIALS') params += '&ordering=-rating';
+  else if (tab === 'FREE GAMES') params += '&tags=free-to-play';
+  else if (tab === 'BY USER TAGS') params += '&ordering=-added';
+
+  const games = await fetchGames('/games', params);
+
+  if (tab === 'SPECIALS') {
+    return games.map(g => {
+      const discount = [0.2, 0.3, 0.5, 0.75, 0.9][Math.floor(Math.random() * 5)];
+      return {
+        ...g,
+        originalPrice: g.price,
+        price: g.price * (1 - discount),
+        badge: `${discount * 100}% OFF`
+      };
+    });
+  }
+  
+  if (tab === 'FREE GAMES') {
+    return games.map(g => ({ ...g, price: 0 }));
+  }
+  
+  return games;
+};
+
 export const getGameDetails = async (rawgId: number): Promise<Game | null> => {
   try {
     const [detailRes, screenshotRes] = await Promise.all([

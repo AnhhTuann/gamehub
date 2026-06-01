@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Game } from '../types';
 import { getTrendingGames, getNewReleases, getAllGames, getSpecialDeals } from '../services/api';
 import { HeroBanner } from '../components/home/HeroBanner';
+import { BrowseGameHub } from '../components/home/BrowseGameHub';
 import { ProductCard } from '../components/common/ProductCard';
 import { Link } from 'react-router-dom';
 import { Flame, Tag, Grid, LayoutTemplate, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -19,7 +20,6 @@ export const Home = () => {
   const [newReleases, setNewReleases] = useState<Game[]>([]);
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'New Releases' | 'Specials' | 'Free Games' | 'By User Tags'>('New Releases');
   const [isHovered, setIsHovered] = useState(false);
   const [isManualScrolling, setIsManualScrolling] = useState(false);
 
@@ -67,20 +67,6 @@ export const Home = () => {
       setLoading(false);
     });
   }, []);
-
-  // Compute tab data
-  let tabGames: Game[] = [];
-  if (activeTab === 'New Releases') {
-    tabGames = newReleases.slice(0, 12);
-  } else if (activeTab === 'Specials') {
-    // Mock specials by picking a slice
-    tabGames = allGames.slice(10, 22);
-  } else if (activeTab === 'Free Games') {
-    // Mock free games by taking another slice
-    tabGames = allGames.slice(22, 34);
-  } else if (activeTab === 'By User Tags') {
-    tabGames = allGames.slice(0, 12);
-  }
 
   return (
     <div className="bg-theme-primary min-h-screen">
@@ -176,59 +162,7 @@ export const Home = () => {
       </div>
 
       {/* 4. Browse Gamehub */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
-        <div className="flex items-center gap-3 mb-8">
-          <LayoutTemplate className="w-6 h-6 text-[#bd93f9]" />
-          <h2 className="font-pixel text-lg text-[var(--text-primary)] tracking-wider">BROWSE GAMEHUB</h2>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex flex-wrap border-b border-[var(--border-primary)] gap-2 md:gap-6 mb-8">
-          {['New Releases', 'Specials', 'Free Games', 'By User Tags'].map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab as any)}
-              className={`pb-3 text-xs md:text-sm font-semibold tracking-wide transition-all duration-200 border-b-2 uppercase ${
-                activeTab === tab
-                  ? 'text-[var(--accent)] border-[var(--accent)]'
-                  : 'text-[var(--text-muted)] border-transparent hover:text-[var(--text-secondary)] hover:border-[var(--accent)]'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab Content Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="aspect-[3/4] bg-[var(--bg-tertiary)] rounded-lg animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <motion.div 
-            key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {tabGames.map((game, idx) => (
-              <ProductCard key={`tab-${activeTab}-${idx}`} product={game} />
-            ))}
-          </motion.div>
-        )}
-        
-        <div className="mt-10 flex justify-center">
-          <Link 
-            to="/shop" 
-            className="px-8 py-3 bg-[var(--bg-card)] border-2 border-[var(--border-primary)] text-[var(--text-primary)] font-bold text-sm tracking-widest rounded hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
-          >
-            VIEW FULL CATALOG
-          </Link>
-        </div>
-      </div>
+      <BrowseGameHub />
     </div>
   );
 };
