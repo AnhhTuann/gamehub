@@ -4,6 +4,30 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Search } from 'lucide-react';
 import { Game } from '../types';
 import { ProductCard } from '../components/common/ProductCard';
+import { CustomDropdown } from '../components/common/CustomDropdown';
+
+const GENRE_OPTIONS = [
+  { value: '', label: 'All Genres' },
+  { value: '4', label: 'Action' },
+  { value: '5', label: 'RPG' },
+  { value: '2', label: 'Shooter' },
+  { value: '51', label: 'Indie' }
+];
+
+const PLATFORM_OPTIONS = [
+  { value: '', label: 'All Platforms' },
+  { value: '4', label: 'PC' },
+  { value: '187', label: 'PlayStation 5' },
+  { value: '186', label: 'Xbox Series S/X' },
+  { value: '7', label: 'Nintendo Switch' }
+];
+
+const SORT_OPTIONS = [
+  { value: '-added', label: 'Trending' },
+  { value: '-released', label: 'New Releases' },
+  { value: '-rating', label: 'Top Rated' },
+  { value: 'name', label: 'Name A-Z' }
+];
 
 export const Shop = () => {
   const location = useLocation();
@@ -119,40 +143,26 @@ export const Shop = () => {
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <span className="font-pixel text-[10px] text-[var(--text-muted)] tracking-widest mr-2">FILTERS:</span>
           
-          <select
+          <CustomDropdown 
+            options={GENRE_OPTIONS}
             value={selectedGenre}
-            onChange={(e) => setSelectedGenre(e.target.value)}
-            className="bg-[#282a36] border border-[#6272a4] text-[#f8f8f2] px-4 py-2.5 rounded-md focus:outline-none focus:border-[#bd93f9] focus:ring-1 focus:ring-[#bd93f9] transition-all font-sans text-sm cursor-pointer min-w-[140px] flex-1 sm:flex-none"
-          >
-            <option value="">All Genres</option>
-            <option value="4">Action</option>
-            <option value="5">RPG</option>
-            <option value="2">Shooter</option>
-            <option value="51">Indie</option>
-          </select>
+            onChange={setSelectedGenre}
+            className="flex-1 sm:flex-none min-w-[150px]"
+          />
           
-          <select
+          <CustomDropdown 
+            options={PLATFORM_OPTIONS}
             value={selectedPlatform}
-            onChange={(e) => setSelectedPlatform(e.target.value)}
-            className="bg-[#282a36] border border-[#6272a4] text-[#f8f8f2] px-4 py-2.5 rounded-md focus:outline-none focus:border-[#bd93f9] focus:ring-1 focus:ring-[#bd93f9] transition-all font-sans text-sm cursor-pointer min-w-[140px] flex-1 sm:flex-none"
-          >
-            <option value="">All Platforms</option>
-            <option value="4">PC</option>
-            <option value="187">PlayStation 5</option>
-            <option value="186">Xbox Series S/X</option>
-            <option value="7">Nintendo Switch</option>
-          </select>
+            onChange={setSelectedPlatform}
+            className="flex-1 sm:flex-none min-w-[150px]"
+          />
 
-          <select
+          <CustomDropdown 
+            options={SORT_OPTIONS}
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="bg-[#282a36] border border-[#6272a4] text-[#f8f8f2] px-4 py-2.5 rounded-md focus:outline-none focus:border-[#bd93f9] focus:ring-1 focus:ring-[#bd93f9] transition-all font-sans text-sm cursor-pointer min-w-[140px] flex-1 sm:flex-none"
-          >
-            <option value="-added">Trending</option>
-            <option value="-released">New Releases</option>
-            <option value="-rating">Top Rated</option>
-            <option value="name">Name A-Z</option>
-          </select>
+            onChange={setSortBy}
+            className="flex-1 sm:flex-none min-w-[150px]"
+          />
 
           {(selectedGenre || selectedPlatform || sortBy !== '-added') && (
             <button
