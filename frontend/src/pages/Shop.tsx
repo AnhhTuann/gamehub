@@ -19,6 +19,7 @@ export const Shop = () => {
     return '';
   });
   const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [sortBy, setSortBy] = useState('-added');
 
   const [games, setGames] = useState<Game[]>([]);
   const [totalGames, setTotalGames] = useState(0);
@@ -38,7 +39,7 @@ export const Shop = () => {
     setIsLoading(true);
     try {
       const key = (import.meta as any).env.VITE_RAWG_API_KEY || 'b01eca51fc9c49b7be3a217fc76f779f';
-      let url = `https://api.rawg.io/api/games?key=${key}&page_size=40&page=${page}&ordering=-metacritic`;
+      let url = `https://api.rawg.io/api/games?key=${key}&page_size=40&page=${page}&ordering=${sortBy}`;
       
       if (debouncedSearch) {
         url += `&search=${encodeURIComponent(debouncedSearch)}`;
@@ -82,12 +83,12 @@ export const Shop = () => {
     }
   };
 
-  // Reset page and fetch new games whenever filters or search query change
+  // Reset page and fetch new games whenever filters, sorting, or search query change
   useEffect(() => {
     setCurrentPage(1);
     setGames([]);
     fetchGames(1);
-  }, [debouncedSearch, selectedGenre, selectedPlatform]);
+  }, [debouncedSearch, selectedGenre, selectedPlatform, sortBy]);
 
   // Load more pages
   useEffect(() => {
@@ -142,9 +143,20 @@ export const Shop = () => {
             <option value="7">Nintendo Switch</option>
           </select>
 
-          {(selectedGenre || selectedPlatform) && (
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-[#282a36] border border-[#6272a4] text-[#f8f8f2] px-4 py-2.5 rounded-md focus:outline-none focus:border-[#bd93f9] focus:ring-1 focus:ring-[#bd93f9] transition-all font-sans text-sm cursor-pointer min-w-[140px] flex-1 sm:flex-none"
+          >
+            <option value="-added">Trending</option>
+            <option value="-released">New Releases</option>
+            <option value="-rating">Top Rated</option>
+            <option value="name">Name A-Z</option>
+          </select>
+
+          {(selectedGenre || selectedPlatform || sortBy !== '-added') && (
             <button
-              onClick={() => { setSelectedGenre(''); setSelectedPlatform(''); }}
+              onClick={() => { setSelectedGenre(''); setSelectedPlatform(''); setSortBy('-added'); }}
               className="text-xs text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors flex items-center gap-1 font-medium"
             >
               <X className="w-3 h-3" /> Clear All
