@@ -38,9 +38,9 @@ export const HeroBanner = () => {
 
   if (games.length === 0) {
     return (
-      <section className="relative w-full bg-theme-primary pt-6 pb-12">
+      <section className="relative w-full bg-theme-primary pt-0 pb-12">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="w-full h-[450px] bg-[#191A21] animate-pulse rounded-lg" />
+          <div className="w-full h-[600px] md:h-[420px] bg-[#191A21] animate-pulse rounded-lg" />
         </div>
       </section>
     );
@@ -52,14 +52,10 @@ export const HeroBanner = () => {
   const tags = activeGame.tags?.slice(0, 3) || [];
 
   return (
-    <section className="relative w-full overflow-hidden bg-theme-primary pt-6 pb-12">
+    <section className="relative w-full overflow-hidden bg-theme-primary pt-0 pb-12">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="mb-6">
-          <h2 className="font-pixel text-xl text-[var(--text-primary)] tracking-wider">FEATURED & RECOMMENDED</h2>
-        </div>
-
         <div 
-          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-[#191A21] min-h-[450px]"
+          className="relative group rounded-lg overflow-hidden shadow-2xl flex flex-col md:flex-row bg-[#191A21] h-[650px] sm:h-[550px] md:h-[420px]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >

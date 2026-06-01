@@ -8,6 +8,11 @@ const getCheapSharkPrice = async (title: string): Promise<number> => {
   return 19.99 + (title.length % 5) * 10; // Fallback price logic to avoid API rate limiting
 };
 
+const getHighResRawg = (url?: string) => {
+  if (!url) return '';
+  return url.replace(/\/crop\/\d+\/\d+\//, '/').replace(/\/resize\/\d+\/-?\//, '/');
+};
+
 const fetchGames = async (endpoint: string, params = ''): Promise<Game[]> => {
   try {
     const res = await fetch(`${RAWG_BASE_URL}${endpoint}?key=${RAWG_API_KEY}${params}`);
@@ -20,14 +25,14 @@ const fetchGames = async (endpoint: string, params = ''): Promise<Game[]> => {
         id: g.id.toString(),
         rawgId: g.id,
         title: g.name,
-        image: g.background_image,
+        image: getHighResRawg(g.background_image),
         rating: g.rating,
         released: g.released,
         price,
         genre: g.genres && g.genres.length > 0 ? { name: g.genres[0].name, slug: g.genres[0].slug } : undefined,
         tags: g.tags ? g.tags.map((t: any) => ({ name: t.name, slug: t.slug })) : [],
         platforms: g.parent_platforms ? g.parent_platforms.map((p: any) => p.platform.name) : [],
-        screenshots: g.short_screenshots ? g.short_screenshots.map((s: any) => s.image) : []
+        screenshots: g.short_screenshots ? g.short_screenshots.map((s: any) => getHighResRawg(s.image)) : []
       };
     }));
     
