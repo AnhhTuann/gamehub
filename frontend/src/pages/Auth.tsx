@@ -15,9 +15,9 @@ const GoogleIcon = () => (
 
 const Input = ({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => (
   <div className="flex flex-col gap-2 w-full">
-    <label className="text-xs font-bold text-[#f8f8f2] tracking-widest uppercase">{label}</label>
+    <label className="text-xs font-bold text-gamehub-text tracking-widest uppercase">{label}</label>
     <input 
-      className="w-full bg-[#282a36] border border-[#6272a4] text-[#f8f8f2] px-4 py-3 rounded focus:border-[#ff79c6] focus:ring-1 focus:ring-[#ff79c6] focus:outline-none transition-all duration-300 font-sans"
+      className="w-full bg-gamehub-surface border border-gamehub-border text-gamehub-text px-4 py-3 rounded focus:border-gamehub-purple focus:ring-1 focus:ring-gamehub-purple focus:outline-none transition-all duration-300 font-sans"
       {...props}
     />
   </div>
@@ -42,31 +42,31 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-gamehub-bg flex items-center justify-center p-4 relative overflow-hidden font-sans">
       
       {/* Retro background effects */}
       <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.05)_2px,rgba(0,0,0,0.05)_4px)] pointer-events-none" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#bd93f9] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#ff79c6] rounded-full mix-blend-screen filter blur-[150px] opacity-10 animate-pulse" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gamehub-purple rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500 rounded-full mix-blend-screen filter blur-[150px] opacity-10 animate-pulse" style={{ animationDelay: '2s' }} />
 
-      <Link to="/" className="absolute top-8 left-8 text-[var(--text-muted)] hover:text-[#ff79c6] transition-colors flex items-center gap-2 text-sm font-bold uppercase tracking-widest z-20">
+      <Link to="/" className="absolute top-8 left-8 text-gamehub-muted hover:text-gamehub-purple hover:opacity-80 transition-colors flex items-center gap-2 text-sm font-bold uppercase tracking-widest z-20">
         <ArrowLeft className="w-4 h-4" />
         Back to Store
       </Link>
 
       <div className="w-full max-w-md relative z-10">
         {/* Glow behind container */}
-        <div className="absolute inset-0 bg-[#bd93f9] blur-xl opacity-20 rounded-lg"></div>
+        <div className="absolute inset-0 bg-gamehub-purple blur-xl opacity-20 rounded-lg"></div>
 
         <motion.div 
-          className="bg-[#44475a]/90 backdrop-blur-md border-2 border-[#bd93f9] p-8 sm:p-10 rounded-lg relative overflow-hidden shadow-[0_0_15px_rgba(189,147,249,0.3)]"
+          className="bg-gamehub-surface/90 backdrop-blur-md border-2 border-gamehub-purple p-8 sm:p-10 rounded-lg relative overflow-hidden shadow-xl"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-[#282a36] border-2 border-[#ff79c6] rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,121,198,0.4)]">
-              <Gamepad2 className="w-8 h-8 text-[#bd93f9] animate-pulse" />
+            <div className="w-16 h-16 bg-gamehub-bg border-2 border-gamehub-purple rounded-full flex items-center justify-center shadow-md">
+              <Gamepad2 className="w-8 h-8 text-gamehub-purple animate-pulse" />
             </div>
           </div>
 
@@ -79,10 +79,10 @@ export const Auth = () => {
               transition={{ duration: 0.3 }}
               className="flex flex-col"
             >
-              <h1 className="font-pixel text-center text-xl md:text-2xl text-[#bd93f9] mb-2 tracking-wide leading-relaxed">
+              <h1 className="font-pixel text-center text-xl md:text-2xl text-gamehub-purple mb-2 tracking-wide leading-relaxed">
                 {isLogin ? 'PLAYER 1 LOGIN' : 'NEW PLAYER REGISTRATION'}
               </h1>
-              <p className="text-[#f8f8f2] text-center mb-8 text-sm opacity-80">
+              <p className="text-gamehub-text text-center mb-8 text-sm opacity-80">
                 {isLogin 
                   ? 'Enter your credentials to continue your adventure.' 
                   : 'Create your profile to join the game.'}
@@ -104,7 +104,7 @@ export const Auth = () => {
 
                 {isLogin && (
                   <div className="flex justify-end -mt-1">
-                    <a href="#" className="text-xs font-medium text-[#bd93f9] hover:text-[#ff79c6] transition-colors tracking-wide">
+                    <a href="#" className="text-xs font-medium text-gamehub-purple hover:opacity-80 transition-colors tracking-wide">
                       Forgot Password?
                     </a>
                   </div>
@@ -112,7 +112,7 @@ export const Auth = () => {
 
                 <button 
                    type="submit"
-                   className="w-full py-4 mt-4 bg-[#bd93f9] text-black font-pixel text-[10px] tracking-widest uppercase rounded hover:bg-[#ff79c6] hover:-translate-y-1 transition-all duration-300"
+                   className="w-full py-4 mt-4 bg-gamehub-purple text-white font-pixel text-[10px] tracking-widest uppercase rounded hover:opacity-80 hover:-translate-y-1 transition-all duration-300"
                    style={{ boxShadow: '4px 4px 0 0 rgba(0,0,0,0.5)' }}
                 >
                   {isLogin ? 'PRESS START (LOGIN)' : 'JOIN GAME'}
@@ -120,9 +120,9 @@ export const Auth = () => {
               </form>
 
               <div className="flex items-center gap-4 my-6">
-                <div className="flex-1 border-t border-[#6272a4]"></div>
-                <span className="text-[#6272a4] text-xs uppercase tracking-widest font-bold">Or</span>
-                <div className="flex-1 border-t border-[#6272a4]"></div>
+                <div className="flex-1 border-t border-gamehub-border"></div>
+                <span className="text-gamehub-muted text-xs uppercase tracking-widest font-bold">Or</span>
+                <div className="flex-1 border-t border-gamehub-border"></div>
               </div>
 
               <button 
@@ -131,17 +131,17 @@ export const Auth = () => {
                   login('GoogleGamer');
                   navigate('/portal', { replace: true });
                 }}
-                className="w-full py-3.5 bg-transparent border-2 border-[#6272a4] text-[#f8f8f2] font-bold tracking-wide text-sm flex items-center justify-center gap-3 rounded hover:border-[#bd93f9] hover:bg-[#bd93f9]/10 transition-colors duration-300"
+                className="w-full py-3.5 bg-transparent border-2 border-gamehub-border text-gamehub-text font-bold tracking-wide text-sm flex items-center justify-center gap-3 rounded hover:border-gamehub-purple hover:bg-gamehub-purple/10 transition-colors duration-300"
               >
                 <GoogleIcon />
                 Continue with Google
               </button>
 
-              <div className="text-center mt-8 text-[#f8f8f2] text-sm opacity-80">
+              <div className="text-center mt-8 text-gamehub-text text-sm opacity-80">
                 {isLogin ? "Don't have an account? " : "Already have an account? "}
                 <button 
                   onClick={() => setIsLogin(!isLogin)}
-                  className="text-[#bd93f9] hover:text-[#ff79c6] hover:underline underline-offset-4 tracking-wide font-bold ml-1 transition-all"
+                  className="text-gamehub-purple hover:opacity-80 hover:underline underline-offset-4 tracking-wide font-bold ml-1 transition-all"
                 >
                   {isLogin ? 'Sign up' : 'Sign in'}
                 </button>

@@ -4,6 +4,39 @@
 @theme {
   --font-pixel: "Press Start 2P", monospace;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* GameHub custom semantic colors mapped from CSS variables */
+  --color-gamehub-bg: var(--bg-main);
+  --color-gamehub-surface: var(--bg-surface);
+  --color-gamehub-text: var(--text-main);
+  --color-gamehub-muted: var(--text-muted);
+  --color-gamehub-purple: var(--accent-purple);
+  --color-gamehub-green: var(--accent-green);
+  --color-gamehub-border: var(--border-color);
+}
+
+@layer base {
+  /* LIGHT THEME (Mặc định) */
+  :root {
+    --bg-main: #f3f4f6;
+    --bg-surface: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --accent-purple: #9333ea;
+    --accent-green: #16a34a;
+    --border-color: #e5e7eb;
+  }
+
+  /* DARK THEME (Dracula) */
+  .dark {
+    --bg-main: #282a36;
+    --bg-surface: #44475a;
+    --text-main: #f8f8f2;
+    --text-muted: #6272a4;
+    --accent-purple: #bd93f9;
+    --accent-green: #50fa7b;
+    --border-color: #6272a4;
+  }
 }
 
 /* ===== DRACULA DARK THEME (default) ===== */
