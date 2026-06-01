@@ -45,7 +45,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       className="group flex flex-col w-full h-full bg-gamehub-surface border-2 border-gamehub-border rounded-lg overflow-hidden transition-all duration-300 hover:border-gamehub-purple hover:-translate-y-1 shadow-sm hover:shadow-lg"
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] w-full overflow-hidden block bg-gamehub-bg">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-video w-full overflow-hidden block bg-gamehub-bg">
         {product.image ? (
           <img
             src={product.image}
