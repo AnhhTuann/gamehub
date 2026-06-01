@@ -104,7 +104,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
         </div>
 
         {/* Price + Cart */}
-        <div className="flex items-center justify-between mt-auto pt-5 border-t border-gamehub-border/50">
+        <div className="flex items-center justify-between mt-auto pt-4 mt-4 border-t border-gamehub-purple/30">
           <div className="flex flex-col">
             {product.originalPrice && (
               <span className="text-xs text-gamehub-muted line-through font-medium">

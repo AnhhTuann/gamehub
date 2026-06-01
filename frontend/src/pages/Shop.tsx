@@ -181,13 +181,13 @@ export const Shop = () => {
       </div>
 
       <div className="flex gap-8 items-start">
-        {/* Product Grid (Full Width) */}
+        {/* Main Content */}
         <div className="w-full lg:flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
             <AnimatePresence mode="popLayout">
               {(isLoading && currentPage === 1) ? (
                 [...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-gamehub-surface border border-gamehub-border rounded-lg animate-pulse overflow-hidden">
+                  <div key={i} className="bg-gamehub-surface border border-gamehub-border rounded-lg animate-pulse overflow-hidden h-full">
                     <div className="aspect-video bg-gamehub-bg" />
                     <div className="p-4 space-y-3">
                       <div className="h-3 bg-gamehub-bg w-1/3 rounded" />
@@ -204,7 +204,17 @@ export const Shop = () => {
                 </div>
               ) : (
                 displayProducts.map((game, idx) => (
-                  <ProductCard key={`${game.id}-${idx}`} product={game} />
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.2, delay: idx * 0.05 }}
+                    key={game.id} 
+                    className="relative group h-full"
+                  >
+                    <ProductCard product={game} />
+                  </motion.div>
                 ))
               )}
             </AnimatePresence>
