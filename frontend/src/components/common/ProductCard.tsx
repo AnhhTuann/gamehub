@@ -48,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onRemove }) =
       onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}
     >
       {/* Image */}
-      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-video w-full overflow-hidden block bg-black">
+      <Link to={`/product/${product.id}`} state={{ productTitle: product.title, productData: product }} className="relative aspect-[460/215] w-full overflow-hidden block bg-black">
         {product.image ? (
           <img
             src={product.image}
